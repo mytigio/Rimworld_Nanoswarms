@@ -2,7 +2,6 @@
 
 <Defs>
   <ThingDef Abstract="True" Name="NeuralArrayBase" ParentName="BuildingBase">
-    <thingClass>Nanoswarms.Building_NeuralArrayBase</thingClass>
     <tickerType>Normal</tickerType>
     <drawerType>MapMeshAndRealTime</drawerType>
     <altitudeLayer>Building</altitudeLayer>
@@ -16,7 +15,6 @@
       <canPlaceOverImpassablePlant>false</canPlaceOverImpassablePlant>
       <ai_chillDestination>false</ai_chillDestination>
       <buildingTags>
-        <li>Production</li>
         <li>Biotech</li>
       </buildingTags>
     </building>
@@ -28,7 +26,7 @@
   <ThingDef ParentName="NeuralArrayBase">
     <defName>mytAINeuralArray</defName>
     <label>AI Nano-Projection Cabinet</label>
-    <description>A complex neural array housing an artifical intellegence and allowing it to control swarms of nanobiotic machines to form a physical body.  Once formed the body communicates with the cabinet through a built-in quantum tunneling array.</description>
+    <description>A complex neural array housing an artifical intellegence crafted from a persona subcore and allowing it to control swarms of nanobiotic machines to form a physical body.  Once formed the body communicates with the cabinet through a built-in quantum tunneling array, allowing unlimited communication range once the link is formed.  If at any time the link is disrupted, the nanoswarm will disapate, requiring a new swarm to be constructed at the projection cabinet.</description>
     <graphicData>
       <texPath>Things/Building/Production/TissueAssembler</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
@@ -51,7 +49,7 @@
       <ComponentIndustrial>12</ComponentIndustrial>
       <ComponentSpacer>6</ComponentSpacer>
       <Gold>30</Gold>
-      <AIPersonaCore>1</AIPersonaCore>
+      <VREA_PersonaSubcore>1</VREA_PersonaSubcore>
     </costList>
     <researchPrerequisites>
       <li>VREA_AndroidTech</li>
