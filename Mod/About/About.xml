@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+
+  <!-- This is the internal identifier for your mod. -->
+  <!-- It is recommended that you make it unique to as to avoid potential collisions with other authors; -->
+  <!--     if Rimworld detects multiple mods with the same packageId then it will refuse to load all of them. -->
+  <packageId>mytigio.Nanoswarms</packageId>
+
+  <!-- This is both the displayed name of your mod as well as the name used for patch targeting. -->
+  <name>Nanoswarms</name>
+
+  <!-- Your name goes here. -->
+  <author>mytigio</author>
+
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld.Biotech</packageId>
+      <displayName>Biotech</displayName>
+    </li>
+    <li>
+      <packageId>OskarPotocki.VanillaFactionsExpanded.Core</packageId>
+      <displayName>Vanilla Expanded Framework</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/workshop/filedetails/?id=2023507013</steamWorkshopUrl>
+      <downloadUrl>https://github.com/Vanilla-Expanded/VanillaExpandedFramework</downloadUrl>
+    </li>
+    <li>
+      <packageId>OskarPotocki.VanillaFactionsExpanded.Core</packageId>
+      <displayName>Vanilla Expanded Framework</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/workshop/filedetails/?id=2023507013</steamWorkshopUrl>
+      <downloadUrl>https://github.com/Vanilla-Expanded/VanillaExpandedFramework</downloadUrl>
+    </li>
+    <li>
+      <packageId>vanillaracesexpanded.android</packageId>
+      <displayName>Vanilla Races Expanded - Android</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/workshop/filedetails/?id=2975771801</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>Ludeon.RimWorld.Royalty</li>
+    <li>Ludeon.RimWorld.Ideology</li>
+    <li>Ludeon.RimWorld.Biotech</li>
+    <li>OskarPotocki.VanillaFactionsExpanded.Core</li>
+    <li>vanillaracesexpanded.android</li>
+  </loadAfter>
+  <!-- These are the RimWorld game versions that your mod supports. -->
+  <!-- It is recommended that you only list versions that you have explicitly tested to ensure they work, -->
+  <!-- as even basic XML options can change between major versions of the game. -->
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+
+  <!-- This is the description of your mod shown in both the vanilla mod manager as well as modded managers. -->
+  <description>Adds nanoswarm pawns controlled remotely via AI or digitized pawns.</description>
+
+</ModMetaData>
