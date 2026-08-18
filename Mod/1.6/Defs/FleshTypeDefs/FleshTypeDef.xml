@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<FleshTypeDef>
+		<defName>mytNS_NanoFlesh</defName>
+		<corpseCategory>CorpsesAnimal</corpseCategory>
+		<damageEffecter>mytNS_Damage_HitSwarm</damageEffecter>
+		<genericWounds>
+			<li>
+				<texture>Things/Pawn/Wounds/Nanite_WoundA</texture>
+			</li>
+			<li>
+				<texture>Things/Pawn/Wounds/Nanite_WoundB</texture>
+			</li>
+			<li>
+				<texture>Things/Pawn/Wounds/Nanite_WoundC</texture>
+			</li>
+		</genericWounds>
+	</FleshTypeDef>
+</Defs>

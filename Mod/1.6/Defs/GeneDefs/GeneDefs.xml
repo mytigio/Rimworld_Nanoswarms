@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <VREAndroids.AndroidGeneDef>
+		<defName>mytNS_NanobotCirculation</defName>
+		<label>nanite circulation</label>
+		<description>Nanoswarm Projections do not have blood or fluid in the traditional sense, but are instead kept mobile through the movement of nanoscale robots.  Injury leaves small dust-like piles of these broken robots behind, resembling a black, dusty blood.</description>
+		<iconPath>UI/Icons/Genes/Hardware/Gene_NeutroCirculation</iconPath>
+		<displayOrderInCategory>11</displayOrderInCategory>
+		<biostatCpx>1</biostatCpx>
+		<displayCategory>VREA_Hardware</displayCategory>
+		<canGenerateInGeneSet>false</canGenerateInGeneSet>
+		<isCoreComponent>true</isCoreComponent>
+		<modExtensions Inherit="False">
+			<li Class="VEF.Genes.GeneExtension">
+				<backgroundPathXenogenes>UI/Icons/Genes/GeneBackground_Hardware</backgroundPathXenogenes>
+				<backgroundPathEndogenes>UI/Icons/Genes/GeneBackground_Hardware</backgroundPathEndogenes>
+				<customBloodThingDef>mytNS_Filth_Nanodust</customBloodThingDef>
+				<customBloodSmearThingDef>mytNS_Filth_NanodustSmear</customBloodSmearThingDef>
+				<customBloodIcon>UI/Icons/NeutrolossIcon</customBloodIcon>
+				<customBloodEffect>mytNS_Damage_HitSwarm</customBloodEffect>
+				<customWoundsFromFleshtype>mytNS_NanoFlesh</customWoundsFromFleshtype>
+			</li>
+		</modExtensions>
+	</VREAndroids.AndroidGeneDef>
+</Defs>

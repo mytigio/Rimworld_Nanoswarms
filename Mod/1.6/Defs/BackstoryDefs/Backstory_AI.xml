@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<BackstoryDef>
+		<defName>mytNS_PersonaCore</defName>
+		<ignoreIllegalLabelCharacterConfigError>False</ignoreIllegalLabelCharacterConfigError>
+		<identifier>mytNS_PersonaCore</identifier>
+		<slot>Childhood</slot>
+		<title>ai persona</title>
+		<titleShort>persona</titleShort>
+		<baseDesc>[PAWN_nameDef] is an ai persona. [PAWN_pronoun] was built to manage an estate or ship and can only physically interact with the world through remotely piloted robots.</baseDesc>
+		<bodyTypeMale>Male</bodyTypeMale>
+		<bodyTypeFemale>Female</bodyTypeFemale>
+		<spawnCategories>
+			<li>aipersona</li>
+		</spawnCategories>
+		<requiredWorkTags>AllWork</requiredWorkTags>
+	</BackstoryDef>
+    <BackstoryDef>
+		<defName>mytNS_SubPersonaCore</defName>
+		<ignoreIllegalLabelCharacterConfigError>False</ignoreIllegalLabelCharacterConfigError>
+		<identifier>mytNS_SubPersonaCore</identifier>
+		<slot>Childhood</slot>
+		<title>ai subpersona</title>
+		<titleShort>persona</titleShort>
+		<baseDesc>[PAWN_nameDef] is an ai subpersona. [PAWN_pronoun] was created by mapping the brains of several humans to form a fascimile of the human mind.  Not as powerful as a full AI Persona, [PAWN_nameDef] was created for a specific job instead of general autonomy.</baseDesc>
+		<bodyTypeMale>Male</bodyTypeMale>
+		<bodyTypeFemale>Female</bodyTypeFemale>
+		<spawnCategories>
+			<li>aipersona</li>
+		</spawnCategories>
+		<requiredWorkTags>AllWork</requiredWorkTags>
+	</BackstoryDef>
+</Defs>

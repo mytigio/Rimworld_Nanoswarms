@@ -4,6 +4,7 @@
         <TargetFramework>net48</TargetFramework>
         <LangVersion>7.3</LangVersion>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <RimworldModDirectory>/media/Games/SteamLibrary/steamapps/common/RimWorld/Mods/</RimworldModDirectory>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -31,12 +32,22 @@
       </Reference>
       <Reference Include="UnityEngine">
         <HintPath>..\..\..\..\..\..\..\SteamLibrary\steamapps\common\RimWorld\RimWorldLinux_Data\Managed\UnityEngine.dll</HintPath>
-        <Private>False</Private>
+      </Reference>
+      <Reference Include="UnityEngine.CoreModule">
+        <HintPath>..\..\..\..\..\..\..\SteamLibrary\steamapps\common\RimWorld\RimWorldLinux_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
       </Reference>
       <Reference Include="VREAndroids">
         <HintPath>..\..\..\..\..\..\..\SteamLibrary\steamapps\workshop\content\294100\2975771801\1.6\Assemblies\VREAndroids.dll</HintPath>
         <Private>False</Private>
       </Reference>
     </ItemGroup>
+
+    <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+      <Exec Command="rm -rf $(TargetDir)" />
+    </Target>
+
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+      <Exec Command="rm -rf $(RimworldModDirectory)$(TargetName)/; &#xA;mkdir $(RimworldModDirectory)$(TargetName)/; &#xA;cp -rf $(ProjectDir)../Mod/*  $(RimworldModDirectory)$(TargetName)/" />
+    </Target>
 
 </Project>

@@ -9,6 +9,19 @@ namespace Nanoswarms
     {
         private static readonly Harmony HarmonyInstance;
         private static readonly string ModName = "[Nanoswarms]";
+        
+        public static bool IsDebugBuild
+        {
+            get
+            {
+                #if DEBUG
+                    return true;
+                #else
+                    return false;
+                #endif
+            }
+        }
+
 
         static NanoswarmsHelper()
         {
@@ -22,7 +35,9 @@ namespace Nanoswarms
         
         public static void WriteLog(string message, LogType type = LogType.Info)
         {
-            string finalMessage = $"{NanoswarmsHelper.ModName} {message}";
+            if (!IsDebugBuild && type == LogType.Debug)
+                return;
+            var finalMessage = $"{NanoswarmsHelper.ModName} {message}";
             switch (type)
             {
                 case LogType.Debug:
@@ -34,6 +49,10 @@ namespace Nanoswarms
                     break;
                 case LogType.Error:
                     Log.Error(finalMessage);
+                    break;
+                default:
+                    Log.Error(finalMessage);
+                    Log.Error("Somehow hit default in WriteLog");
                     break;
             }
         }

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+    <mytNS_SpawnProjection>Form Projection</mytNS_SpawnProjection>
+    <mytNS_SpawnProjectionDesc>Release a projection drone and form a nanoswarm projection from inactive nanites housed in the cabinet.</mytNS_SpawnProjectionDesc>
+    <mytNS_RespawnProjection>Reform Projection</mytNS_RespawnProjection>
+    <mytNS_RespawnProjectionDesc>Delink from the current projection drone and form a new nanoswarm projection from inactive nanites housed in the cabinet.  The previous projection will be destroyed and all items it is carrying dropped.</mytNS_RespawnProjectionDesc>
+    <mytNS_Debug_CreateAIMind>Create AI Mind</mytNS_Debug_CreateAIMind>
+    <mytNS_Debug_CreateAIMindDesc>Creates (or recreates) an AI mind for this projection cabinet.</mytNS_Debug_CreateAIMindDesc>
+</LanguageData>

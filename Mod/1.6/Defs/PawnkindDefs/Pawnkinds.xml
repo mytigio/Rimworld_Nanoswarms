@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+    <PawnKindDef Name="mytNS_SubpersonaAI">
+		<defName>mytNS_SubpersonaAI</defName>
+		<label>Basic AI</label>
+		<race>Human</race>
+		<xenotypeSet>
+			<xenotypeChances>
+				<mytNS_NanoswarmBasic>999</mytNS_NanoswarmBasic>
+			</xenotypeChances>
+		</xenotypeSet>
+		<useFactionXenotypes>false</useFactionXenotypes>
+		<combatPower>0</combatPower>
+		<initialWillRange>0</initialWillRange>
+		<initialResistanceRange>0</initialResistanceRange>
+	</PawnKindDef>
+    <PawnKindDef Name="mytNS_PersonaAI">
+		<defName>mytNS_PersonaAI</defName>
+		<label>Advanced AI</label>
+		<race>Human</race>
+		<xenotypeSet>
+			<xenotypeChances>
+				<mytNS_NanoswarmAI>999</mytNS_NanoswarmAI>
+			</xenotypeChances>
+		</xenotypeSet>
+		<useFactionXenotypes>false</useFactionXenotypes>
+		<combatPower>0</combatPower>
+		<initialWillRange>0</initialWillRange>
+		<initialResistanceRange>0</initialResistanceRange>
+	</PawnKindDef>
+    <PawnKindDef Name="mytNS_DigitizedMind">
+		<defName>mytNS_DigitizedMind</defName>
+		<label>Digitized Mind</label>
+		<race>Human</race>
+		<xenotypeSet>
+			<xenotypeChances>
+				<mytNS_NanoswarmDigitalMind>999</mytNS_NanoswarmDigitalMind>
+			</xenotypeChances>
+		</xenotypeSet>
+		<useFactionXenotypes>false</useFactionXenotypes>
+		<combatPower>0</combatPower>
+		<initialWillRange>0</initialWillRange>
+		<initialResistanceRange>0</initialResistanceRange>
+	</PawnKindDef>
+</Defs>

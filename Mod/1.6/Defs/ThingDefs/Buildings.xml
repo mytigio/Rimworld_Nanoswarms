@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Defs>
+  <ThingDef Abstract="True" Name="NeuralArrayBase" ParentName="BuildingBase">
+    <tickerType>Normal</tickerType>
+    <drawerType>MapMeshAndRealTime</drawerType>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.5</fillPercent>
+    <castEdgeShadows>true</castEdgeShadows>
+    <pathCost>42</pathCost>
+    <surfaceType>Item</surfaceType>
+    <building>
+      <canPlaceOverImpassablePlant>false</canPlaceOverImpassablePlant>
+      <ai_chillDestination>false</ai_chillDestination>
+      <buildingTags>
+        <li>Biotech</li>
+      </buildingTags>
+    </building>
+    <designationCategory>Biotech</designationCategory>
+    <uiOrder>2400</uiOrder>
+    <defaultPlacingRot>South</defaultPlacingRot>
+  </ThingDef>
+
+  <ThingDef ParentName="NeuralArrayBase">
+    <defName>mytSubpersonaNeuralArray</defName>
+    <label>Subpersona Nano-Projection Cabinet</label>
+    <description>A complex neural array housing an AI crafted from a persona subcore and allowing it to control swarms of nanobiotic machines to form a physical body.  Once formed the body communicates with the cabinet through a built-in quantum tunneling array, allowing unlimited communication range once the link is formed.  If at any time the link is disrupted, the nanoswarm will disapate, requiring a new swarm to be constructed at the projection cabinet.  Because this cabinet only has the hardware to manage a subpersona, the resulting AI is simple minded and unable to control more then a single remote body.</description>
+    <graphicData>
+      <texPath>Things/Building/Cabinets/AIProjectionCabinet_north</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(2, 2)</drawSize>
+      <shadowData>
+        <volume>(2.76, 0.5, 2.66)</volume>
+        <offset>(0,0,-0.05)</offset>
+      </shadowData>
+    </graphicData>
+    <rotatable>false</rotatable>
+    <statBases>
+      <MaxHitPoints>150</MaxHitPoints>
+      <WorkToBuild>12000</WorkToBuild>
+      <Mass>250</Mass>
+      <Flammability>0.25</Flammability>
+    </statBases>
+    <size>(2,2)</size>
+    <costList>
+      <Steel>150</Steel>
+      <Plasteel>50</Plasteel>
+      <ComponentIndustrial>8</ComponentIndustrial>
+      <ComponentSpacer>4</ComponentSpacer>
+      <Gold>200</Gold>
+      <VREA_PersonaSubcore>1</VREA_PersonaSubcore>
+    </costList>
+    <constructionSkillPrerequisite>8</constructionSkillPrerequisite>
+    <researchPrerequisites>
+      <li>VREA_AndroidTech</li>
+    </researchPrerequisites>
+    <building>
+    </building>
+    <comps>
+      <li Class="Nanoswarms.CompProps_DigitalMind">
+        <SpawnType>mytNS_SubpersonaAI</SpawnType>
+      </li>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>400</basePowerConsumption>
+      </li>
+    </comps>
+  </ThingDef>
+  
+  <ThingDef ParentName="NeuralArrayBase">
+    <defName>mytAINeuralArray</defName>
+    <label>AI Persona Array</label>
+    <description>A complex neural array housing an AI crafted from a persona core and allowing it to control swarms of nanobiotic machines to form a physical body.  Once formed the body communicates with the cabinet through a built-in quantum tunneling array, allowing unlimited communication range once the link is formed.  If at any time the link is disrupted, the nanoswarm will disapate, requiring a new swarm to be constructed at the projection cabinet.</description>
+    <graphicData>
+      <texPath>Things/Building/Cabinets/AIProjectionCabinet_north</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(2, 2)</drawSize>
+      <shadowData>
+        <volume>(2.76, 0.5, 2.66)</volume>
+        <offset>(0,0,-0.05)</offset>
+      </shadowData>
+    </graphicData>
+    <rotatable>false</rotatable>
+    <statBases>
+      <MaxHitPoints>250</MaxHitPoints>
+      <WorkToBuild>16000</WorkToBuild>
+      <Mass>250</Mass>
+      <Flammability>0.25</Flammability>
+    </statBases>
+    <size>(2,2)</size>
+    <costList>
+      <Steel>150</Steel>
+      <Plasteel>50</Plasteel>
+      <ComponentIndustrial>12</ComponentIndustrial>
+      <ComponentSpacer>6</ComponentSpacer>
+      <Gold>300</Gold>
+      <AIPersonaCore>1</AIPersonaCore>
+    </costList>
+    <constructionSkillPrerequisite>10</constructionSkillPrerequisite>
+    <researchPrerequisites>
+      <li>VREA_AndroidTech</li>
+    </researchPrerequisites>
+    <building>
+      
+    </building>
+    <comps>
+      <li Class="Nanoswarms.CompProps_DigitalMind">
+        <SpawnType>mytNS_PersonaAI</SpawnType>
+      </li>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>1000</basePowerConsumption>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="NeuralArrayBase">
+    <defName>mytNS_DMNeuralArray</defName>
+    <label>digitized mind array</label>
+    <description>A cabinet designed to entomb a human being, slowly desolving their body and digitizing their brain.  Once complete, the cabinet is sealed shut, and the fluid within becomes a dynamic neural array housing the digital mind of the occupant.  The cabinet cannot be opened and the corpse cannot be retreived.</description>
+    <thingClass>mytNS_DigitalMindCasket</thingClass>
+    <containedPawnsSelectable>false</containedPawnsSelectable>
+    <drawerType>RealtimeOnly</drawerType>
+    <graphicData>
+      <texPath>Things/Building/Cabinets/DigitalMindCasket</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(1,2)</drawSize>
+      <shadowData>
+        <volume>(0.83, 0.3, 1.7)</volume>
+      </shadowData>
+    </graphicData>
+    <researchPrerequisites><li>VREA_AndroidTech</li></researchPrerequisites>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>42</pathCost>
+    <blockWind>true</blockWind>
+    <fillPercent>0.5</fillPercent>
+    <canOverlapZones>false</canOverlapZones>
+    <statBases>
+      <MaxHitPoints>350</MaxHitPoints>
+      <WorkToBuild>24000</WorkToBuild>
+      <Mass>250</Mass>
+      <Flammability>0.25</Flammability>
+    </statBases>
+    <tickerType>Normal</tickerType>
+    <size>(1,2)</size>
+    <designationCategory>Biotech</designationCategory>
+    <hasInteractionCell>true</hasInteractionCell>
+    <interactionCellOffset>(1,0,0)</interactionCellOffset>
+    <comps>
+      <li Class="Nanoswarms.CompProps_DigitalMind">
+        <SpawnType>mytNS_DigitizedMind</SpawnType>
+      </li>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>1500</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_EmptyStateGraphic">
+        <graphicData>
+          <texPath>Things/Building/Ship/ShipCryptosleepCasketOpenDoor</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>(1, 2)</drawSize>
+        </graphicData>
+        <alwaysDrawParent>true</alwaysDrawParent>
+      </li>
+    </comps>
+    <placeWorkers>
+    </placeWorkers>
+    <defaultPlacingRot>South</defaultPlacingRot>
+    <building>
+      <isPlayerEjectable>false</isPlayerEjectable>
+      <destroySound>BuildingDestroyed_Metal_Medium</destroySound>
+    </building>
+    <costList>
+      <Steel>250</Steel>
+      <Plasteel>75</Plasteel>
+      <ComponentIndustrial>18</ComponentIndustrial>
+      <ComponentSpacer>9</ComponentSpacer>
+      <Gold>400</Gold>
+      <Silver>2000</Silver>
+    </costList>
+    <inspectorTabs>
+    </inspectorTabs>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <constructionSkillPrerequisite>12</constructionSkillPrerequisite>
+  </ThingDef>
+</Defs>
