@@ -4,6 +4,14 @@
     <mytNS_SpawnProjectionDesc>Release a projection drone and form a nanoswarm projection from inactive nanites housed in the cabinet.</mytNS_SpawnProjectionDesc>
     <mytNS_RespawnProjection>Reform Projection</mytNS_RespawnProjection>
     <mytNS_RespawnProjectionDesc>Delink from the current projection drone and form a new nanoswarm projection from inactive nanites housed in the cabinet.  The previous projection will be destroyed and all items it is carrying dropped.</mytNS_RespawnProjectionDesc>
+    <mytNS_EnterDigitalMindArray>Enter digital mind array</mytNS_EnterDigitalMindArray>
+    <mytNS_EnterDigitalMindArrayDesc>Entering the digital mind array will kill this pawn and store their mind in the neural matrix of the digital mind array.  This process will take several hours.</mytNS_EnterDigitalMindArrayDesc>
     <mytNS_Debug_CreateAIMind>Create AI Mind</mytNS_Debug_CreateAIMind>
     <mytNS_Debug_CreateAIMindDesc>Creates (or recreates) an AI mind for this projection cabinet.</mytNS_Debug_CreateAIMindDesc>
+    <mytNS_Debug_CompleteDigitization>Complete Digitization</mytNS_Debug_CompleteDigitization>
+    <mytNS_Debug_CompleteDigitizationDesc>Completes digitization instantly.</mytNS_Debug_CompleteDigitizationDesc>
+    <mytNS_DigitizingMind>Brain Scan</mytNS_DigitizingMind>
+    <mytNS_Complete>Complete</mytNS_Complete>
+    <mytNS_StoredMind>Digital Mind</mytNS_StoredMind>
+
 </LanguageData>

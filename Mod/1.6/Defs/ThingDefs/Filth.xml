@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <Defs>
-    <ThingDef ParentName="BaseFilth" Name="mytNS_Filth_Nanodust">
+	<DamageDef>
+		<defName>mytNS_Damage_Nanodust</defName>
+		<label>nanite dust</label>
+		<canInterruptJobs>false</canInterruptJobs>
+		<makesBlood>false</makesBlood>
+		<defaultDamage>0</defaultDamage>
+		<explosionCellFleck>BlastExtinguisher</explosionCellFleck>
+		<explosionColorEdge>(1, 1, 1, 0.05)</explosionColorEdge>
+		<soundExplosion>Explosion_Stun</soundExplosion>
+		<harmsHealth>false</harmsHealth>
+		<combatLogRules>Damage_Smoke</combatLogRules>
+	</DamageDef>
+	<ThingDef ParentName="BaseFilth" Name="mytNS_Filth_Nanodust">
 		<defName>mytNS_Filth_Nanodust</defName>
 		<label>nanite dust</label>
 		<statBases>
@@ -22,13 +34,14 @@
 		</filth>
 	</ThingDef>
 	<ThingDef ParentName="mytNS_Filth_Nanodust">
-    <defName>mytNS_Filth_NanodustSmear</defName>
-    <label>nanite dust smear</label>
-    <graphicData>
-      <texPath>Things/Filth/CrawlSmear</texPath>
-      <color>(128, 128, 128)</color>
-      <graphicClass>Graphic_ClusterTight</graphicClass>
-      <drawSize>0.9</drawSize>
-    </graphicData>
-  </ThingDef>
+		<defName>mytNS_Filth_NanodustSmear</defName>
+		<label>nanite dust smear</label>
+		<graphicData>
+			<texPath>Things/Filth/CrawlSmear</texPath>
+			<color>(128, 128, 128)</color>
+			<graphicClass>Graphic_ClusterTight</graphicClass>
+			<drawSize>0.9</drawSize>
+		</graphicData>
+	</ThingDef>
+
 </Defs>

@@ -12,7 +12,7 @@ namespace Nanoswarms
     {
         //public variables.
         public Pawn StoredMind;
-        public CompProps_DigitalMind Props => (CompProps_DigitalMind) this.props;
+        private CompProps_DigitalMind Props => (CompProps_DigitalMind) this.props;
         
         //Private variables.
         private CompPowerTrader _compPower;
@@ -180,11 +180,18 @@ namespace Nanoswarms
                 StoredMind.health.RemoveHediff(hediff);
             }
 
+            var projectionBody =
+                (mytNS_NanoswarmProjectionBody) StoredMind.health.AddHediff(mytNSDefOf.mytNS_NanoswarmProjectionBody);
+            projectionBody.DigitalMindStorage = this;
+            
             StoredMind.ageTracker.ResetAgeReversalDemand(Pawn_AgeTracker.AgeReversalReason.ViaTreatment);
             StoredMind.story.HairColor = NanoswarmColor;
             StoredMind.story.skinColorOverride = NanoswarmColor;
+            StoredMind.forceNoDeathNotification = true;
+            NanoswarmsHelper.WriteLog("PreFormation for "+StoredMind.Name+" Complete.", NanoswarmsHelper.LogType.Debug);
         }
-        public virtual void FormProjection()
+
+        protected virtual void FormProjection()
         {
             NanoswarmsHelper.WriteLog("Form Projection Started", NanoswarmsHelper.LogType.Debug);
             if (StoredMind.Spawned || StoredMind.Corpse != null)
@@ -197,11 +204,15 @@ namespace Nanoswarms
 
             if (StoredMind.Dead)
             {
+                NanoswarmsHelper.WriteLog("Attempt resurrection for "+StoredMind.Name+".", NanoswarmsHelper.LogType.Debug);
                 ResurrectionUtility.TryResurrect(StoredMind);
+                NanoswarmsHelper.WriteLog("Resurrection for "+StoredMind.Name+" complete.", NanoswarmsHelper.LogType.Debug);
             }
-                
+            
+            NanoswarmsHelper.WriteLog("Try Place for "+StoredMind.Name+".", NanoswarmsHelper.LogType.Debug);
             GenPlace.TryPlaceThing(StoredMind, parent.Position, parent.Map, ThingPlaceMode.Near);
             this.StoredMind.Drawer.renderer.EnsureGraphicsInitialized();
+            NanoswarmsHelper.WriteLog("Try Place for "+StoredMind.Name+" Complete.", NanoswarmsHelper.LogType.Debug);
         }
 
         public virtual void StopProjection()
@@ -223,14 +234,13 @@ namespace Nanoswarms
             if (StoredMind.Map != null)
             {
                 NanoswarmsHelper.WriteLog("Found StoredMind Map.  Trigger explosion and then despawn.", NanoswarmsHelper.LogType.Debug);
-                //GenExplosion.DoExplosion(StoredMind.Position, StoredMind.Map, 4.9f, NanoDust, (Thing) StoredMind, -1, -1f, (SoundDef) null, (ThingDef) null, (ThingDef) null, (Thing) null, RimWorld.ThingDefOf.Filth_Slime);
-                StoredMind.DeSpawn();
+                StoredMind.DeSpawn(DestroyMode.Vanish);
             }
 
             if (StoredMind.Corpse?.Map != null)
             {
                 NanoswarmsHelper.WriteLog("Found StoredMind Corpse Map.  Trigger explosion and then despawn.", NanoswarmsHelper.LogType.Debug);
-                //GenExplosion.DoExplosion(StoredMind.Corpse.Position, StoredMind.Corpse.Map, 4.9f, NanoDust, (Thing) StoredMind.Corpse, -1, -1f, (SoundDef) null, (ThingDef) null, (ThingDef) null, (Thing) null, RimWorld.ThingDefOf.Filth_Slime);
+                GenExplosion.DoExplosion(StoredMind.Corpse.Position, StoredMind.Corpse.Map, 4.9f, mytNSDefOf.mytNS_Damage_Nanodust, StoredMind.Corpse, -1, -1f, (SoundDef) null, (ThingDef) null, (ThingDef) null, (Thing) null, RimWorld.ThingDefOf.Filth_Slime);
                 StoredMind.Corpse.Destroy();
             }
             

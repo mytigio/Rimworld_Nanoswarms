@@ -40,10 +40,10 @@ namespace Nanoswarms
                 BackstoryDef backstoryDef = null;
                 if (SpawnType == PawnKindDef.Named("mytNS_SubpersonaAI"))
                 {
-                    backstoryDef = DefDatabase<BackstoryDef>.GetNamed("mytNS_SubPersonaCore");
+                    backstoryDef = mytNSDefOf.mytNS_SubPersonaCore;
                 } else if (SpawnType == PawnKindDef.Named("mytNS_PersonaAI"))
                 { 
-                    backstoryDef = DefDatabase<BackstoryDef>.GetNamed("mytNS_PersonaCore");
+                    backstoryDef = mytNSDefOf.mytNS_PersonaCore;
                 }
                 
                 return backstoryDef;

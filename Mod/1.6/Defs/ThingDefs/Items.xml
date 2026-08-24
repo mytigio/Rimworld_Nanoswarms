@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <Defs>
-    
+    <ThingDef>
+    <defName>mytNS_MindPlaceholder</defName>
+    <label>Mind Placeholder</label>
+    <thingClass>Nanoswarms.mytNS_MindPlaceholder</thingClass>
+    <category>Attachment</category>
+    <tickerType>Never</tickerType>
+    <pathfinderDangerous>false</pathfinderDangerous>
+    <forceDebugSpawnable>false</forceDebugSpawnable>
+    <canInteractThroughCorners>false</canInteractThroughCorners>
+    <altitudeLayer>PawnState</altitudeLayer>
+    <useHitPoints>false</useHitPoints>
+  </ThingDef>
 </Defs>

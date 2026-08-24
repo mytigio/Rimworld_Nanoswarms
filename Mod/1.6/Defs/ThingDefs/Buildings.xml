@@ -119,7 +119,7 @@
     <defName>mytNS_DMNeuralArray</defName>
     <label>digitized mind array</label>
     <description>A cabinet designed to entomb a human being, slowly desolving their body and digitizing their brain.  Once complete, the cabinet is sealed shut, and the fluid within becomes a dynamic neural array housing the digital mind of the occupant.  The cabinet cannot be opened and the corpse cannot be retreived.</description>
-    <thingClass>mytNS_DigitalMindCasket</thingClass>
+    <thingClass>Nanoswarms.mytNS_DigitalMindCasket</thingClass>
     <containedPawnsSelectable>false</containedPawnsSelectable>
     <drawerType>RealtimeOnly</drawerType>
     <graphicData>
@@ -143,7 +143,7 @@
       <Mass>250</Mass>
       <Flammability>0.25</Flammability>
     </statBases>
-    <tickerType>Normal</tickerType>
+    <tickerType>Long</tickerType>
     <size>(1,2)</size>
     <designationCategory>Biotech</designationCategory>
     <hasInteractionCell>true</hasInteractionCell>
@@ -156,7 +156,7 @@
         <compClass>CompPowerTrader</compClass>
         <basePowerConsumption>1500</basePowerConsumption>
       </li>
-      <li Class="CompProperties_EmptyStateGraphic">
+      <li Class="Nanoswarms.CompProps_NoStoredMindGraphic">
         <graphicData>
           <texPath>Things/Building/Ship/ShipCryptosleepCasketOpenDoor</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
@@ -185,4 +185,39 @@
     <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
     <constructionSkillPrerequisite>12</constructionSkillPrerequisite>
   </ThingDef>
+
+  <JobDef>
+    <defName>EnterDigitalMindArray</defName>
+    <driverClass>Nanoswarms.JobDriver_EnterDigitalMindArray</driverClass>
+    <reportString>entering digital mind array.</reportString>
+    <taleOnCompletion>EnteredDigitalMindArray</taleOnCompletion>
+    <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+  </JobDef>
+
+  <TaleDef>
+    <defName>EnteredDigitalMindArray</defName>
+    <label>entered digital mind array</label>
+    <taleClass>Tale_SinglePawn</taleClass>
+    <type>Volatile</type>
+    <baseInterest>5</baseInterest>
+    <rulePack>
+      <rulesStrings>
+        <li>tale_noun->[PAWN_nameDef] entering the digital mind array</li>
+        <li>image->[PAWN_nameFull] lying down inside a digital projection cabinet [circumstance_group]</li>
+        <li>image->[PAWN_nameFull] opening an empty digital projection cabinet [circumstance_group]</li>
+        <li>image->[PAWN_nameFull] sealing themselves inside a digital projection cabinet [circumstance_group]</li>
+        <li>image->[PAWN_nameFull] looking through the wall of a digital projection cabinet at a world they're about to leave [circumstance_group]</li>
+        <li>circumstance_phrase->with a [AdjectiveAngsty] expression</li>
+        <li>circumstance_phrase->while consumed in thought</li>
+        <li>circumstance_phrase->while gazing at a faraway [TerrainFeature]</li>
+        <li>circumstance_phrase->and talking quietly to themselves</li>
+        <li>desc_sentence->[Quantity_adjphrase] [Animal]s rest near the scene.</li>
+        <li>desc_sentence->[Quantity_adjphrase] [Enemy]s approach the area.</li>
+        <li>desc_sentence->[PAWN_nameDef] radiates determination.</li>
+        <li>desc_sentence->[PAWN_nameDef] is visibly wounded.</li>
+        <li>desc_sentence->A [Color] aurora shines in the background.</li>
+        <li>desc_sentence->[Quantity_adjphrase] filled digital projection cabinets surround the scene.</li>
+      </rulesStrings>
+    </rulePack>
+  </TaleDef>
 </Defs>

@@ -3,6 +3,7 @@
     <HediffDef>
         <defName>mytNS_NanoswarmProjectionBody</defName>
         <label>Nanoswarm Projection</label>
+        <hediffClass>Nanoswarms.mytNS_NanoswarmProjectionBody</hediffClass>
         <description>This body is in fact a swarm of nanoscale robots shaped to resemble a human.  As a result, the body is resistant to blunt and cutting damage, however the miroscopic robots are very vulnerable to fire and EMP damage.  The body is robotic, and is thus immune to most disease, does not require food or sleep.  The body is actually a projection controlled by a mind in a projection cabinet, and as such if destroyed, a new body can simply be formed from a new swarm of nanites.</description>
         <descriptionShort>This body is in fact a swarm of nanoscale robots shaped to resemble a human.  As it is robotic in nature it lacks many of the needs of an organic body.</descriptionShort>
         <countsAsAddedPartOrImplant>true</countsAsAddedPartOrImplant>
@@ -10,7 +11,7 @@
         <stages>
             <li>
                 <totalBleedFactor>0.1</totalBleedFactor>
-                <naturalHealingFactor>10</naturalHealingFactor>
+                <naturalHealingFactor>0</naturalHealingFactor>
                 <statFactors>
                     <MarketValue>0</MarketValue>
                     <ToxicResistance>1</ToxicResistance>
@@ -22,8 +23,8 @@
                     <ArmorRating_Heat>0</ArmorRating_Heat>
                 </statFactors>
                 <statOffsets>
-                    <ComfyTempatureMin>-30</ComfyTempatureMin>
-                    <ComfyTempatureMax>30</ComfyTempatureMax>
+                    <ComfyTemperatureMin>-30</ComfyTemperatureMin>
+                    <ComfyTemperatureMax>30</ComfyTemperatureMax>
                     <ArmorRating_Sharp>1.45</ArmorRating_Sharp>
                     <ArmorRating_Blunt>1.45</ArmorRating_Blunt>
                 </statOffsets>
