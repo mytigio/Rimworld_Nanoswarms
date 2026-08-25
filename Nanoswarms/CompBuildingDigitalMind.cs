@@ -142,26 +142,28 @@ namespace Nanoswarms
             pawn.Position = parent.Position;
             pawn.relations = new Pawn_RelationsTracker(pawn);
             pawn.interactions = new Pawn_InteractionsTracker(pawn);
-            while (pawn.story.traits.allTraits.Count > 0)
-                pawn.story.traits.allTraits.RemoveLast<Trait>();
+            while (pawn.story.traits.allTraits.Count > Props.numberOfTraits)
+                pawn.story.traits.allTraits.RemoveLast<Trait>();            
             StoredMind = pawn;
             foreach (var skill in StoredMind.skills.skills)
             {
                 var random = Random.Range(0,100);
                 var passionToSet = Passion.None;
-                if (random < 1)
+                if (random < Props.burningPassionChancePercent)
                 {
                     passionToSet = Passion.Major;
-                } else if (random < 10)
+                } else if (random < Props.passionChancePercent)
                 {
                     passionToSet = Passion.Minor;
                 }
                 NanoswarmsHelper.WriteLog("Value for " + skill.LevelDescriptor + ": " + random,
                     NanoswarmsHelper.LogType.Debug);
                 skill.passion = passionToSet;
-                skill.levelInt = this.Props.BaseStats;
-                var totallyDisabled = skill.TotallyDisabled;
+                var skillLevel = Random.Range(Props.skillRangeMinimum, Props.skillRangeMaximum+1);
+                skill.levelInt = skillLevel;
             }
+            
+            //foreach ()
             StoredMind.skills.Notify_SkillDisablesChanged();
             if (ModsConfig.IdeologyActive)
                 StoredMind.ideo.SetIdeo(Faction.OfPlayer.ideos.PrimaryIdeo);
@@ -187,6 +189,8 @@ namespace Nanoswarms
             StoredMind.ageTracker.ResetAgeReversalDemand(Pawn_AgeTracker.AgeReversalReason.ViaTreatment);
             StoredMind.story.HairColor = NanoswarmColor;
             StoredMind.story.skinColorOverride = NanoswarmColor;
+            if (!StoredMind.story.traits.HasTrait(mytNSDefOf.Nanorobotic_Swarm))
+                StoredMind.story.traits.GainTrait(new Trait(mytNSDefOf.Nanorobotic_Swarm,0,true), true);
             StoredMind.forceNoDeathNotification = true;
             NanoswarmsHelper.WriteLog("PreFormation for "+StoredMind.Name+" Complete.", NanoswarmsHelper.LogType.Debug);
         }
