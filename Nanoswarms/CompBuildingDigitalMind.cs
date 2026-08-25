@@ -145,16 +145,20 @@ namespace Nanoswarms
             while (pawn.story.traits.allTraits.Count > Props.numberOfTraits)
                 pawn.story.traits.allTraits.RemoveLast<Trait>();            
             StoredMind = pawn;
+            var passionsRemaining = Props.maxPassions;
+            var burningPassionsRemaining = Props.maxBurningPassions;
             foreach (var skill in StoredMind.skills.skills)
             {
                 var random = Random.Range(0,100);
                 var passionToSet = Passion.None;
-                if (random < Props.burningPassionChancePercent)
+                if (random < Props.burningPassionChancePercent && burningPassionsRemaining > 0)
                 {
                     passionToSet = Passion.Major;
-                } else if (random < Props.passionChancePercent)
+                    burningPassionsRemaining--;
+                } else if (random < Props.passionChancePercent && passionsRemaining > 0)
                 {
                     passionToSet = Passion.Minor;
+                    passionsRemaining--;
                 }
                 NanoswarmsHelper.WriteLog("Value for " + skill.LevelDescriptor + ": " + random,
                     NanoswarmsHelper.LogType.Debug);

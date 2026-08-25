@@ -7,7 +7,9 @@ namespace Nanoswarms
     {
         public PawnKindDef SpawnType;
         public int passionChancePercent = 0;
+        public int maxPassions = 0;
         public int burningPassionChancePercent = 0;
+        public int maxBurningPassions = 0;
         public int skillRangeMinimum = 0;
         public int skillRangeMaximum = 3;
         public int numberOfTraits = 0;
