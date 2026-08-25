@@ -107,6 +107,13 @@
     <comps>
       <li Class="Nanoswarms.CompProps_DigitalMind">
         <SpawnType>mytNS_PersonaAI</SpawnType>
+        <burningPassionChancePercent>5</burningPassionChancePercent>
+        <maxBurningPassions>2</maxBurningPassions>
+        <passionChancePercent>20</passionChancePercent>
+        <maxPassions>5</maxPassions>
+        <skillRangeMinimum>5</skillRangeMinimum>
+        <skillRangeMaximum>15</skillRangeMaximum>
+        <numberOfTraits>2</numberOfTraits>
       </li>
       <li Class="CompProperties_Power">
         <compClass>CompPowerTrader</compClass>

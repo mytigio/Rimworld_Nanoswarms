@@ -6,6 +6,13 @@ namespace Nanoswarms
     public class CompProps_DigitalMind : CompProperties
     {
         public PawnKindDef SpawnType;
+        public int passionChancePercent = 0;
+        public int maxPassions = 0;
+        public int burningPassionChancePercent = 0;
+        public int maxBurningPassions = 0;
+        public int skillRangeMinimum = 0;
+        public int skillRangeMaximum = 3;
+        public int numberOfTraits = 0;
 
         public bool IsAIMind
         {
@@ -13,23 +20,6 @@ namespace Nanoswarms
             {
                 return (SpawnType == PawnKindDef.Named("mytNS_SubpersonaAI") ||
                         SpawnType == PawnKindDef.Named("mytNS_PersonaAI"));
-            }
-        }
-        
-        public int BaseStats
-        {
-            get
-            {
-                int baseStat = 0;
-                if (SpawnType == PawnKindDef.Named("mytNS_SubpersonaAI"))
-                {
-                    baseStat = 3;   
-                } else if (SpawnType == PawnKindDef.Named("mytNS_PersonaAI"))
-                {
-                    baseStat = 8;
-                }
-                
-                return baseStat;
             }
         }
         
