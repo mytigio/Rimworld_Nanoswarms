@@ -6,6 +6,8 @@ namespace Nanoswarms
     {
         public CompBuildingDigitalMind DigitalMindStorage;
 
+        
+
         public override void Notify_PawnKilled()
         {
             base.Notify_PawnKilled();
