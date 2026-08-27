@@ -60,6 +60,7 @@
     <comps>
       <li Class="Nanoswarms.CompProps_DigitalMind">
         <SpawnType>mytNS_SubpersonaAI</SpawnType>
+        <reprogrammable>true</reprogrammable>
       </li>
       <li Class="CompProperties_Power">
         <compClass>CompPowerTrader</compClass>

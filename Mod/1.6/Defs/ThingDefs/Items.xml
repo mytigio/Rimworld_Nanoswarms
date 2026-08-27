@@ -2,8 +2,8 @@
 
 <Defs>
     <ThingDef ParentName="ResourceBase">
-        <defName>mytNS_NaniteCanister</defName>
-        <label>nanite canister</label>
+        <defName>mytNS_Nanites</defName>
+        <label>nanites</label>
         <description>A small canister holding a small swarm of nanites.</description>
         <graphicData>
             <texPath>Things/Item/Special/MechSerumHealer</texPath>

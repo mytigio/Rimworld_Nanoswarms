@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using RimWorld;
 using Verse;
@@ -19,6 +20,13 @@ namespace Nanoswarms
         private static readonly Color NanoswarmColor = Color.gray;
         //private static readonly DamageDef NanoDust = DefDatabase<DamageDef>.GetNamed(nameof(mytNS_Filth_Nanodust));
 
+        public CustomXenotype reprogramingProject;
+
+        public CustomXenotype storedCustomXenotype;
+
+        public float TotalWorkAmount = 12000.0f;
+        
+        
         public override void Initialize(CompProperties props)
         {
             base.Initialize(props);
@@ -35,13 +43,13 @@ namespace Nanoswarms
         }
         public override IEnumerable<Gizmo> CompGetGizmosExtra()
         {
-            List<Gizmo> gizmosExtra = new List<Gizmo>();
+            var gizmosExtra = new List<Gizmo>();
             gizmosExtra.AddRange(base.CompGetGizmosExtra());
             if (this.parent.Faction == Faction.OfPlayer && this._compPower.PowerOn)
             {
                 if (this.StoredMind == null && DebugSettings.godMode)
                 {
-                    Command_Action createAIMindDebug = new Command_Action
+                    var createAIMindDebug = new Command_Action
                     {
                         action = CreateAIMind,
                         defaultLabel = (string) "mytNS_Debug_CreateAIMind".Translate(),
@@ -51,7 +59,7 @@ namespace Nanoswarms
                 }
                 if (this.StoredMind != null && !this.StoredMind.Spawned && !this.StoredMind.InContainerEnclosed && this.StoredMind.CarriedBy == null)
                 {
-                    Command_Action formPrjectionAction = new Command_Action
+                    var formPrjectionAction = new Command_Action
                     {
                         action = FormProjection,
                         defaultLabel = (string) "mytNS_SpawnProjection".Translate(),
@@ -61,7 +69,7 @@ namespace Nanoswarms
                     gizmosExtra.Add(formPrjectionAction);
                 } else if (this.StoredMind != null && this.StoredMind.Spawned)
                 {
-                    Command_Action reFormPrjectionAction = new Command_Action
+                    var reFormPrjectionAction = new Command_Action
                     {
                         action = FormProjection,
                         defaultLabel = (string) "mytNS_RespawnProjection".Translate(),
@@ -70,9 +78,36 @@ namespace Nanoswarms
                     };
                     gizmosExtra.Add(reFormPrjectionAction);
                 }
+
+                if (this.StoredMind != null && !this.StoredMind.Spawned && !this.StoredMind.InContainerEnclosed &&
+                    this.StoredMind.CarriedBy == null && Props.reprogrammable)
+                {
+                    Command_Action reProgramAction = new Command_Action
+                    {
+                        action = InitiateReprogram,
+                        defaultLabel = (string) "mytNS_Reprogram".Translate(),
+                        defaultDesc = (string) "mytNS_ReprogramDesc".Translate(),
+                        icon = (Texture) ContentFinder<Texture2D>.Get("UI/Gizmos/ModifyAnAndroid")
+                    };
+                    gizmosExtra.Add(reProgramAction);
+                }
             }
 
             return gizmosExtra;
+        }
+
+        private void InitiateReprogram()
+        {
+            if (!_compPower.PowerOn || !Props.reprogrammable) return;
+            var creationWindow = new Window_SubpersonaProgram(this, SetCustomXenotype);
+            creationWindow.disableAndroidHardwareLimitation = false;
+                
+            Find.WindowStack.Add(creationWindow);
+        }
+
+        private void SetCustomXenotype()
+        {
+            
         }
 
         public virtual void CreateAIMind()
@@ -193,8 +228,21 @@ namespace Nanoswarms
             StoredMind.ageTracker.ResetAgeReversalDemand(Pawn_AgeTracker.AgeReversalReason.ViaTreatment);
             StoredMind.story.HairColor = NanoswarmColor;
             StoredMind.story.skinColorOverride = NanoswarmColor;
-            if (!StoredMind.story.traits.HasTrait(mytNSDefOf.Nanorobotic_Swarm))
-                StoredMind.story.traits.GainTrait(new Trait(mytNSDefOf.Nanorobotic_Swarm,0,true), true);
+            if (storedCustomXenotype != null)
+            {
+                StoredMind.genes.xenotypeName = storedCustomXenotype.name;
+                StoredMind.genes.iconDef = storedCustomXenotype.iconDef;
+                foreach (var gene in Utils.allAndroidGenes.Select(allAndroidGene => StoredMind.genes.GetGene(allAndroidGene)).Where(gene => gene != null && gene.def.IsSubroutine()))
+                {
+                    StoredMind.genes.RemoveGene(gene);
+                }
+
+                foreach (var geneDef in reprogramingProject.genes.OrderByDescending(x => !x.CanBeRemovedFromAndroid())
+                             .ToList().Where(geneDef => geneDef.IsSubroutine()))
+                {
+                    StoredMind.genes.AddGene(geneDef, true);
+                }
+            }
             StoredMind.forceNoDeathNotification = true;
             NanoswarmsHelper.WriteLog("PreFormation for "+StoredMind.Name+" Complete.", NanoswarmsHelper.LogType.Debug);
         }

@@ -28,6 +28,7 @@
 			<li>VREA_Power</li>
 			<li>VREA_SyntheticImmunity</li>
 			<li>VREA_PainDisabled</li>
+			<li>VREA_ComfortDisabled</li>
 			<li>VREA_DrugDesireDisabled</li>
 			<li>VREA_HeatTolerant</li>
 			<li>VREA_PsychicallyDeaf</li>
@@ -41,6 +42,7 @@
 			<li>VREA_Power</li>
 			<li>VREA_SyntheticImmunity</li>
 			<li>VREA_PainDisabled</li>
+			<li>VREA_ComfortDisabled</li>
 			<li>VREA_DrugDesireDisabled</li>
 			<li>VREA_HeatTolerant</li>
 			<li>VREA_PsychicallyDeaf</li>

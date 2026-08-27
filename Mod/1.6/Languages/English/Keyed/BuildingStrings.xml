@@ -13,5 +13,6 @@
     <mytNS_DigitizingMind>Brain Scan</mytNS_DigitizingMind>
     <mytNS_Complete>Complete</mytNS_Complete>
     <mytNS_StoredMind>Digital Mind</mytNS_StoredMind>
-
+    <mytNS_Reprogram>Reprogram</mytNS_Reprogram>
+    <mytNS_ReprogramDesc>Reprogram subpersona core with new subroutines.  Power consumption is adjusted on the computational complexity of the subroutines running on the neural array.</mytNS_ReprogramDesc>
 </LanguageData>
