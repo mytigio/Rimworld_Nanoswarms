@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
+	<GeneCategoryDef ParentDef="VREA_Hardware">
+		<defName>mytNS_NanoSwarm_Hardware</defName>
+		<label>robotic swarm hardware</label>
+		<displayPriorityInXenotype>2</displayPriorityInXenotype>
+	</GeneCategoryDef>
+	
     <VREAndroids.AndroidGeneDef>
 		<defName>mytNS_NanobotCirculation</defName>
 		<label>nanite circulation</label>
 		<description>Nanoswarm Projections do not have blood or fluid in the traditional sense, but are instead kept mobile through the movement of nanoscale robots.  Injury leaves small dust-like piles of these broken robots behind, resembling a black, dusty blood.</description>
 		<iconPath>UI/Icons/Genes/Hardware/Gene_NeutroCirculation</iconPath>
-		<displayOrderInCategory>11</displayOrderInCategory>
+		<displayOrderInCategory>1</displayOrderInCategory>
 		<biostatCpx>1</biostatCpx>
 		<displayCategory>VREA_Hardware</displayCategory>
 		<canGenerateInGeneSet>false</canGenerateInGeneSet>
 		<isCoreComponent>true</isCoreComponent>
+		<prerequisite>mytNS_NanobotSwarm</prerequisite>
 		<modExtensions Inherit="False">
 			<li Class="VEF.Genes.GeneExtension">
 				<backgroundPathXenogenes>UI/Icons/Genes/GeneBackground_Hardware</backgroundPathXenogenes>
@@ -21,5 +28,33 @@
 				<customWoundsFromFleshtype>mytNS_NanoFlesh</customWoundsFromFleshtype>
 			</li>
 		</modExtensions>
+	</VREAndroids.AndroidGeneDef>
+
+	<VREAndroids.AndroidGeneDef ParentName="VREA_HardwareBase">
+		<defName>mytNS_NanobotSwarm</defName>
+		<label>nanite swarm</label>
+		<description>Nanoswarm Projections have a body created from a swarm of microscopic robots.  This gives them a host of unique properties and strips them of most of the physical requirements of a human body.</description>
+		<iconPath>UI/Icons/Genes/Hardware/Gene_NeutroCirculation</iconPath>
+		<displayOrderInCategory>1</displayOrderInCategory>
+		<biostatCpx>5</biostatCpx>
+		<displayCategory>VREA_Hardware</displayCategory>
+		<statFactors>
+			<Fertility>0</Fertility>
+		</statFactors>
+		<statOffsets>
+			<VacuumResistance MayRequire="Ludeon.RimWorld.Odyssey">1</VacuumResistance>
+		</statOffsets>
+		<sterilize>true</sterilize>
+		<geneClass>Nanoswarms.Gene_NaniteSwarmBody</geneClass>
+		<resourceGizmoType>Nanoswarms.GeneGizmo_Resource_Nanites</resourceGizmoType>
+		<resourceLabel>nanites</resourceLabel>
+		<resourceGizmoThresholds>
+			<li>0.2</li>
+			<li>0.4</li>
+			<li>0.6</li>
+		</resourceGizmoThresholds>
+		<showGizmoOnWorldView>false</showGizmoOnWorldView>
+		<resourceDescription>The microscopic robots that make up {PAWN_nameDef}'s body.  Cannot be restored, a new projection will need to be formed when the nanites are consumed.</resourceDescription>
+		<resourceLossPerDay>0</resourceLossPerDay>
 	</VREAndroids.AndroidGeneDef>
 </Defs>

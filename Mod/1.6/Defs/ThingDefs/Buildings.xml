@@ -2,7 +2,7 @@
 
 <Defs>
   <ThingDef Abstract="True" Name="NeuralArrayBase" ParentName="BuildingBase">
-    <tickerType>Normal</tickerType>
+    <tickerType>Rare</tickerType>
     <drawerType>MapMeshAndRealTime</drawerType>
     <altitudeLayer>Building</altitudeLayer>
     <passability>PassThroughOnly</passability>
@@ -19,7 +19,23 @@
     </building>
     <designationCategory>Biotech</designationCategory>
     <uiOrder>2400</uiOrder>
-    <defaultPlacingRot>South</defaultPlacingRot>
+    <comps>
+      <li Class="CompProperties_Refuelable">
+        <fuelLabel>Nanites</fuelLabel>
+        <fuelGizmoLabel>Nanites</fuelGizmoLabel>
+        <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
+        <targetFuelLevelConfigurable>false</targetFuelLevelConfigurable>
+        <fuelCapacity>10000.0</fuelCapacity>
+        <fuelFilter>
+          <thingDefs>
+            <li>mytNS_Nanites</li>
+          </thingDefs>
+        </fuelFilter>
+        <initialFuelPercent>0</initialFuelPercent>
+        <showAllowAutoRefuelToggle>false</showAllowAutoRefuelToggle>
+        <showFuelGizmo>true</showFuelGizmo>
+      </li>
+    </comps>
   </ThingDef>
 
   <ThingDef ParentName="NeuralArrayBase">
@@ -27,7 +43,7 @@
     <label>Subpersona Nano-Projection Cabinet</label>
     <description>A complex neural array housing an AI crafted from a persona subcore and allowing it to control swarms of nanobiotic machines to form a physical body.  Once formed the body communicates with the cabinet through a built-in quantum tunneling array, allowing unlimited communication range once the link is formed.  If at any time the link is disrupted, the nanoswarm will disapate, requiring a new swarm to be constructed at the projection cabinet.  Because this cabinet only has the hardware to manage a subpersona, the resulting AI is simple minded and unable to control more then a single remote body.</description>
     <graphicData>
-      <texPath>Things/Building/Cabinets/AIProjectionCabinet_north</texPath>
+      <texPath>Things/Building/Cabinets/AIProjectionCabinet</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
       <drawSize>(2, 2)</drawSize>
       <shadowData>
@@ -59,12 +75,12 @@
     </building>
     <comps>
       <li Class="Nanoswarms.CompProps_DigitalMind">
-        <SpawnType>mytNS_SubpersonaAI</SpawnType>
+        <SpawnType>mytNS_NanoswarmBasic</SpawnType>
         <reprogrammable>true</reprogrammable>
       </li>
       <li Class="CompProperties_Power">
         <compClass>CompPowerTrader</compClass>
-        <basePowerConsumption>400</basePowerConsumption>
+        <basePowerConsumption>1000</basePowerConsumption>
       </li>
     </comps>
   </ThingDef>
@@ -74,7 +90,7 @@
     <label>AI Persona Array</label>
     <description>A complex neural array housing an AI crafted from a persona core and allowing it to control swarms of nanobiotic machines to form a physical body.  Once formed the body communicates with the cabinet through a built-in quantum tunneling array, allowing unlimited communication range once the link is formed.  If at any time the link is disrupted, the nanoswarm will disapate, requiring a new swarm to be constructed at the projection cabinet.</description>
     <graphicData>
-      <texPath>Things/Building/Cabinets/AIProjectionCabinet_north</texPath>
+      <texPath>Things/Building/Cabinets/AIProjectionCabinet</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
       <drawSize>(2, 2)</drawSize>
       <shadowData>
@@ -107,7 +123,7 @@
     </building>
     <comps>
       <li Class="Nanoswarms.CompProps_DigitalMind">
-        <SpawnType>mytNS_PersonaAI</SpawnType>
+        <SpawnType>mytNS_NanoswarmAI</SpawnType>
         <burningPassionChancePercent>5</burningPassionChancePercent>
         <maxBurningPassions>2</maxBurningPassions>
         <passionChancePercent>20</passionChancePercent>
@@ -118,7 +134,7 @@
       </li>
       <li Class="CompProperties_Power">
         <compClass>CompPowerTrader</compClass>
-        <basePowerConsumption>1000</basePowerConsumption>
+        <basePowerConsumption>2500</basePowerConsumption>
       </li>
     </comps>
   </ThingDef>
@@ -151,18 +167,17 @@
       <Mass>250</Mass>
       <Flammability>0.25</Flammability>
     </statBases>
-    <tickerType>Long</tickerType>
     <size>(1,2)</size>
     <designationCategory>Biotech</designationCategory>
     <hasInteractionCell>true</hasInteractionCell>
     <interactionCellOffset>(1,0,0)</interactionCellOffset>
     <comps>
       <li Class="Nanoswarms.CompProps_DigitalMind">
-        <SpawnType>mytNS_DigitizedMind</SpawnType>
+        <SpawnType>mytNS_NanoswarmDigitalMind</SpawnType>
       </li>
       <li Class="CompProperties_Power">
         <compClass>CompPowerTrader</compClass>
-        <basePowerConsumption>1500</basePowerConsumption>
+        <basePowerConsumption>2000</basePowerConsumption>
       </li>
       <li Class="Nanoswarms.CompProps_NoStoredMindGraphic">
         <graphicData>

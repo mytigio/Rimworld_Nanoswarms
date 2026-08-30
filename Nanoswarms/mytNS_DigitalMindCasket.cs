@@ -8,6 +8,7 @@ using Verse;
 using Verse.AI;
 using Verse.Noise;
 using Verse.Sound;
+using VREAndroids;
 
 namespace Nanoswarms
 {
@@ -15,7 +16,7 @@ namespace Nanoswarms
     {
         protected ThingOwner innerContainer;
 
-        private const int LongTick = 2000;
+        private const int RareTick = 250;
         private static readonly int DigitizationTicksMax = 180000;
         private int _digitizationTicks = DigitizationTicksMax;
         
@@ -31,26 +32,26 @@ namespace Nanoswarms
 
         public Thing ContainedThing => innerContainer.Count != 0 ? innerContainer[0] : null;
 
-        public virtual bool Accepts(Thing thing) => this.innerContainer.CanAcceptAnyOf(thing);
+        public virtual bool Accepts(Thing thing) => (this.innerContainer.CanAcceptAnyOf(thing) && (thing is Pawn pawn) && !pawn.IsAndroid() ); 
 
         public virtual bool TryAcceptThing(Thing thing, bool allowSpecialEffects = true)
         {
             if (!Accepts(thing) || _compBuildingDigitalMind.StoredMind != null)
                 return false;
-            bool flag;
+            bool added;
             if (thing.holdingOwner != null)
             {
                 thing.holdingOwner.TryTransferToContainer(thing, this.innerContainer, thing.stackCount);
-                flag = true;
+                added = true;
             }
             else
-                flag = this.innerContainer.TryAdd(thing);
+                added = this.innerContainer.TryAdd(thing);
 
-            if (flag)
+            if (added)
             {
                 DigitizationBegun = true;
             }
-            return flag;
+            return added;
         }
 
         public bool DigitizationBegun { get; private set; } = false;
@@ -89,10 +90,7 @@ namespace Nanoswarms
                 var smallerCurrent = (float) (smallerMax - (_digitizationTicks / 1000.0));
                 stringBuilder.Append("mytNS_DigitizingMind".Translate() + ": ");
                 stringBuilder.Append((smallerCurrent / smallerMax).ToStringPercent() + " " + "mytNS_Complete".Translate());
-            } else if (_compBuildingDigitalMind?.StoredMind != null)
-            {
-                stringBuilder.Append("mytNS_StoredMind".Translate() + ": " + _compBuildingDigitalMind.StoredMind.Name);
-            }
+            } 
 
             return stringBuilder.ToString().TrimEndNewlines();
         }
@@ -100,7 +98,7 @@ namespace Nanoswarms
         private void CompleteDigitization()
         {
             _digitizationTicks = 0;
-            this.TickLong();
+            TickRare();
         }
         
         public override IEnumerable<FloatMenuOption> GetFloatMenuOptions(Pawn myPawn)
@@ -109,6 +107,10 @@ namespace Nanoswarms
             if (myPawn.IsQuestLodger())
             {
               yield return new FloatMenuOption((string) "CannotUseReason".Translate((NamedArgument) "CryptosleepCasketGuestsNotAllowed".Translate()), (Action) null);
+            }
+            else if (myPawn.IsAndroid())
+            {
+                yield return new FloatMenuOption((string) "CannotUseReason".Translate((NamedArgument) "mytNS_AndroidsCannotUseCasket".Translate()), (Action) null);
             }
             else
             {
@@ -138,33 +140,24 @@ namespace Nanoswarms
             }
         }
 
-        public override void TickLong()
+        public override void TickRare()
         {
-            NanoswarmsHelper.WriteLog("Casket long tick.", NanoswarmsHelper.LogType.Debug);
-            base.TickLong();
-            if (DigitizationBegun && _compBuildingDigitalMind.StoredMind == null)
-            {
-                var pawnToStore = (Pawn)ContainedThing;
-                if (pawnToStore == null) return;
-                _digitizationTicks -= LongTick;
-                NanoswarmsHelper.WriteLog(_digitizationTicks + " remaining until digitization complete.", NanoswarmsHelper.LogType.Debug);
-                if (_digitizationTicks > 0) return;
-                NanoswarmsHelper.WriteLog("Digitization Complete. Storing " + pawnToStore.Name, NanoswarmsHelper.LogType.Debug);
-                innerContainer.Clear();
-                pawnToStore.forceNoDeathNotification = true;
-                pawnToStore.apparel.DestroyAll();
-                pawnToStore.inventory.DestroyAll();
-                CompBuildingDigitalMind.StoredMind = pawnToStore;
-                CompBuildingDigitalMind.StoredMind.genes.SetXenotype(
-                    mytNSDefOf.mytNS_NanoswarmDigitalMind);
-                CompBuildingDigitalMind.StopProjection();
-                CompBuildingDigitalMind.PreFormation();
-            }
-            else
-            {
-                string message = (_compBuildingDigitalMind?.StoredMind != null ? "Digitization complete. Casket holds mind of " + _compBuildingDigitalMind?.StoredMind?.Name : "Digitization has not begun.");
-                NanoswarmsHelper.WriteLog(message, NanoswarmsHelper.LogType.Debug);
-            }
+            base.TickRare();
+            if (!DigitizationBegun || _compBuildingDigitalMind.StoredMind != null) return;
+            
+            var pawnToStore = (Pawn)ContainedThing;
+            if (pawnToStore == null) return;
+            _digitizationTicks -= RareTick;
+            NanoswarmsHelper.WriteLog(_digitizationTicks + " remaining until digitization complete.", NanoswarmsHelper.LogType.Debug);
+            if (_digitizationTicks > 0) return;
+            NanoswarmsHelper.WriteLog("Digitization Complete. Storing " + pawnToStore.Name, NanoswarmsHelper.LogType.Debug);
+            innerContainer.Clear();
+            pawnToStore.forceNoDeathNotification = true;
+            pawnToStore.apparel.DestroyAll();
+            pawnToStore.inventory.DestroyAll();
+            CompBuildingDigitalMind.StoredMind = pawnToStore;
+            CompBuildingDigitalMind.StopProjection();
+            CompBuildingDigitalMind.PreFormation();
         }
 
         public ThingOwner GetDirectlyHeldThings() => innerContainer;

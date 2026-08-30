@@ -18,20 +18,28 @@ namespace Nanoswarms
             this.forcePause = true;
         }
 
-        protected override string Header => "mytNS.mytNS_Reprogram".Translate();
-        protected override string AcceptButtonLabel => "mytNS.mytNS_Reprogram".Translate();
+        public override List<GeneDef> SelectedGenes => this.selectedGenes;
+        protected override string Header => "mytNS_Reprogram".Translate();
+        protected override string AcceptButtonLabel => "mytNS_Reprogram".Translate();
         protected override void AcceptInner()
         {
             CustomXenotype customXenotype = new CustomXenotype();
-            customXenotype.name = this.xenotypeName?.Trim();
-            customXenotype.genes.AddRange((IEnumerable<GeneDef>) this.selectedGenes);
+            customXenotype.name = xenotypeName?.Trim();
+            customXenotype.genes.AddRange(selectedGenes);
             customXenotype.inheritable = false;
-            customXenotype.iconDef = this.iconDef;
-            _compBuildingDigitalMind.TotalWorkAmount = (float) (_compBuildingDigitalMind.StoredMind.genes.GenesListForReading.Where<Gene>(x => x.def.IsAndroidGene() && !this.selectedGenes.Contains(x.def)).ToList<Gene>().Count * 2000 + this.selectedGenes.Where<GeneDef>(x => !_compBuildingDigitalMind.StoredMind.genes.GenesListForReading.Select<Gene, GeneDef>((Func<Gene, GeneDef>) (y => y.def)).Contains<GeneDef>(x)).ToList<GeneDef>().Count * 2000);
-            this.station.currentWorkAmountDone = 0.0f;
-            this.station.initModification = true;
+            customXenotype.iconDef = iconDef;
+            _compBuildingDigitalMind.reprogramingProject = customXenotype;
+            var workToDo = _compBuildingDigitalMind.StoredMind.genes.GenesListForReading.Where(x => x.def.IsAndroidGene() && !selectedGenes.Contains(x.def)).ToList().Count * 2000 + selectedGenes.Where(x => !_compBuildingDigitalMind.StoredMind.genes.GenesListForReading.Select(y => y.def).Contains(x)).ToList().Count * 2000;
+            NanoswarmsHelper.WriteLog("Work to complete " + customXenotype.name + ": " + workToDo, NanoswarmsHelper.LogType.Debug);
+            _compBuildingDigitalMind.TotalWorkAmount = workToDo; 
+            _compBuildingDigitalMind.CurrentWorkAmountDone = 0.0f;
         }
 
-        
+        public override bool GeneValidator(GeneDef x)
+        {
+            return ((x is AndroidGeneDef androidGeneDef) &&
+                     androidGeneDef.AllowedForSwarms()
+                    ) && base.GeneValidator(x);
+        }
     }
 }
