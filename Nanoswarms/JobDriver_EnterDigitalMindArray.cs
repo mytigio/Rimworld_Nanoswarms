@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using RimWorld;
 using Verse;
 using Verse.AI;
+using VREAndroids;
 
 namespace Nanoswarms
 {
@@ -26,7 +27,7 @@ namespace Nanoswarms
             {
                 var actor = enter.actor;
                 var pod = (mytNS_DigitalMindCasket) actor.CurJob.targetA.Thing;
-
+                if (actor.IsAndroid()) return;
                 if (!pod.def.building.isPlayerEjectable)
                 {
                     if (this.Map.mapPawns.FreeColonistsSpawnedOrInPlayerEjectablePodsCount <= 1)

@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <Defs>
-    <ThingDef>
-    <defName>mytNS_MindPlaceholder</defName>
-    <label>Mind Placeholder</label>
-    <thingClass>Nanoswarms.mytNS_MindPlaceholder</thingClass>
-    <category>Attachment</category>
-    <tickerType>Never</tickerType>
-    <pathfinderDangerous>false</pathfinderDangerous>
-    <forceDebugSpawnable>false</forceDebugSpawnable>
-    <canInteractThroughCorners>false</canInteractThroughCorners>
-    <altitudeLayer>PawnState</altitudeLayer>
-    <useHitPoints>false</useHitPoints>
-  </ThingDef>
+    <ThingDef ParentName="ResourceBase">
+        <defName>mytNS_Nanites</defName>
+        <label>nanites</label>
+        <description>A small canister holding a small swarm of nanites.</description>
+        <graphicData>
+            <texPath>Things/Item/Special/MechSerumHealer</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+        </graphicData>
+        <stackLimit>100</stackLimit>
+        <statBases>
+            <MarketValue>0</MarketValue>
+            <Mass>0.5</Mass>
+        </statBases>
+        <thingCategories>
+            <li>ItemsMisc</li>
+        </thingCategories>
+        <tradeability>None</tradeability>
+    </ThingDef>
 </Defs>

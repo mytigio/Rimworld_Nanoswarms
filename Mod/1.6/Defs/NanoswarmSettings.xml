@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <Nanoswarms.NanoswarmSettings>
+        <defName>mytNS_NanoswarmSettings</defName>
+        <label>this def records information for spawning and managing nanoswarm androids.</label>
+        <disallowedSubroutines>
+            <li>VREA_SolarFlareVulnerability</li>
+            <li>VREA_EMPVulnerability</li>
+            <li>VREA_ZeroWaste</li>
+            <li>VREA_ExtraWaste</li>
+            <li>VREA_SelfRecharge</li>
+            <li>VREA_NeutroSynthesis</li>
+            <li>VREA_SolarPowered</li>
+            <li>VREA_SelfDestructProtocols</li>
+        </disallowedSubroutines>
+    </Nanoswarms.NanoswarmSettings>
+
+</Defs>

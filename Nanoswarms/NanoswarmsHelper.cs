@@ -9,7 +9,6 @@ namespace Nanoswarms
     {
         private static readonly Harmony HarmonyInstance;
         private static readonly string ModName = "[Nanoswarms]";
-        
         public static bool IsDebugBuild
         {
             get

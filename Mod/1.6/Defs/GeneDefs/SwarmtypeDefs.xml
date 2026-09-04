@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	
+	<XenotypeDef Name="mytNS_AINanoswarmXenotypeBase" Abstract="True">
+		<genes>
+			
+		</genes>
+	</XenotypeDef>
+	
+	<XenotypeDef Name="mytNS_DigitalMindNanoswarmXenotypeBase" Abstract="True">
+		<genes>
+			
+		</genes>
+	</XenotypeDef>
+	
+	<Nanoswarms.Swarmtype>
+		<defName>mytNS_NanoswarmDigitalMind</defName>
+		<label>Digital Mind Nanoswarm</label>
+		<description>A digital mind nanoswarm is a cloud-like swarm of nanoscale robots, remotely controlled by a digitized human mind housed inside a Neural Projection Cabinet.  While these nanoswarm bodies do not have standard nutritional or sleep needs, they do have to return regularly to the projection cabinet to replenish the nanoswarms population.</description>
+		<descriptionShort>A digital mind nanoswarm is a cloud-like swarm of nanoscale robots, remotely controlled by a digitized human mind housed inside a Neural Projection Cabinet.</descriptionShort>
+		<iconPath>UI/XenotypeIcons/Androidtype_VR</iconPath>
+		<isAI>false</isAI>
+		<forcedTraits>
+			<li>
+				GreatMemory
+			</li>
+		</forcedTraits>
+		<hardwareGenes>
+			<li>VREA_MemoryProcessing</li>
+			<li>VREA_Power</li>
+			<li>VREA_SyntheticImmunity</li>
+			<li>VREA_PainDisabled</li>
+			<li>VREA_ComfortDisabled</li>
+			<li>VREA_DrugDesireDisabled</li>
+			<li>VREA_HeatTolerant</li>
+			<li>VREA_PsychicallyDeaf</li>
+			<li>mytNS_NanobotCirculation</li>
+			<li>mytNS_NanobotSwarm</li>
+		</hardwareGenes>
+	</Nanoswarms.Swarmtype>
+
+	<Nanoswarms.Swarmtype>
+		<defName>mytNS_NanoswarmAI</defName>
+		<label>AI Nanoswarm</label>
+		<description>AI Nanoswarms are cloud-like swarms of nanoscale robots, remotely controlled by an AI construct to grant the AI a physical presence.  Frequently deployed to manage and maintain an estate, ship or even small governments.</description>
+		<descriptionShort>AI Nanoswarms are cloud-like swarms of nanoscale robots, remotely controlled by an AI construct to grant the AI a physical presence.</descriptionShort>
+		<iconPath>UI/XenotypeIcons/Androidtype_Skilled</iconPath>
+		<backstory>mytNS_PersonaCore</backstory>
+		<isAI>true</isAI>
+		<forcedTraits>
+			<li>
+				FastLearner
+			</li>
+			<li>
+				GreatMemory
+			</li>
+		</forcedTraits>
+		<hardwareGenes>
+			<li>VREA_MemoryProcessing</li>
+			<li>VREA_Power</li>
+			<li>VREA_SyntheticImmunity</li>
+			<li>VREA_PainDisabled</li>
+			<li>VREA_ComfortDisabled</li>
+			<li>VREA_DrugDesireDisabled</li>
+			<li>VREA_HeatTolerant</li>
+			<li>VREA_PsychicallyDeaf</li>
+			<li>mytNS_NanobotCirculation</li>
+			<li>mytNS_NanobotSwarm</li>
+			<li>VREA_Hair_ShortOnly</li>
+			<li>VREA_Beard_NoBeardOnly</li>
+			<li>VREA_Skin_InkBlack</li>
+			<li>VREA_Skin_SheerWhite</li>
+		</hardwareGenes>
+	</Nanoswarms.Swarmtype>
+
+	<Nanoswarms.Swarmtype>
+		<defName>mytNS_NanoswarmBasic</defName>
+		<label>Subpersona Nanoswarm</label>
+		<description>Subpersona Nanoswarms are cloud-like swarms of nanoscale robots, remotely controlled by an AI Subpersona construct to grant the AI a physical presence.  These subpersonas are frequently created and deployed to serve niche roles in a company, estate, ship or government.</description>
+		<descriptionShort>Subpersona Nanoswarms are cloud-like swarms of nanoscale robots, remotely controlled by an AI subpersona construct to grant the AI a physical presence.</descriptionShort>
+		<iconPath>UI/XenotypeIcons/Androidtype_Drone</iconPath>
+		<backstory>mytNS_SubPersonaCore</backstory>
+		<isAI>true</isAI>
+		<hardwareGenes>
+			<li>VREA_MemoryProcessing</li>
+			<li>VREA_Power</li>
+			<li>VREA_JoyDisabled</li>
+			<li>VREA_BeautyDisabled</li>
+			<li>VREA_ComfortDisabled</li>
+			<li>VREA_OutdoorsDisabled</li>
+			<li>VREA_DrugDesireDisabled</li>
+			<li>VREA_RoomSizeDisabled</li>
+			<li>VREA_PainDisabled</li>
+			<li>VREA_SyntheticImmunity</li>
+			<li>VREA_HeatTolerant</li>
+			<li>VREA_NoSkillGain</li>
+			<li>VREA_Uninspired</li>
+			<li>VREA_PsychicallyDeaf</li>
+			<li>VREA_MentalBreaksDisabled</li>
+			<li>VREA_PsychologyDisabled</li>
+			<li>mytNS_NanobotCirculation</li>
+			<li>mytNS_NanobotSwarm</li>
+			<li>VREA_Hair_BaldOnly</li>
+			<li>VREA_Beard_NoBeardOnly</li>
+			<li>VREA_Skin_LightGray</li>
+		</hardwareGenes>
+	</Nanoswarms.Swarmtype>
+
+</Defs>

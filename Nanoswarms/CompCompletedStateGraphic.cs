@@ -24,7 +24,6 @@ namespace Nanoswarms
         
         public override void PostDraw()
         {
-            NanoswarmsHelper.WriteLog("ParentHasNoStoredMind: " + ParentHasNoStoredMind + "; ParentIsEmpty: " + ParentIsEmpty + "; ShouldDraw: " + ShouldDraw);
             if (!ShouldDraw || parent.def.drawerType == DrawerType.MapMeshOnly)
                 return;
             Graphics.DrawMesh(PropsNo.graphicData.Graphic.MeshAt(parent.Rotation),

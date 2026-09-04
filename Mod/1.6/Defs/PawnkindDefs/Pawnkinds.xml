@@ -5,9 +5,6 @@
 		<label>Basic AI</label>
 		<race>Human</race>
 		<xenotypeSet>
-			<xenotypeChances>
-				<mytNS_NanoswarmBasic>999</mytNS_NanoswarmBasic>
-			</xenotypeChances>
 		</xenotypeSet>
 		<useFactionXenotypes>false</useFactionXenotypes>
 		<combatPower>0</combatPower>
@@ -19,9 +16,6 @@
 		<label>Advanced AI</label>
 		<race>Human</race>
 		<xenotypeSet>
-			<xenotypeChances>
-				<mytNS_NanoswarmAI>999</mytNS_NanoswarmAI>
-			</xenotypeChances>
 		</xenotypeSet>
 		<useFactionXenotypes>false</useFactionXenotypes>
 		<combatPower>0</combatPower>
@@ -33,9 +27,6 @@
 		<label>Digitized Mind</label>
 		<race>Human</race>
 		<xenotypeSet>
-			<xenotypeChances>
-				<mytNS_NanoswarmDigitalMind>999</mytNS_NanoswarmDigitalMind>
-			</xenotypeChances>
 		</xenotypeSet>
 		<useFactionXenotypes>false</useFactionXenotypes>
 		<combatPower>0</combatPower>
