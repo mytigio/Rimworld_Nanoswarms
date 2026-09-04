@@ -12,17 +12,17 @@ using VREAndroids;
 
 namespace Nanoswarms
 {
-    public class mytNS_DigitalMindCasket : Building, ISuspendableThingHolder 
+    public class mytNS_Building_DigitalMindCasket : Building, ISuspendableThingHolder 
     {
         protected ThingOwner innerContainer;
 
         private const int RareTick = 250;
-        private static readonly int DigitizationTicksMax = 180000;
+        private const int DigitizationTicksMax = 180000;
         private int _digitizationTicks = DigitizationTicksMax;
         
         private CompBuildingDigitalMind _compBuildingDigitalMind;
 
-        public mytNS_DigitalMindCasket()
+        public mytNS_Building_DigitalMindCasket()
         {
             innerContainer = new ThingOwner<Thing>(this, false);
         }
@@ -47,6 +47,11 @@ namespace Nanoswarms
             else
                 added = this.innerContainer.TryAdd(thing);
 
+            if (thing is Pawn pawn)
+            {
+                pawn.Strip();
+            }
+            
             if (added)
             {
                 DigitizationBegun = true;
@@ -54,7 +59,13 @@ namespace Nanoswarms
             return added;
         }
 
-        public bool DigitizationBegun { get; private set; } = false;
+        private bool _digitizationBegun = false;
+
+        private bool DigitizationBegun
+        {
+            get => _digitizationBegun;
+            set => _digitizationBegun = value;
+        }
 
         public override IEnumerable<Gizmo> GetGizmos()
         {
@@ -67,7 +78,7 @@ namespace Nanoswarms
             {
                 Command_Action completeDigitization = new Command_Action
                 {
-                    action = CompleteDigitization,
+                    action = CompleteDigitizationDebug,
                     defaultLabel = (string) "mytNS_Debug_CompleteDigitization".Translate(),
                     defaultDesc = (string) "mytNS_Debug_CompleteDigitizationDesc".Translate(),
                 };
@@ -95,10 +106,18 @@ namespace Nanoswarms
             return stringBuilder.ToString().TrimEndNewlines();
         }
 
-        private void CompleteDigitization()
+        private void CompleteDigitizationDebug()
         {
             _digitizationTicks = 0;
             TickRare();
+        }
+
+        private void CompleteDigitization()
+        {
+            var pawnToStore = (Pawn)ContainedThing;
+            NanoswarmsHelper.WriteLog("Digitization Complete. Storing " + pawnToStore.Name, NanoswarmsHelper.LogType.Debug);
+            innerContainer.Clear();
+            CompBuildingDigitalMind.CompleteDigitization(pawnToStore);
         }
         
         public override IEnumerable<FloatMenuOption> GetFloatMenuOptions(Pawn myPawn)
@@ -150,14 +169,7 @@ namespace Nanoswarms
             _digitizationTicks -= RareTick;
             NanoswarmsHelper.WriteLog(_digitizationTicks + " remaining until digitization complete.", NanoswarmsHelper.LogType.Debug);
             if (_digitizationTicks > 0) return;
-            NanoswarmsHelper.WriteLog("Digitization Complete. Storing " + pawnToStore.Name, NanoswarmsHelper.LogType.Debug);
-            innerContainer.Clear();
-            pawnToStore.forceNoDeathNotification = true;
-            pawnToStore.apparel.DestroyAll();
-            pawnToStore.inventory.DestroyAll();
-            CompBuildingDigitalMind.StoredMind = pawnToStore;
-            CompBuildingDigitalMind.StopProjection();
-            CompBuildingDigitalMind.PreFormation();
+            CompleteDigitization();
         }
 
         public ThingOwner GetDirectlyHeldThings() => innerContainer;
@@ -168,5 +180,14 @@ namespace Nanoswarms
         }
 
         public bool IsContentsSuspended => true;
+
+        public override void ExposeData()
+        {
+            base.ExposeData();
+            Scribe_Deep.Look<ThingOwner>(ref innerContainer, "innerContainer", (object) this);
+            Scribe_References.Look<CompBuildingDigitalMind>(ref _compBuildingDigitalMind, "CompBuildingDigitalMind");
+            Scribe_Values.Look(ref _digitizationTicks, "digitizationTicks");
+            Scribe_Values.Look(ref _digitizationBegun, "DigitizationBegun");
+        }
     }
 }

@@ -8,6 +8,7 @@ namespace Nanoswarms
     {
         public string descriptionShort;
         public string iconPath;
+        public List<TraitDef> forcedTraits;
         public List<GeneDef> hardwareGenes;
         public List<GeneDef> defaultSubroutineGenes;
         public bool isAI;

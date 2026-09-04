@@ -5,39 +5,15 @@
 		<label>robotic swarm hardware</label>
 		<displayPriorityInXenotype>2</displayPriorityInXenotype>
 	</GeneCategoryDef>
-	
-    <VREAndroids.AndroidGeneDef>
-		<defName>mytNS_NanobotCirculation</defName>
-		<label>nanite circulation</label>
-		<description>Nanoswarm Projections do not have blood or fluid in the traditional sense, but are instead kept mobile through the movement of nanoscale robots.  Injury leaves small dust-like piles of these broken robots behind, resembling a black, dusty blood.</description>
-		<iconPath>UI/Icons/Genes/Hardware/Gene_NeutroCirculation</iconPath>
-		<displayOrderInCategory>1</displayOrderInCategory>
-		<biostatCpx>1</biostatCpx>
-		<displayCategory>VREA_Hardware</displayCategory>
-		<canGenerateInGeneSet>false</canGenerateInGeneSet>
-		<isCoreComponent>true</isCoreComponent>
-		<prerequisite>mytNS_NanobotSwarm</prerequisite>
-		<modExtensions Inherit="False">
-			<li Class="VEF.Genes.GeneExtension">
-				<backgroundPathXenogenes>UI/Icons/Genes/GeneBackground_Hardware</backgroundPathXenogenes>
-				<backgroundPathEndogenes>UI/Icons/Genes/GeneBackground_Hardware</backgroundPathEndogenes>
-				<customBloodThingDef>mytNS_Filth_Nanodust</customBloodThingDef>
-				<customBloodSmearThingDef>mytNS_Filth_NanodustSmear</customBloodSmearThingDef>
-				<customBloodIcon>UI/Icons/NeutrolossIcon</customBloodIcon>
-				<customBloodEffect>mytNS_Damage_HitSwarm</customBloodEffect>
-				<customWoundsFromFleshtype>mytNS_NanoFlesh</customWoundsFromFleshtype>
-			</li>
-		</modExtensions>
-	</VREAndroids.AndroidGeneDef>
 
-	<VREAndroids.AndroidGeneDef ParentName="VREA_HardwareBase">
+	<Nanoswarms.NanoswarmAndroidGeneDef ParentName="VREA_HardwareBase">
 		<defName>mytNS_NanobotSwarm</defName>
 		<label>nanite swarm</label>
 		<description>Nanoswarm Projections have a body created from a swarm of microscopic robots.  This gives them a host of unique properties and strips them of most of the physical requirements of a human body.</description>
-		<iconPath>UI/Icons/Genes/Hardware/Gene_NeutroCirculation</iconPath>
+		<iconPath>UI/Icons/Genes/Gene_NaniteBody</iconPath>
 		<displayOrderInCategory>1</displayOrderInCategory>
 		<biostatCpx>5</biostatCpx>
-		<displayCategory>VREA_Hardware</displayCategory>
+		<displayCategory>mytNS_NanoSwarm_Hardware</displayCategory>
 		<statFactors>
 			<Fertility>0</Fertility>
 		</statFactors>
@@ -54,7 +30,20 @@
 			<li>0.6</li>
 		</resourceGizmoThresholds>
 		<showGizmoOnWorldView>false</showGizmoOnWorldView>
+		<showGizmoWhenDrafted>true</showGizmoWhenDrafted>
 		<resourceDescription>The microscopic robots that make up {PAWN_nameDef}'s body.  Cannot be restored, a new projection will need to be formed when the nanites are consumed.</resourceDescription>
 		<resourceLossPerDay>0</resourceLossPerDay>
-	</VREAndroids.AndroidGeneDef>
+		<modExtensions Inherit="False">
+			<li Class="VEF.Genes.GeneExtension">
+				<backgroundPathXenogenes>UI/Icons/Genes/GeneBackground_Hardware</backgroundPathXenogenes>
+				<backgroundPathEndogenes>UI/Icons/Genes/GeneBackground_Hardware</backgroundPathEndogenes>
+				<customBloodThingDef>mytNS_Filth_Nanodust</customBloodThingDef>
+				<customBloodSmearThingDef>mytNS_Filth_NanodustSmear</customBloodSmearThingDef>
+				<customBloodIcon>UI/Icons/NeutrolossIcon</customBloodIcon>
+				<customBloodEffect>mytNS_Damage_HitSwarm</customBloodEffect>
+				<customWoundsFromFleshtype>mytNS_NanoFlesh</customWoundsFromFleshtype>
+				<hediffToWholeBody>mytNS_NanoswarmProjectionBody</hediffToWholeBody>
+			</li>
+		</modExtensions>
+	</Nanoswarms.NanoswarmAndroidGeneDef>
 </Defs>

@@ -2,40 +2,53 @@ using Verse;
 
 namespace Nanoswarms
 {
-    public class mytNS_NanoswarmProjectionBody : Hediff
+    public class mytNS_NanoswarmProjectionBody : HediffWithComps
     {
         public CompBuildingDigitalMind DigitalMindStorage;
-
+        
+        private int _healTicksSinceLastHit = 0;
+        private Gene_NaniteSwarmBody _nanoswarmBodyGene;
         public override void Tick()
         {
             base.Tick();
-            if (DigitalMindStorage != null) return;
-            
-            NanoswarmsHelper.WriteLog("Form Projection Xenotype with no linked digital mind building. Destroy", NanoswarmsHelper.LogType.Warning);
-            this.DestroyUnlinkedSwarm();
+            if (!pawn.IsHashIntervalTick(60) || _healTicksSinceLastHit < 0) return;
+            if (_nanoswarmBodyGene == null)
+            {
+                NanoswarmsHelper.WriteLog("Nanoswarm Body Gene not found attached to hediff.", NanoswarmsHelper.LogType.Warning);
+                LinkBodyGene();
+            }
+            _nanoswarmBodyGene?.HealIfPossible();
+            _healTicksSinceLastHit--;
         }
 
-        private void DestroyUnlinkedSwarm()
+        private void LinkBodyGene()
         {
-            
-            if (pawn.carryTracker?.CarriedThing != null)
+            var gene = pawn.genes.GetGene(mytNSDefOf.mytNS_NanobotSwarm);
+            if (gene is Gene_NaniteSwarmBody swarmBody)
             {
-                pawn.carryTracker.TryDropCarriedThing(pawn.Position, ThingPlaceMode.Near, out var resultingThing);
+                _nanoswarmBodyGene = swarmBody;
             }
-                
-            if (pawn.Spawned || pawn.Corpse != null)
-            {
-                pawn.apparel.DropAll(pawn.Position);
-                pawn.inventory.DropAllNearPawn(pawn.Position);
-            }
+        }
 
-            if (pawn.Map != null)
+        public void RefreshNanitePool()
+        {
+            if (_nanoswarmBodyGene == null)
             {
-                pawn.DeSpawn();
+                NanoswarmsHelper.WriteLog("Nanoswarm body gene is null. Cannot reset nanite pool.", NanoswarmsHelper.LogType.Warning);
+                return;
             }
+            NanoswarmsHelper.WriteLog("Reset nanite pool to max.");
+            _nanoswarmBodyGene.Resource.Value = _nanoswarmBodyGene.Resource.Max;
+        }
 
-            if (pawn.Corpse?.Map == null) return;
-            pawn.Corpse.Destroy();
+        public override void Notify_PawnPostApplyDamage(DamageInfo dinfo, float totalDamageDealt)
+        {
+            base.Notify_PawnPostApplyDamage(dinfo, totalDamageDealt);
+
+            if (_nanoswarmBodyGene?.Active != true) return;
+            NanoswarmsHelper.WriteLog("Begin healing if possible.", NanoswarmsHelper.LogType.Debug);
+            _nanoswarmBodyGene?.HealIfPossible();
+            _healTicksSinceLastHit = 600;
         }
 
         public override void Notify_PawnKilled()
@@ -48,6 +61,14 @@ namespace Nanoswarms
         {
             base.Notify_PawnDied(dinfo, culprit);
             DigitalMindStorage?.StopProjection();
+        }
+
+        public override void ExposeData()
+        {
+            base.ExposeData();
+            Scribe_References.Look(ref _nanoswarmBodyGene, "_nanoswarmBodyGene");
+            Scribe_References.Look(ref DigitalMindStorage, "DigitalMindStorage");
+            Scribe_Values.Look(ref _healTicksSinceLastHit, "_healTicksSinceLastHit");
         }
     }
 }

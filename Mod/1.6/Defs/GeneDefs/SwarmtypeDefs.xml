@@ -1,18 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
 	
-	<XenotypeDef Name="mytNS_AINanoswarmXenotypeBase" Abstract="True">
-		<genes>
-			
-		</genes>
-	</XenotypeDef>
-	
-	<XenotypeDef Name="mytNS_DigitalMindNanoswarmXenotypeBase" Abstract="True">
-		<genes>
-			
-		</genes>
-	</XenotypeDef>
-	
 	<Nanoswarms.Swarmtype>
 		<defName>mytNS_NanoswarmDigitalMind</defName>
 		<label>Digital Mind Nanoswarm</label>
@@ -21,9 +9,7 @@
 		<iconPath>UI/XenotypeIcons/Androidtype_VR</iconPath>
 		<isAI>false</isAI>
 		<forcedTraits>
-			<li>
-				GreatMemory
-			</li>
+			<li>GreatMemory</li>
 		</forcedTraits>
 		<hardwareGenes>
 			<li>VREA_MemoryProcessing</li>
@@ -34,7 +20,6 @@
 			<li>VREA_DrugDesireDisabled</li>
 			<li>VREA_HeatTolerant</li>
 			<li>VREA_PsychicallyDeaf</li>
-			<li>mytNS_NanobotCirculation</li>
 			<li>mytNS_NanobotSwarm</li>
 		</hardwareGenes>
 	</Nanoswarms.Swarmtype>
@@ -48,12 +33,8 @@
 		<backstory>mytNS_PersonaCore</backstory>
 		<isAI>true</isAI>
 		<forcedTraits>
-			<li>
-				FastLearner
-			</li>
-			<li>
-				GreatMemory
-			</li>
+			<li>FastLearner</li>
+			<li>GreatMemory</li>
 		</forcedTraits>
 		<hardwareGenes>
 			<li>VREA_MemoryProcessing</li>
@@ -64,7 +45,6 @@
 			<li>VREA_DrugDesireDisabled</li>
 			<li>VREA_HeatTolerant</li>
 			<li>VREA_PsychicallyDeaf</li>
-			<li>mytNS_NanobotCirculation</li>
 			<li>mytNS_NanobotSwarm</li>
 			<li>VREA_Hair_ShortOnly</li>
 			<li>VREA_Beard_NoBeardOnly</li>
@@ -98,7 +78,6 @@
 			<li>VREA_PsychicallyDeaf</li>
 			<li>VREA_MentalBreaksDisabled</li>
 			<li>VREA_PsychologyDisabled</li>
-			<li>mytNS_NanobotCirculation</li>
 			<li>mytNS_NanobotSwarm</li>
 			<li>VREA_Hair_BaldOnly</li>
 			<li>VREA_Beard_NoBeardOnly</li>

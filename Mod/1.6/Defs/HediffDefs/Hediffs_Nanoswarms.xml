@@ -30,5 +30,23 @@
                 </statOffsets>
             </li>
         </stages>
+        <comps>
+            <li Class="HediffCompProperties_ReactOnDamage">
+                <damageDefIncoming>EMP</damageDefIncoming>
+                <createHediff>mytNS_EMPBurst</createHediff>
+            </li>
+        </comps>
+    </HediffDef>
+
+
+    <HediffDef>
+        <defName>mytNS_EMPBurst</defName>
+        <label>emp burst</label>
+        <labelNoun>an emp burst</labelNoun>
+        <description>An emp burst that destroyed the nanites of a nanoswarm projection.</description>
+        <hediffClass>HediffWithComps</hediffClass>
+        <comps>
+            <li Class="Nanoswarms.mytNS_HediffCompProperties_DisableNanoSwarm" />
+        </comps>
     </HediffDef>
 </Defs>

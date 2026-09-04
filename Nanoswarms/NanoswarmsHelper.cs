@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using HarmonyLib;
 using Verse;
+using VREAndroids;
 
 namespace Nanoswarms
 {
@@ -9,6 +11,29 @@ namespace Nanoswarms
     {
         private static readonly Harmony HarmonyInstance;
         private static readonly string ModName = "[Nanoswarms]";
+
+        private static List<GeneCategoryDef> extraGeneCategories;
+
+        public static List<GeneCategoryDef> ExtraGeneCategories
+        {
+            get
+            {
+                if (extraGeneCategories == null)
+                {
+                    extraGeneCategories = new List<GeneCategoryDef>();
+                    foreach (var convGenes in DefDatabase<AndroidConvertableGenesDef>
+                                 .AllDefsListForReading)
+                    {
+                        extraGeneCategories.AddRange(convGenes.geneCategories);
+                    }
+                    
+                    WriteLog("extra gene categories are null. Set to convertable genes defined in androids.", LogType.Debug);
+                    WriteLog("extra categories: " + extraGeneCategories?.Count, LogType.Debug);
+                }
+                
+                return extraGeneCategories;
+            }
+        }
         public static bool IsDebugBuild
         {
             get
