@@ -4,7 +4,9 @@
         <TargetFramework>net48</TargetFramework>
         <LangVersion>7.3</LangVersion>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-        <RimworldModDirectory>/media/Games/SteamLibrary/steamapps/common/RimWorld/Mods/</RimworldModDirectory>
+        <SteamDirectory>/media/Games/SteamLibrary/steamapps/</SteamDirectory>
+        <RimworldDirectory>$(SteamDirectory)common/RimWorld/</RimworldDirectory>
+        <RimworldModDirectory>$(RimworldDirectory)Mods/</RimworldModDirectory>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -27,17 +29,17 @@
 
     <ItemGroup>
       <Reference Include="Assembly-CSharp">
-        <HintPath>..\..\..\..\..\..\..\SteamLibrary\steamapps\common\RimWorld\RimWorldLinux_Data\Managed\Assembly-CSharp.dll</HintPath>
+        <HintPath>$(RimworldDirectory)RimWorldLinux_Data/Managed/Assembly-CSharp.dll</HintPath>
         <Private>False</Private>
       </Reference>
       <Reference Include="UnityEngine">
-        <HintPath>..\..\..\..\..\..\..\SteamLibrary\steamapps\common\RimWorld\RimWorldLinux_Data\Managed\UnityEngine.dll</HintPath>
+        <HintPath>$(RimworldDirectory)RimWorldLinux_Data/Managed/UnityEngine.dll</HintPath>
       </Reference>
       <Reference Include="UnityEngine.CoreModule">
-        <HintPath>..\..\..\..\..\..\..\SteamLibrary\steamapps\common\RimWorld\RimWorldLinux_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+        <HintPath>$(RimworldDirectory)RimWorldLinux_Data/Managed/UnityEngine.CoreModule.dll</HintPath>
       </Reference>
       <Reference Include="VREAndroids">
-        <HintPath>..\..\..\..\..\..\..\SteamLibrary\steamapps\workshop\content\294100\2975771801\1.6\Assemblies\VREAndroids.dll</HintPath>
+        <HintPath>$(SteamDirectory)/workshop/content/294100/2975771801/1.6/Assemblies/VREAndroids.dll</HintPath>
         <Private>False</Private>
       </Reference>
     </ItemGroup>
