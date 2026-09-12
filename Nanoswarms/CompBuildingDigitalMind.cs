@@ -198,17 +198,32 @@ namespace Nanoswarms
 
             GetLinkedHediff();
 
-            if (StoredMind != null && StoredMindSpawned() && !_compPower.PowerOn)
+            if (StoredMind != null)
             {
-                StopProjection();
                 var desync = StoredMind.health.hediffSet.GetFirstHediffOfDef(mytNSDefOf.mytNS_Desynchronization);
-                if (desync == null)
+                if (!_compPower.PowerOn)
                 {
-                    StoredMind.health.AddHediff(mytNSDefOf.mytNS_Desynchronization);
+                    if (StoredMindSpawned())
+                    {
+                        StopProjection();    
+                    }
+                
+                    if (desync == null)
+                    {
+                        desync = StoredMind.health.AddHediff(mytNSDefOf.mytNS_Desynchronization);
+                        desync.Severity = 0.1f;
+                    }
+                    else
+                    {
+                        desync.Severity += 0.1f;
+                    }
                 }
                 else
                 {
-                    desync.Severity += 0.1f;
+                    if (desync != null && !StoredMindSpawned())
+                    {
+                        NanoswarmsHelper.WriteLog($"Desync Severity for {StoredMind.Name}: {desync.Severity}");
+                    }
                 }
             }
 
@@ -540,9 +555,22 @@ namespace Nanoswarms
             if (StoredMindSpawned() || StoredMind.Corpse != null && StoredMind.Corpse.Spawned)
             {
                 NanoswarmsHelper.WriteLog($"Form Projection spawned: {StoredMindSpawned()} or is corpse {StoredMind.Corpse != null && StoredMind.Corpse.Spawned}. Drop all of their things.", NanoswarmsHelper.LogType.Debug);
-                if (StoredMindSpawned()) StoredMind.Strip(false);
-                StoredMind.Corpse?.Strip(false);
+                if (StoredMindSpawned())
+                {
+                    StoredMind.Strip(false);
+                    StoredMind.equipment.DestroyAllEquipment();
+                    StoredMind.apparel.DestroyAll();
+                    StoredMind.inventory.DestroyAll();
+                }
 
+                if (StoredMind.Corpse != null)
+                {
+                    StoredMind.Corpse.Strip(false);
+                    StoredMind.Corpse.InnerPawn.equipment.DestroyAllEquipment();
+                    StoredMind.Corpse.InnerPawn.apparel.DestroyAll();
+                    StoredMind.Corpse.InnerPawn.inventory.DestroyAll();
+                }
+                
             }
 
             if (StoredMind.Map != null)
