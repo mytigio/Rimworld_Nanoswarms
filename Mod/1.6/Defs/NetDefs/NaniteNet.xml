@@ -12,7 +12,7 @@
 		<pipeDefs>
 			<li>mytNS_NanitePipe</li>
 			<li>mytNS_SubterranianNanitePipe</li>
-		</pipeDefs>`
+		</pipeDefs>
 		<designator>
 			<deconstructIconPath>UI/NeutroPipes_Deconstruct</deconstructIconPath>
 			<designationCategoryDef>VCHE_PipeNetworks</designationCategoryDef>
