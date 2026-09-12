@@ -27,6 +27,7 @@ namespace Nanoswarms
             if (gene is Gene_NaniteSwarmBody swarmBody)
             {
                 _nanoswarmBodyGene = swarmBody;
+                swarmBody.ProjectionBody = this;
             }
         }
 

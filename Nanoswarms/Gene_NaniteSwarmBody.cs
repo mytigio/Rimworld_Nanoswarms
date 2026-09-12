@@ -12,11 +12,18 @@ namespace Nanoswarms
 	    
 	    public CompBuildingDigitalMind CompBuildingDigitalMind =>
 		    _compBuildingDigitalMind ??
-		    (_compBuildingDigitalMind = _projectionBody?.DigitalMindStorage);
+		    (_compBuildingDigitalMind = ProjectionBody?.DigitalMindStorage);
 
 	    private mytNS_NanoswarmProjectionBody _projectionBody;
 
-        public Gene_Resource Resource => this;
+	    public mytNS_NanoswarmProjectionBody ProjectionBody
+	    {
+		    get => _projectionBody;
+		    set => _projectionBody = value;
+	    }
+	    
+
+	    public Gene_Resource Resource => this;
 
         public bool CanOffset => pawn.Spawned && Active;
 
@@ -34,15 +41,22 @@ namespace Nanoswarms
 
         public override IEnumerable<Gizmo> GetGizmos()
         {
-			foreach (Gizmo gizmo in base.GetGizmos())
+			foreach (var gizmo in base.GetGizmos())
 			{
 				yield return gizmo;
 			}
-			foreach (Gizmo resourceDrainGizmo in GeneResourceDrainUtility.GetResourceDrainGizmos(this))
+			foreach (var resourceDrainGizmo in GeneResourceDrainUtility.GetResourceDrainGizmos(this))
 			{
 				yield return resourceDrainGizmo;
 			}
 		}
+
+        public override void Tick()
+        {
+	        base.Tick();
+	        if (Resource.Value > 0f) return;
+	        CompBuildingDigitalMind.StopProjection();
+        }
 
         public override void ExposeData()
         {
@@ -66,7 +80,7 @@ namespace Nanoswarms
 				        var total = hediff.Part.def.hitPoints;
 				        var naniteHealCost = (hediff.Part.def.hitPoints * 2) / 1000.0f;
 				        NanoswarmsHelper.WriteLog("Total HP to restore: " + total + "; Nanite cost: " + naniteHealCost + "; Nanites available: " + Resource.Value,NanoswarmsHelper.LogType.Debug); 
-			        
+						
 				        pawn.health.RestorePart(hediff.Part);
 				        Resource.Value -= naniteHealCost;
 				        break;
