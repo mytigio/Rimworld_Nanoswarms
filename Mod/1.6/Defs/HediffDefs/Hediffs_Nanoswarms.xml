@@ -30,5 +30,100 @@
                 </statOffsets>
             </li>
         </stages>
+        <comps>
+            <li Class="HediffCompProperties_ReactOnDamage">
+                <damageDefIncoming>EMP</damageDefIncoming>
+                <createHediff>mytNS_EMPBurst</createHediff>
+            </li>
+        </comps>
+    </HediffDef>
+    <HediffDef>
+        <defName>mytNS_Desynchronization</defName>
+        <label>Desynchronization</label>
+        <hediffClass>HediffWithComps</hediffClass>
+        <description>Disorientation stemming from being powered down for an extended period.  Causes confusion and difficulty controlling the projection swarm due to wave-form synchronization errors.  This synchronization error will correct naturally given enough time.</description>
+        <defaultLabelColor>(0.8, 0.8, 1)</defaultLabelColor>
+        <comps>
+            <li Class="HediffCompProperties_SeverityPerDay">
+                <severityPerDay>-0.25</severityPerDay>
+            </li>
+        </comps>
+        <stages>
+            <li>
+                <label>desync</label>
+                <becomeVisible>false</becomeVisible>
+            </li>
+            <li>
+                <label>minor latency</label>
+                <minSeverity>0.04</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Manipulation</capacity>
+                        <offset>-0.08</offset>
+                    </li>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <offset>-0.05</offset>
+                    </li>
+                </capMods>
+            </li>
+            <li>
+                <label>lag spikes</label>
+                <minSeverity>0.2</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Moving</capacity>
+                        <offset>-0.1</offset>
+                    </li>
+                    <li>
+                        <capacity>Manipulation</capacity>
+                        <offset>-0.2</offset>
+                    </li>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <offset>-0.10</offset>
+                    </li>
+                </capMods>
+            </li>
+            <li>
+                <label>persistent latency</label>
+                <minSeverity>0.35</minSeverity>
+                <painOffset>0.15</painOffset>
+                <capMods>
+                    <li>
+                        <capacity>Moving</capacity>
+                        <offset>-0.3</offset>
+                    </li>
+                    <li>
+                        <capacity>Manipulation</capacity>
+                        <offset>-0.5</offset>
+                    </li>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <offset>-0.20</offset>
+                    </li>
+                </capMods>
+            </li>
+            <li>
+                <label>full desynchronization</label>
+                <minSeverity>0.62</minSeverity>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <setMax>0.1</setMax>
+                    </li>
+                </capMods>
+            </li>
+        </stages>
+    </HediffDef>
+    <HediffDef>
+        <defName>mytNS_EMPBurst</defName>
+        <label>emp burst</label>
+        <labelNoun>an emp burst</labelNoun>
+        <description>An emp burst that destroyed the nanites of a nanoswarm projection.</description>
+        <hediffClass>HediffWithComps</hediffClass>
+        <comps>
+            <li Class="Nanoswarms.mytNS_HediffCompProperties_DisableNanoSwarm" />
+        </comps>
     </HediffDef>
 </Defs>

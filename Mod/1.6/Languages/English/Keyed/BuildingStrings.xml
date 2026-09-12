@@ -22,4 +22,7 @@
     <mytNS_AndroidsCannotUseCasket>Androids cannot have their minds scanned.</mytNS_AndroidsCannotUseCasket>
     <mytNS_Reprogram>Reprogram</mytNS_Reprogram>
     <mytNS_ReprogramDesc>Reprogram subpersona core with new subroutines.  Power consumption is adjusted on the computational complexity of the subroutines running on the neural array.</mytNS_ReprogramDesc>
+    <mytNS_Customize>Customize Appearance</mytNS_Customize>
+    <mytNS_CustomizeDesc>Adjust the cosmetic factors of the nanoswarms appearance.  Cannot adjust subroutines or actual android hardware in this way.</mytNS_CustomizeDesc>
+    <mytNS_NanoswarmNotAllowed>Nanoswarm Androids are not allowed.</mytNS_NanoswarmNotAllowed>
 </LanguageData>

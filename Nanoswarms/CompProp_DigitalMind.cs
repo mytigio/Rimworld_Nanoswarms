@@ -13,7 +13,6 @@ namespace Nanoswarms
         public int skillRangeMinimum = 0;
         public int skillRangeMaximum = 0;
         public int numberOfTraits = 0;
-        public bool reprogrammable = false;
 
         public bool IsAIMind => SpawnType.isAI;
 

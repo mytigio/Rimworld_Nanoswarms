@@ -76,7 +76,6 @@
     <comps>
       <li Class="Nanoswarms.CompProps_DigitalMind">
         <SpawnType>mytNS_NanoswarmBasic</SpawnType>
-        <reprogrammable>true</reprogrammable>
       </li>
       <li Class="CompProperties_Power">
         <compClass>CompPowerTrader</compClass>
@@ -143,7 +142,7 @@
     <defName>mytNS_DMNeuralArray</defName>
     <label>digitized mind array</label>
     <description>A cabinet designed to entomb a human being, slowly desolving their body and digitizing their brain.  Once complete, the cabinet is sealed shut, and the fluid within becomes a dynamic neural array housing the digital mind of the occupant.  The cabinet cannot be opened and the corpse cannot be retreived.</description>
-    <thingClass>Nanoswarms.mytNS_DigitalMindCasket</thingClass>
+    <thingClass>Nanoswarms.mytNS_Building_DigitalMindCasket</thingClass>
     <containedPawnsSelectable>false</containedPawnsSelectable>
     <drawerType>RealtimeOnly</drawerType>
     <graphicData>

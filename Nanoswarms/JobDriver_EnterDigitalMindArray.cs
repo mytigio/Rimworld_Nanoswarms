@@ -26,7 +26,7 @@ namespace Nanoswarms
             enter.initAction = () =>
             {
                 var actor = enter.actor;
-                var pod = (mytNS_DigitalMindCasket) actor.CurJob.targetA.Thing;
+                var pod = (mytNS_Building_DigitalMindCasket) actor.CurJob.targetA.Thing;
                 if (actor.IsAndroid()) return;
                 if (!pod.def.building.isPlayerEjectable)
                 {
