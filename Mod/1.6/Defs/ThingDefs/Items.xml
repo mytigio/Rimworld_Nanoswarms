@@ -13,10 +13,29 @@
         <statBases>
             <MarketValue>0</MarketValue>
             <Mass>0.5</Mass>
+            <WorkToMake>60000</WorkToMake>
         </statBases>
         <thingCategories>
             <li>ItemsMisc</li>
         </thingCategories>
         <tradeability>None</tradeability>
+        <recipeMaker>
+            <researchPrerequisite>VREA_AndroidTech</researchPrerequisite>
+            <workSpeedStat>SubcoreEncodingSpeed</workSpeedStat>
+            <workSkill>Crafting</workSkill>
+            <recipeUsers>
+                <li>mytNS_NaniteCreator</li>
+            </recipeUsers>
+            <mechanitorOnlyRecipe>true</mechanitorOnlyRecipe>
+            <unfinishedThingDef>UnfinishedSubcore</unfinishedThingDef>
+            <soundWorking>SubcoreEncoder_Working</soundWorking>
+        </recipeMaker>
+        <costList>
+            <Steel>100</Steel>
+            <Plasteel>100</Plasteel>
+            <Neutramine>25</Neutramine>
+            <Gold>25</Gold>
+            <Silver>100</Silver>
+        </costList>
     </ThingDef>
 </Defs>
