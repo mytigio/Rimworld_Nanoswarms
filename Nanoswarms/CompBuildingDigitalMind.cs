@@ -26,12 +26,12 @@ namespace Nanoswarms
         private CompRefuelable _compRefuelable;
         private CompPowerTrader _compPower;
         private CustomXenotype _storedCustomXenotype;
-        
+
         private float _bodyFormingCompletedTicks = 0.0f;
         private bool _isBodyForming = false;
         private bool _requiresDeepSave = false;
 
-        public bool Reprogrammable => this.Props.reprogrammable;
+        public bool Reprogrammable => this.Props.SpawnType.isReprogrammable;
 
 
 
@@ -50,7 +50,7 @@ namespace Nanoswarms
             base.PostSpawnSetup(respawningAfterLoad);
             _compPower = parent.TryGetComp<CompPowerTrader>();
             _compRefuelable = parent.GetComp<CompRefuelable>();
-            if (!respawningAfterLoad)
+            if (!respawningAfterLoad && Props.SpawnType.isAI)
             {
                 CreateAIMind();
             }
@@ -60,6 +60,16 @@ namespace Nanoswarms
             }
             
         }
+
+        public bool StoredMindSpawned()
+        {
+            if (StoredMind == null) return false;
+            
+            
+            return (StoredMind.Spawned || StoredMind.InContainerEnclosed ||
+                    StoredMind.CarriedBy != null);
+        }
+        
         public override IEnumerable<Gizmo> CompGetGizmosExtra()
         {
             var gizmosExtra = new List<Gizmo>();
@@ -88,7 +98,7 @@ namespace Nanoswarms
                     gizmosExtra.Add(finishReprogramming);
                 }
                 
-                if (StoredMind != null && !StoredMind.Spawned && !StoredMind.InContainerEnclosed && StoredMind.CarriedBy == null && !ReprogrammingJobReady() && !_isBodyForming)
+                if (StoredMind != null && !StoredMindSpawned() && !ReprogrammingJobReady() && !_isBodyForming)
                 {
                     var formProjectionAction = new Command_Action
                     {
@@ -98,7 +108,7 @@ namespace Nanoswarms
                         icon = ContentFinder<Texture2D>.Get("UI/Gizmos/FormProjection")
                     };
                     gizmosExtra.Add(formProjectionAction);
-                } else if (StoredMind != null && StoredMind.Spawned && !ReprogrammingJobReady() && !_isBodyForming)
+                } else if (StoredMindSpawned() && !ReprogrammingJobReady() && !_isBodyForming)
                 {
                     var endFormProjectionAction = new Command_Action
                     {
@@ -119,8 +129,7 @@ namespace Nanoswarms
                     gizmosExtra.Add(reFormProjectionAction);
                 }
 
-                if (StoredMind != null && !StoredMind.Spawned && !StoredMind.InContainerEnclosed &&
-                    StoredMind.CarriedBy == null && !ReprogrammingJobReady() && !_isBodyForming)
+                if (StoredMind != null && !StoredMindSpawned() && !ReprogrammingJobReady() && !_isBodyForming)
                 {
                     var reProgramAction = new Command_Action
                     {
@@ -189,6 +198,20 @@ namespace Nanoswarms
 
             GetLinkedHediff();
 
+            if (StoredMind != null && StoredMindSpawned() && !_compPower.PowerOn)
+            {
+                StopProjection();
+                var desync = StoredMind.health.hediffSet.GetFirstHediffOfDef(mytNSDefOf.mytNS_Desynchronization);
+                if (desync == null)
+                {
+                    StoredMind.health.AddHediff(mytNSDefOf.mytNS_Desynchronization);
+                }
+                else
+                {
+                    desync.Severity += 0.1f;
+                }
+            }
+
             if (!_isBodyForming || !(_compRefuelable.Fuel >= TickModifier * 4)) return; //either we aren't growing a body atm or we dont have enough fuel to proceed.
             NanoswarmsHelper.WriteLog("Body Forming for "+StoredMind.Name + "Work: " + _bodyFormingCompletedTicks + " / " + TicksToFormBody,NanoswarmsHelper.LogType.Debug);
             _bodyFormingCompletedTicks += TickModifier;
@@ -197,6 +220,28 @@ namespace Nanoswarms
             if (_bodyFormingCompletedTicks < TicksToFormBody) return;  //body formation not complete yet.
             FormProjection();
             _isBodyForming = false;
+        }
+
+        public override void PostDestroy(DestroyMode mode, Map previousMap)
+        {
+            base.PostDestroy(mode, previousMap);
+            if (StoredMind == null) return;
+            
+            if (StoredMindSpawned())
+            {
+                StopProjection();
+            }
+            if (StoredMind.Dead)
+            {
+                NanoswarmsHelper.WriteLog($"Attempt resurrection for {StoredMind.Name} so we can kill them for real.", NanoswarmsHelper.LogType.Debug);
+                ResurrectionUtility.TryResurrect(StoredMind);
+                NanoswarmsHelper.WriteLog($"Resurrection for {StoredMind.Name} complete.", NanoswarmsHelper.LogType.Debug);
+            }
+
+            StoredMind.forceNoDeathNotification = false;
+            NanoswarmsHelper.WriteLog($"{parent.ThingID} destroyed. Killing {StoredMind.Name}.");
+            StoredMind.Kill(null);
+
         }
 
         private mytNS_NanoswarmProjectionBody GetLinkedHediff()
@@ -212,7 +257,6 @@ namespace Nanoswarms
             
             NanoswarmsHelper.WriteLog($"No nanoswarm body hediff found for {StoredMind?.Name}", NanoswarmsHelper.LogType.Debug);
             return null;                
-
         }
 
         private void SetCustomXenotype()
@@ -362,7 +406,7 @@ namespace Nanoswarms
             // this will include almost everything.
             // copy the list so we can act on it.
             var hediffList = StoredMind.health.hediffSet.hediffs.ListFullCopyOrNull();
-            foreach (var hediff in hediffList.Where(hediff => hediff.def != mytNSDefOf.mytNS_NanoswarmProjectionBody))
+            foreach (var hediff in hediffList.Where(hediff => (hediff.def != mytNSDefOf.mytNS_NanoswarmProjectionBody && hediff.def != mytNSDefOf.mytNS_Desynchronization)))
             {
                 NanoswarmsHelper.WriteLog("Removing Hediff " + hediff.Label, NanoswarmsHelper.LogType.Debug);
                 StoredMind.health.RemoveHediff(hediff);
@@ -477,9 +521,15 @@ namespace Nanoswarms
             StoredMind.Drawer.renderer.EnsureGraphicsInitialized();
             NanoswarmsHelper.WriteLog("Try Place for "+StoredMind.Name+" Complete.", NanoswarmsHelper.LogType.Debug);
         }
-
+        private bool _stoppingProjection = false;
         public virtual void StopProjection()
         {
+            //mutex lock to prevent multiple stops from running at the same time.
+            if (_stoppingProjection)
+            {
+                NanoswarmsHelper.WriteLog($"Stopping projection underway. Return.", NanoswarmsHelper.LogType.Debug);
+            }
+            _stoppingProjection = true;
             NanoswarmsHelper.WriteLog("Form Projection Stopped", NanoswarmsHelper.LogType.Debug);
             if (StoredMind.carryTracker?.CarriedThing != null)
             {
@@ -487,10 +537,12 @@ namespace Nanoswarms
                 StoredMind.carryTracker.TryDropCarriedThing(StoredMind.Position, ThingPlaceMode.Near, out var resultingThing);
             }
                 
-            if (StoredMind.Spawned || StoredMind.Corpse != null)
+            if (StoredMindSpawned() || StoredMind.Corpse != null && StoredMind.Corpse.Spawned)
             {
-                NanoswarmsHelper.WriteLog("Form Projection currently spawned. Drop all of their things.", NanoswarmsHelper.LogType.Debug);
-                StoredMind.Strip(false);
+                NanoswarmsHelper.WriteLog($"Form Projection spawned: {StoredMindSpawned()} or is corpse {StoredMind.Corpse != null && StoredMind.Corpse.Spawned}. Drop all of their things.", NanoswarmsHelper.LogType.Debug);
+                if (StoredMindSpawned()) StoredMind.Strip(false);
+                StoredMind.Corpse?.Strip(false);
+
             }
 
             if (StoredMind.Map != null)
@@ -505,7 +557,8 @@ namespace Nanoswarms
                 GenExplosion.DoExplosion(StoredMind.Corpse.Position, StoredMind.Corpse.Map, 4.9f, mytNSDefOf.mytNS_Damage_Nanodust, StoredMind.Corpse, -1, -1f, null, null, null, null, ThingDefOf.Filth_Slime);
                 StoredMind.Corpse.Destroy();
             }
-            
+
+            _stoppingProjection = false;
         }
         
         public override void PostExposeData()
@@ -513,16 +566,27 @@ namespace Nanoswarms
             base.PostExposeData();
             if (Scribe.mode == LoadSaveMode.Saving)
             {
-                _requiresDeepSave = (StoredMind == null || StoredMind.Spawned || StoredMind.InContainerEnclosed ||
-                                     StoredMind.CarriedBy != null || Find.WorldPawns.Contains(StoredMind));
+                var StoredMindSpawned = StoredMind?.Spawned == true;
+                var StoredMindInContainer = StoredMind?.InContainerEnclosed == true;
+                var StoredMindCarried = StoredMind?.CarriedBy != null;
+                var StoredMindInWorld = Find.WorldPawns.Contains(StoredMind);
+                _requiresDeepSave = (!StoredMindSpawned && !StoredMindInContainer &&
+                                     !StoredMindCarried && !StoredMindInWorld);
+                NanoswarmsHelper.WriteLog($"{StoredMind?.Name} requires deep save: " + _requiresDeepSave, NanoswarmsHelper.LogType.Debug);
+                NanoswarmsHelper.WriteLog($"{StoredMind?.Name} is spawned: {StoredMindSpawned}");
+                NanoswarmsHelper.WriteLog($"{StoredMind?.Name} is in container: {StoredMindInContainer}");
+                NanoswarmsHelper.WriteLog($"{StoredMind?.Name} is being carried: {StoredMindCarried}");
+                NanoswarmsHelper.WriteLog($"{StoredMind?.Name} is in world: {StoredMindInWorld}");
                 Scribe_Values.Look(ref _requiresDeepSave, "RequiresDeepSave", defaultValue: false);
-                if (!_requiresDeepSave) 
+                if (_requiresDeepSave) 
                 {
-                    Scribe_References.Look(ref StoredMind, "StoredMind");
+                    NanoswarmsHelper.WriteLog($"Deep save stored mind {StoredMind?.Name}", NanoswarmsHelper.LogType.Debug);
+                    Scribe_Deep.Look<Pawn>(ref StoredMind, "StoredMind");
                 }
                 else
                 {
-                    Scribe_Deep.Look<Pawn>(ref StoredMind, "StoredMind");    
+                    NanoswarmsHelper.WriteLog($"Save reference to {StoredMind?.Name}", NanoswarmsHelper.LogType.Debug);
+                    Scribe_References.Look(ref StoredMind, "StoredMind");    
                 }
             }
             else
@@ -530,13 +594,17 @@ namespace Nanoswarms
                 Scribe_Values.Look(ref _requiresDeepSave, "RequiresDeepSave", defaultValue: false);
                 if (_requiresDeepSave)
                 {
+                    NanoswarmsHelper.WriteLog($"Restore StoredMind from deep save.", NanoswarmsHelper.LogType.Debug);
                     Scribe_Deep.Look(ref StoredMind, "StoredMind");
                 }
                 else
                 {
+                    NanoswarmsHelper.WriteLog($"Restore StoredMind via reference");
                     Scribe_References.Look(ref StoredMind, "StoredMind");
                 }
             }
+            
+            
             
             Scribe_Deep.Look(ref ReprogrammingProject, "ReprogrammingProject");
             Scribe_Deep.Look(ref _storedCustomXenotype, "_storedCustomXenotype");

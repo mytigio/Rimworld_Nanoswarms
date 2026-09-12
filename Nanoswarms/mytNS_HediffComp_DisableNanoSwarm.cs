@@ -4,7 +4,7 @@ namespace Nanoswarms
 {
     public class mytNS_HediffComp_DisableNanoSwarm : HediffComp
     {
-        public mytNS_HediffCompProperties_DisableNanoSwarm Props => (mytNS_HediffCompProperties_DisableNanoSwarm) this.props;
+        public mytNS_HediffCompProperties_DisableNanoSwarm Props => (mytNS_HediffCompProperties_DisableNanoSwarm) props;
 
         public override void CompPostTick(ref float severityAdjustment)
         {

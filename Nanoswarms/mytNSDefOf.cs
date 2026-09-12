@@ -14,7 +14,7 @@ namespace Nanoswarms
         public static FleshTypeDef mytNS_NanoFlesh;
         public static NanoswarmAndroidGeneDef mytNS_NanobotSwarm;
         public static GeneCategoryDef mytNS_NanoSwarm_Hardware;
-        public static HediffDef mytNS_NanoswarmProjectionBody;
+        public static HediffDef mytNS_NanoswarmProjectionBody,mytNS_Desynchronization;
         public static ThingDef mytSubpersonaNeuralArray, mytAINeuralArray, mytNS_DMNeuralArray, mytNS_Filth_Nanodust, mytNS_Filth_NanodustSmear;
         public static JobDef EnterDigitalMindArray;
         public static TaleDef EnteredDigitalMindArray;

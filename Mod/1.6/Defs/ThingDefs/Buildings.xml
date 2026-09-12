@@ -76,7 +76,6 @@
     <comps>
       <li Class="Nanoswarms.CompProps_DigitalMind">
         <SpawnType>mytNS_NanoswarmBasic</SpawnType>
-        <reprogrammable>true</reprogrammable>
       </li>
       <li Class="CompProperties_Power">
         <compClass>CompPowerTrader</compClass>
