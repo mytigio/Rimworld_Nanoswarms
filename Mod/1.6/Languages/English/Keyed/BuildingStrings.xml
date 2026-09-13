@@ -19,6 +19,7 @@
     <mytNS_StoredMind>Digital Mind</mytNS_StoredMind>
     <mytNS_Reprogramming>Reprogramming Progress</mytNS_Reprogramming>
     <mytNS_FormingBody>Swarm Forming</mytNS_FormingBody>
+    <mytNS_DesyncDisplay>Desync Severity</mytNS_DesyncDisplay>
     <mytNS_AndroidsCannotUseCasket>Androids cannot have their minds scanned.</mytNS_AndroidsCannotUseCasket>
     <mytNS_Reprogram>Reprogram</mytNS_Reprogram>
     <mytNS_ReprogramDesc>Reprogram subpersona core with new subroutines.  Power consumption is adjusted on the computational complexity of the subroutines running on the neural array.</mytNS_ReprogramDesc>

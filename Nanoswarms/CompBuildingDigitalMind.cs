@@ -168,6 +168,15 @@ namespace Nanoswarms
                           (_bodyFormingCompletedTicks / TicksToFormBody).ToStringPercent());
                 sb.AppendLine();
             }
+
+            if (StoredMind == null) return sb.ToString().Trim();
+            var desync = StoredMind.health.hediffSet.GetFirstHediffOfDef(mytNSDefOf.mytNS_Desynchronization);
+            if (desync != null && desync.Severity > 0.0f)
+            {
+                sb.Append("mytNS_DesyncDisplay".Translate() + ": " + desync.Severity.ToStringPercent());
+            }
+
+            sb.AppendLine();
             return sb.ToString().Trim();
         }
 
@@ -210,19 +219,26 @@ namespace Nanoswarms
                 
                     if (desync == null)
                     {
+                        NanoswarmsHelper.WriteLog($"Power is off. Add desync hediff to {StoredMind.Name}.");
                         desync = StoredMind.health.AddHediff(mytNSDefOf.mytNS_Desynchronization);
                         desync.Severity = 0.1f;
                     }
+                    else if (desync.Severity < 1.0f)
+                    {
+                        NanoswarmsHelper.WriteLog($"Power is off. Increase severity of desync hediff for {StoredMind.Name}.");
+                        desync.Severity += 0.1f;
+                    }
                     else
                     {
-                        desync.Severity += 0.1f;
+                        NanoswarmsHelper.WriteLog($"Desync severity for {StoredMind.Name} is at max severity.");
                     }
                 }
                 else
                 {
                     if (desync != null && !StoredMindSpawned())
                     {
-                        NanoswarmsHelper.WriteLog($"Desync Severity for {StoredMind.Name}: {desync.Severity}");
+                        NanoswarmsHelper.WriteLog($"Reduce desync Severity for {StoredMind.Name} while no projection spawned: {desync.Severity}");
+                        desync.Severity -= 0.001f;
                     }
                 }
             }

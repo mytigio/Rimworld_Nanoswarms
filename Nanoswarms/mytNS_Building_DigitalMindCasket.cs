@@ -162,7 +162,7 @@ namespace Nanoswarms
         public override void TickRare()
         {
             base.TickRare();
-            if (!DigitizationBegun || _compBuildingDigitalMind.StoredMind != null) return;
+            if (!DigitizationBegun || _compBuildingDigitalMind?.StoredMind != null) return;
             
             var pawnToStore = (Pawn)ContainedThing;
             if (pawnToStore == null) return;
