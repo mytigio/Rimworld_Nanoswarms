@@ -33,8 +33,6 @@ namespace Nanoswarms
 
         public bool Reprogrammable => this.Props.SpawnType.isReprogrammable;
 
-
-
         public override void PostPreApplyDamage(ref DamageInfo dinfo, out bool absorbed)
         {
             base.PostPreApplyDamage(ref dinfo, out absorbed);
@@ -131,18 +129,52 @@ namespace Nanoswarms
 
                 if (StoredMind != null && !StoredMindSpawned() && !ReprogrammingJobReady() && !_isBodyForming)
                 {
-                    var reProgramAction = new Command_Action
+                    if (Reprogrammable)
                     {
-                        action = InitiateReprogram,
-                        defaultLabel = (Reprogrammable) ? "mytNS_Reprogram".Translate() : "mytNS_Customize".Translate(),
-                        defaultDesc = (Reprogrammable) ? "mytNS_ReprogramDesc".Translate() : "mytNS_CustomizeDesc".Translate(),
-                        icon = ContentFinder<Texture2D>.Get("UI/Gizmos/ModifyAnAndroid")
-                    };
-                    gizmosExtra.Add(reProgramAction);
+                        var reProgramAction = new Command_Action
+                        {
+                            action = InitiateReprogram,
+                            defaultLabel = "mytNS_Reprogram".Translate(),
+                            defaultDesc = "mytNS_ReprogramDesc".Translate(),
+                            icon = ContentFinder<Texture2D>.Get("UI/Gizmos/ModifyAnAndroid")
+                        };
+                        gizmosExtra.Add(reProgramAction);
+                    }
                 }
             }
 
             return gizmosExtra;
+        }
+
+        private void InitiateStyling()
+        {
+            if (!ModLister.CheckIdeology("Styling station")) return;
+            Find.WindowStack.Add(new Dialog_StylingStation(StoredMind, parent));
+            //set the hair
+            if (StoredMind.style.nextHairDef != null && StoredMind.style.nextHairDef != StoredMind.story.hairDef)
+            {
+                StoredMind.story.hairDef = StoredMind.style.nextHairDef;
+            }
+
+            //set the bear
+            if (StoredMind.style.CanWantBeard && StoredMind.style.nextBeardDef != null &&
+                StoredMind.style.nextBeardDef != StoredMind.style.beardDef)
+            {
+                StoredMind.style.beardDef =  StoredMind.style.nextBeardDef;
+            }
+        
+            if (StoredMind.style.nextFaceTattooDef != null)
+            {
+                StoredMind.style.FaceTattoo = StoredMind.style.nextFaceTattooDef;
+            }
+
+            if (StoredMind.style.nextBodyTatooDef != null)
+            {
+                StoredMind.style.BodyTattoo = StoredMind.style.nextBodyTatooDef;
+            }
+            
+            StoredMind.style.Notify_StyleItemChanged();
+            StoredMind.style.ResetNextStyleChangeAttemptTick();
         }
 
         public override string CompInspectStringExtra()
@@ -371,8 +403,33 @@ namespace Nanoswarms
             pawn.Position = parent.Position;
             pawn.relations = new Pawn_RelationsTracker(pawn);
             pawn.interactions = new Pawn_InteractionsTracker(pawn);
-            while (pawn.story.traits.allTraits.Count > Props.numberOfTraits)
-                pawn.story.traits.allTraits.RemoveLast();            
+
+            var traitCount = pawn?.story?.traits?.allTraits?.Count ?? -1;
+            var keptTraits = 0;
+            for (var i = traitCount; i > 0; i--)
+            {
+                var idx = i - 1;
+                var trait = pawn.story.traits.allTraits[idx];
+                NanoswarmsHelper.WriteLog($"Checking trait {trait.def.defName} for removal.",NanoswarmsHelper.LogType.Debug);
+                if (VREA_DefOf.VREA_AndroidSettings.disallowedTraits.Contains(
+                        trait.def.defName) || keptTraits >= Props.numberOfTraits)
+                {
+                    pawn.story.traits.allTraits.RemoveAt(idx);
+                    continue;
+                }
+
+                keptTraits++;
+            }
+
+            if (Props.SpawnType.forcedTraits != null && pawn?.story?.traits != null)
+            {
+                foreach (var trait in Props.SpawnType.forcedTraits)
+                {
+                    NanoswarmsHelper.WriteLog($"Adding {trait.defName} to {pawn.Name}");
+                    pawn.story.traits.GainTrait(new Trait(trait));
+                }     
+            }
+            
             StoredMind = pawn;
             ApplyXenotype();
             var passionsRemaining = Props.maxPassions;
@@ -646,9 +703,12 @@ namespace Nanoswarms
                     NanoswarmsHelper.WriteLog($"Restore StoredMind via reference");
                     Scribe_References.Look(ref StoredMind, "StoredMind");
                 }
+
+                if (StoredMind != null)
+                {
+                    GetLinkedHediff();
+                }
             }
-            
-            
             
             Scribe_Deep.Look(ref ReprogrammingProject, "ReprogrammingProject");
             Scribe_Deep.Look(ref _storedCustomXenotype, "_storedCustomXenotype");

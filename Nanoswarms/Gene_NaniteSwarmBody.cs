@@ -62,7 +62,7 @@ namespace Nanoswarms
         {
             base.ExposeData();
             Scribe_Deep.Look(ref _compBuildingDigitalMind, "_compBuildingDigitalMind");
-            Scribe_Deep.Look(ref _projectionBody, "_projectionBody");
+            Scribe_References.Look(ref _projectionBody, "_projectionBody");
             
         }
 

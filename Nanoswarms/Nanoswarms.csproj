@@ -38,6 +38,10 @@
       <Reference Include="UnityEngine.CoreModule">
         <HintPath>$(RimworldDirectory)RimWorldLinux_Data/Managed/UnityEngine.CoreModule.dll</HintPath>
       </Reference>
+      <Reference Include="UnityEngine.IMGUIModule">
+        <HintPath>$(RimworldDirectory)RimWorldLinux_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
+        <Private>False</Private>
+      </Reference>
       <Reference Include="VREAndroids">
         <HintPath>$(SteamDirectory)/workshop/content/294100/2975771801/1.6/Assemblies/VREAndroids.dll</HintPath>
         <Private>False</Private>

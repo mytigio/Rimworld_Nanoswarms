@@ -22,6 +22,11 @@
 		</statOffsets>
 		<sterilize>true</sterilize>
 		<geneClass>Nanoswarms.Gene_NaniteSwarmBody</geneClass>
+		<disablesNeeds>
+			<li>Comfort</li>
+			<li>DrugDesire</li>
+		</disablesNeeds>
+		<painFactor>0</painFactor>
 		<resourceGizmoType>Nanoswarms.GeneGizmo_Resource_Nanites</resourceGizmoType>
 		<resourceLabel>nanites</resourceLabel>
 		<resourceGizmoThresholds>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-	
 	<Nanoswarms.Swarmtype>
 		<defName>mytNS_NanoswarmDigitalMind</defName>
 		<label>Digital Mind Nanoswarm</label>
@@ -16,15 +15,12 @@
 			<li>VREA_MemoryProcessing</li>
 			<li>VREA_Power</li>
 			<li>VREA_SyntheticImmunity</li>
-			<li>VREA_PainDisabled</li>
-			<li>VREA_ComfortDisabled</li>
-			<li>VREA_DrugDesireDisabled</li>
+			<li>VREA_SyntheticBody</li>
 			<li>VREA_HeatTolerant</li>
 			<li>VREA_PsychicallyDeaf</li>
 			<li>mytNS_NanobotSwarm</li>
 		</hardwareGenes>
 	</Nanoswarms.Swarmtype>
-
 	<Nanoswarms.Swarmtype>
 		<defName>mytNS_NanoswarmAI</defName>
 		<label>AI Nanoswarm</label>
@@ -42,19 +38,34 @@
 			<li>VREA_MemoryProcessing</li>
 			<li>VREA_Power</li>
 			<li>VREA_SyntheticImmunity</li>
-			<li>VREA_PainDisabled</li>
-			<li>VREA_ComfortDisabled</li>
-			<li>VREA_DrugDesireDisabled</li>
+			<li>VREA_SyntheticBody</li>
 			<li>VREA_HeatTolerant</li>
 			<li>VREA_PsychicallyDeaf</li>
 			<li>mytNS_NanobotSwarm</li>
-			<li>VREA_Hair_ShortOnly</li>
-			<li>VREA_Beard_NoBeardOnly</li>
 			<li>VREA_Skin_InkBlack</li>
+			<li>VREA_Skin_SlateGray</li>
+			<li>VREA_Skin_LightGray</li>
 			<li>VREA_Skin_SheerWhite</li>
+			<li>VREA_Skin_Blue</li>
+			<li>VREA_Skin_Purple</li>
+			<li>VREA_Skin_PaleRed</li>
+			<li>VREA_Skin_DeepRed</li>
+			<li>VREA_Skin_PaleYellow</li>
+			<li>VREA_Skin_DeepYellow</li>
+			<li>VREA_Skin_Orange</li>
+			<li>VREA_Skin_Green</li>
+			<li>VREA_Eyes_Red</li>
+			<li>VREA_Eyes_Gray</li>
+			<li>VREA_Body_Standard</li>
+			<li>VREA_Body_Hulk</li>
+			<li>VREA_Body_Thin</li>
+			<li>VREA_Ears_Human</li>
+			<li>VREA_Ears_Pig</li>
+			<li>VREA_Ears_Floppy</li>
+			<li>VREA_Ears_Cat</li>
+			<li>VREA_Ears_Pointed</li>
 		</hardwareGenes>
 	</Nanoswarms.Swarmtype>
-
 	<Nanoswarms.Swarmtype>
 		<defName>mytNS_NanoswarmBasic</defName>
 		<label>Subpersona Nanoswarm</label>
@@ -75,17 +86,18 @@
 			<li>VREA_RoomSizeDisabled</li>
 			<li>VREA_PainDisabled</li>
 			<li>VREA_SyntheticImmunity</li>
+			<li>VREA_SyntheticBody</li>
 			<li>VREA_HeatTolerant</li>
 			<li>VREA_NoSkillGain</li>
 			<li>VREA_Uninspired</li>
 			<li>VREA_PsychicallyDeaf</li>
 			<li>VREA_MentalBreaksDisabled</li>
 			<li>VREA_PsychologyDisabled</li>
+			<li>VREA_AntiAwakeningProtocols</li>
 			<li>mytNS_NanobotSwarm</li>
 			<li>VREA_Hair_BaldOnly</li>
 			<li>VREA_Beard_NoBeardOnly</li>
 			<li>VREA_Skin_LightGray</li>
 		</hardwareGenes>
 	</Nanoswarms.Swarmtype>
-
 </Defs>

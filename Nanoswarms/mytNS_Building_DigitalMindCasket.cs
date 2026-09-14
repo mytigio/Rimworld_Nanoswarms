@@ -185,7 +185,6 @@ namespace Nanoswarms
         {
             base.ExposeData();
             Scribe_Deep.Look<ThingOwner>(ref innerContainer, "innerContainer", (object) this);
-            Scribe_References.Look<CompBuildingDigitalMind>(ref _compBuildingDigitalMind, "CompBuildingDigitalMind");
             Scribe_Values.Look(ref _digitizationTicks, "digitizationTicks");
             Scribe_Values.Look(ref _digitizationBegun, "DigitizationBegun");
         }
