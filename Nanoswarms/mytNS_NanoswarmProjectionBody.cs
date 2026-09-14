@@ -1,8 +1,9 @@
 using Verse;
+using VREAndroids;
 
 namespace Nanoswarms
 {
-    public class mytNS_NanoswarmProjectionBody : HediffWithComps
+    public class mytNS_NanoswarmProjectionBody : Hediff_AndroidReactor
     {
         public CompBuildingDigitalMind DigitalMindStorage;
         
@@ -10,7 +11,6 @@ namespace Nanoswarms
         private Gene_NaniteSwarmBody _nanoswarmBodyGene;
         public override void Tick()
         {
-            base.Tick();
             if (!pawn.IsHashIntervalTick(60) || _healTicksSinceLastHit < 0) return;
             if (_nanoswarmBodyGene == null)
             {
@@ -30,6 +30,8 @@ namespace Nanoswarms
                 swarmBody.ProjectionBody = this;
             }
         }
+
+        public override bool Visible => true;
 
         public void RefreshNanitePool()
         {
@@ -68,7 +70,6 @@ namespace Nanoswarms
         {
             base.ExposeData();
             Scribe_References.Look(ref _nanoswarmBodyGene, "_nanoswarmBodyGene");
-            Scribe_References.Look(ref DigitalMindStorage, "DigitalMindStorage");
             Scribe_Values.Look(ref _healTicksSinceLastHit, "_healTicksSinceLastHit");
         }
     }

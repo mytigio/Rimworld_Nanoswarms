@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <HediffDef>
+    <HediffDef Parent="Hediff_AndroidReactor">
         <defName>mytNS_NanoswarmProjectionBody</defName>
         <label>Nanoswarm Projection</label>
         <hediffClass>Nanoswarms.mytNS_NanoswarmProjectionBody</hediffClass>
@@ -42,7 +42,7 @@
         <label>Desynchronization</label>
         <hediffClass>HediffWithComps</hediffClass>
         <description>Disorientation stemming from being powered down for an extended period.  Causes confusion and difficulty controlling the projection swarm due to wave-form synchronization errors.  This synchronization error will correct naturally given enough time.</description>
-        <defaultLabelColor>(0.8, 0.8, 1)</defaultLabelColor>
+        <defaultLabelColor>(0.6, 0.6, 0.6)</defaultLabelColor>
         <comps>
             <li Class="HediffCompProperties_SeverityPerDay">
                 <severityPerDay>-0.25</severityPerDay>
