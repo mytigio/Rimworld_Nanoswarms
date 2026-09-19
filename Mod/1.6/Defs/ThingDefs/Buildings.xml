@@ -1,6 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <Defs>
+    <ThingDef ParentName="BenchBase">
+        <defName>mytNS_NaniteCreator</defName>
+        <label>nanite breader</label>
+        <description>a bench for making nanites.</description>
+        <thingClass>Building_WorkTable</thingClass>
+        <canOverlapZones>false</canOverlapZones>
+        <passability>PassThroughOnly</passability>
+        <fillPercent>0.3</fillPercent>
+        <graphicData>
+            <texPath>Things/Building/Production/SubcoreEncoder</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>(3,2)</drawSize>
+            <shadowData>
+                <volume>(3, 2, 1.9)</volume>
+            </shadowData>
+        </graphicData>
+        <altitudeLayer>Building</altitudeLayer>
+        <building>
+            <ai_chillDestination>false</ai_chillDestination>
+            <buildingTags>
+                <li>Biotech</li>
+            </buildingTags>
+            <workTableRoomRole>Laboratory</workTableRoomRole>
+            <workTableNotInRoomRoleFactor>0.2</workTableNotInRoomRoleFactor>
+        </building>
+        <constructionSkillPrerequisite>9</constructionSkillPrerequisite>
+        <designationCategory>Biotech</designationCategory>
+        <uiOrder>2430</uiOrder>
+        <statBases>
+            <MaxHitPoints>500</MaxHitPoints>
+            <WorkToBuild>12000</WorkToBuild>
+            <Mass>25</Mass>
+            <Flammability>0.5</Flammability>
+        </statBases>
+        <size>(3,2)</size>
+        <costList>
+            <Steel>100</Steel>
+            <ComponentIndustrial>5</ComponentIndustrial>
+            <ComponentSpacer>4</ComponentSpacer>
+            <Gold>200</Gold>
+            <Silver>200</Silver>
+            <Plasteel>450</Plasteel>
+        </costList>
+        <researchPrerequisites>
+            <li>VREA_AndroidTech</li>
+        </researchPrerequisites>
+        <hasInteractionCell>true</hasInteractionCell>
+        <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+        <inspectorTabs>
+            <li>ITab_Bills</li>
+        </inspectorTabs>
+        <comps>
+            <li Class="CompProperties_MoteEmitter">
+                <perRotationMotes>
+                    <li>Mote_SubcoreEncoderNorth</li>
+                    <li>Mote_SubcoreEncoderEast</li>
+                    <li>Mote_SubcoreEncoderSouth</li>
+                    <li>Mote_SubcoreEncoderEast</li>
+                </perRotationMotes>
+                <offsetNorth>(0, 0, -0.34)</offsetNorth>
+                <offsetSouth>(0, 0, 0.66)</offsetSouth>
+                <offsetWest>(0.575, 0, 0.24)</offsetWest>
+                <offsetEast>(-0.575, 0, 0.24)</offsetEast>
+                <useParentRotation>true</useParentRotation>
+            </li>
+            <li Class="CompProperties_Power">
+                <compClass>CompPowerTrader</compClass>
+                <basePowerConsumption>500</basePowerConsumption>
+                <idlePowerDraw>50</idlePowerDraw>
+            </li>
+            <li Class="CompProperties_Flickable"/>
+            
+        </comps>
+        <recipes>
+           <li>Make_mytNS_Nanites</li>
+        </recipes>
+        <placeWorkers>
+            <li>PlaceWorker_PreventInteractionSpotOverlap</li>
+        </placeWorkers>
+  </ThingDef>
+
+    <WorkGiverDef>
+        <defName>DoBillsNaniteMaker</defName>
+        <label>Produce nanites</label>
+        <giverClass>WorkGiver_DoBill</giverClass>
+        <workType>Crafting</workType>
+        <priorityInType>50</priorityInType>
+        <fixedBillGiverDefs>
+            <li>mytNS_NaniteCreator</li>
+        </fixedBillGiverDefs>
+        <verb>Create Nanites at</verb>
+        <gerund>Creating Nanites at</gerund>
+        <requiredCapacities>
+            <li>Manipulation</li>
+        </requiredCapacities>
+        <prioritizeSustains>true</prioritizeSustains>
+    </WorkGiverDef>
+    
+    
+  <!-- Neural arrays start -->
   <ThingDef Abstract="True" Name="NeuralArrayBase" ParentName="BuildingBase">
     <tickerType>Rare</tickerType>
     <drawerType>MapMeshAndRealTime</drawerType>
@@ -242,4 +342,5 @@
       </rulesStrings>
     </rulePack>
   </TaleDef>
+    
 </Defs>
