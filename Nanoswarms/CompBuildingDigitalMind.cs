@@ -535,68 +535,35 @@ namespace Nanoswarms
             newPawn.SetFactionDirect(originalPawn.Faction);
             PawnComponentsUtility.CreateInitialComponents(newPawn);
             newPawn.gender = originalPawn.gender;
-            newPawn.ageTracker.AgeBiologicalTicks = originalPawn.ageTracker.AgeBiologicalTicks;
             
-            newPawn.needs.AllNeeds.Clear();
-            newPawn.needs.AllNeeds.AddRange(originalPawn.needs.AllNeeds);
+            newPawn.ageTracker = originalPawn.ageTracker;
+            newPawn.needs = originalPawn.needs;
+            newPawn.skills = originalPawn.skills;
 
-            newPawn.skills.skills.Clear();
-            newPawn.skills.skills.AddRange(originalPawn.skills.skills);
-
-            newPawn.story.favoriteColor = originalPawn.story.favoriteColor;
-            newPawn.story.skinColorOverride = originalPawn.story.skinColorOverride;
-            newPawn.story.title = originalPawn.story.title;
-            newPawn.story.hairDef = originalPawn.story.hairDef;
-            newPawn.story.bodyType = originalPawn.story.bodyType;
-            newPawn.story.headType = originalPawn.story.headType;
-            newPawn.story.furDef =  originalPawn.story.furDef;
-            newPawn.story.Adulthood = originalPawn.story.Adulthood;
-            newPawn.story.Childhood = originalPawn.story.Childhood;
+            newPawn.story = originalPawn.story;
             newPawn.Name = originalPawn.Name;
-            newPawn.story.birthLastName =  originalPawn.story.birthLastName;
-            newPawn.story.traits.allTraits.Clear();
-            newPawn.story.traits.allTraits.AddRange(originalPawn.story.traits.allTraits);
             
-            newPawn.abilities.abilities.Clear();
-            newPawn.abilities.abilities.AddRange(originalPawn.abilities.abilities);
-            
-            newPawn.connections.ConnectedThings.Clear(); 
-            newPawn.connections.ConnectedThings.AddRange(originalPawn.connections.ConnectedThings);
-            
-            newPawn.genes.Endogenes.Clear();
-            newPawn.genes.Endogenes.AddRange(originalPawn.genes.Endogenes);
-            newPawn.genes.Xenogenes.Clear();
-            newPawn.genes.Xenogenes.AddRange(originalPawn.genes.Xenogenes);
-            newPawn.genes.xenotypeName = originalPawn.genes.xenotypeName;
-            newPawn.genes.iconDef = originalPawn.genes.iconDef;
-            
-            newPawn.health.hediffSet.hediffs.Clear();
-            newPawn.ideo.SetIdeo(originalPawn.ideo.Ideo);
+            newPawn.abilities = originalPawn.abilities;
+            newPawn.connections = originalPawn.connections;
 
-            if (originalPawn?.learning?.ActiveLearningDesires != null)
+            newPawn.genes = originalPawn.genes;
+            newPawn.health = originalPawn.health;
+            newPawn.ideo = originalPawn.ideo;
+
+            if (originalPawn?.learning != null)
             {
-                if (newPawn.learning == null)
-                {
-                    newPawn.learning = new Pawn_LearningTracker();
-                }
-                newPawn.learning.ActiveLearningDesires.Clear();
-                newPawn.learning.ActiveLearningDesires.AddRange(originalPawn.learning.ActiveLearningDesires);    
+
+                newPawn.learning = originalPawn.learning;
             }
             
             
-            newPawn.foodRestriction.CurrentFoodPolicy = originalPawn.foodRestriction.CurrentFoodPolicy;
-            newPawn.drugs.CurrentPolicy = originalPawn.drugs.CurrentPolicy;
-
+            newPawn.foodRestriction = originalPawn.foodRestriction;
+            newPawn.drugs = originalPawn.drugs;
             newPawn.workSettings = originalPawn.workSettings;
 
-            if (originalPawn?.mechanitor?.ActiveMechBills != null)
+            if (originalPawn?.mechanitor != null)
             {
-                if (newPawn.mechanitor == null)
-                {
-                    newPawn.mechanitor = new Pawn_MechanitorTracker();
-                }
-                newPawn.mechanitor.ActiveMechBills.Clear();
-                newPawn.mechanitor.ActiveMechBills.AddRange(originalPawn.mechanitor.ActiveMechBills);    
+                newPawn.mechanitor = originalPawn.mechanitor;    
             }
 
             newPawn.forceNoDeathNotification = originalPawn.forceNoDeathNotification;
