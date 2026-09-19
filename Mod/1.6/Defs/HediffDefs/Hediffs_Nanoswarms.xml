@@ -151,7 +151,7 @@
                     <li>
                         <label>nanite armblade</label>
                         <capacities>
-                            <li>Slice</li>
+                            <li>Cut</li>
                         </capacities>
                         <power>23</power> <!-- nanoscale robots are sharp and deadly. -->
                         <armorPenetration>0.5</armorPenetration>
@@ -187,7 +187,7 @@
                     <li>
                         <label>nanite monoblade</label>
                         <capacities>
-                            <li>Slice</li>
+                            <li>Cut</li>
                         </capacities>
                         <power>35</power> <!-- nanoscale robots are sharp and deadly. -->
                         <armorPenetration>0.90</armorPenetration>
