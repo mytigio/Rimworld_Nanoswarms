@@ -29,7 +29,7 @@ namespace Nanoswarms
                 _nanoswarmBodyGene = swarmBody;
                 swarmBody.ProjectionBody = this;
             }
-        }
+        } 
 
         public override bool Visible => true;
 
