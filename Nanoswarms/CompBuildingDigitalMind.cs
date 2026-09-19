@@ -48,7 +48,7 @@ namespace Nanoswarms
             base.PostSpawnSetup(respawningAfterLoad);
             _compPower = parent.TryGetComp<CompPowerTrader>();
             _compRefuelable = parent.GetComp<CompRefuelable>();
-            if (!respawningAfterLoad && Props.SpawnType.isAI)
+            if (!respawningAfterLoad && Props.SpawnType.isAI && _compPower.PowerOn)
             {
                 CreateAIMind();
             }
@@ -226,6 +226,11 @@ namespace Nanoswarms
         public override void CompTickRare()
         {
             base.CompTickRare();
+
+            if (StoredMind == null && _compPower.PowerOn && Props.IsAIMind)
+            {
+                CreateAIMind();
+            }
             
             if (ReprogrammingJobReady())
             {
@@ -342,7 +347,7 @@ namespace Nanoswarms
             var pawnKindDef = Props.SpawnType;
             var ofPlayer = Faction.OfPlayer;
             var pawnRequest = new PawnGenerationRequest(
-                PawnKindDefOf.Colonist,
+                mytNSDefOf.mytNS_SwarmColonist,
                 ofPlayer,
                 PawnGenerationContext.NonPlayer,
                 -1,
@@ -517,9 +522,86 @@ namespace Nanoswarms
             pawnToStore.equipment.DestroyAllEquipment();
             pawnToStore.apparel.DestroyAll();
             pawnToStore.inventory.DestroyAll();
-            StoredMind = pawnToStore;
+            StoredMind = clonePawnAsSwarm(pawnToStore);
+            pawnToStore.Destroy();
             ApplyXenotype();
             InitializeFormation();
+        }
+
+        private Pawn clonePawnAsSwarm(Pawn originalPawn)
+        {
+            var newPawn = (Pawn) ThingMaker.MakeThing(mytNSDefOf.mytNS_SwarmColonist.race);
+            newPawn.kindDef = mytNSDefOf.mytNS_SwarmColonist;
+            newPawn.SetFactionDirect(originalPawn.Faction);
+            PawnComponentsUtility.CreateInitialComponents(newPawn);
+            newPawn.gender = originalPawn.gender;
+            newPawn.ageTracker.AgeBiologicalTicks = originalPawn.ageTracker.AgeBiologicalTicks;
+            
+            newPawn.needs.AllNeeds.Clear();
+            newPawn.needs.AllNeeds.AddRange(originalPawn.needs.AllNeeds);
+
+            newPawn.skills.skills.Clear();
+            newPawn.skills.skills.AddRange(originalPawn.skills.skills);
+
+            newPawn.story.favoriteColor = originalPawn.story.favoriteColor;
+            newPawn.story.skinColorOverride = originalPawn.story.skinColorOverride;
+            newPawn.story.title = originalPawn.story.title;
+            newPawn.story.hairDef = originalPawn.story.hairDef;
+            newPawn.story.bodyType = originalPawn.story.bodyType;
+            newPawn.story.headType = originalPawn.story.headType;
+            newPawn.story.furDef =  originalPawn.story.furDef;
+            newPawn.story.Adulthood = originalPawn.story.Adulthood;
+            newPawn.story.Childhood = originalPawn.story.Childhood;
+            newPawn.Name = originalPawn.Name;
+            newPawn.story.birthLastName =  originalPawn.story.birthLastName;
+            newPawn.story.traits.allTraits.Clear();
+            newPawn.story.traits.allTraits.AddRange(originalPawn.story.traits.allTraits);
+            
+            newPawn.abilities.abilities.Clear();
+            newPawn.abilities.abilities.AddRange(originalPawn.abilities.abilities);
+            
+            newPawn.connections.ConnectedThings.Clear(); 
+            newPawn.connections.ConnectedThings.AddRange(originalPawn.connections.ConnectedThings);
+            
+            newPawn.genes.Endogenes.Clear();
+            newPawn.genes.Endogenes.AddRange(originalPawn.genes.Endogenes);
+            newPawn.genes.Xenogenes.Clear();
+            newPawn.genes.Xenogenes.AddRange(originalPawn.genes.Xenogenes);
+            newPawn.genes.xenotypeName = originalPawn.genes.xenotypeName;
+            newPawn.genes.iconDef = originalPawn.genes.iconDef;
+            
+            newPawn.health.hediffSet.hediffs.Clear();
+            newPawn.ideo.SetIdeo(originalPawn.ideo.Ideo);
+
+            if (originalPawn?.learning?.ActiveLearningDesires != null)
+            {
+                if (newPawn.learning == null)
+                {
+                    newPawn.learning = new Pawn_LearningTracker();
+                }
+                newPawn.learning.ActiveLearningDesires.Clear();
+                newPawn.learning.ActiveLearningDesires.AddRange(originalPawn.learning.ActiveLearningDesires);    
+            }
+            
+            
+            newPawn.foodRestriction.CurrentFoodPolicy = originalPawn.foodRestriction.CurrentFoodPolicy;
+            newPawn.drugs.CurrentPolicy = originalPawn.drugs.CurrentPolicy;
+
+            newPawn.workSettings = originalPawn.workSettings;
+
+            if (originalPawn?.mechanitor?.ActiveMechBills != null)
+            {
+                if (newPawn.mechanitor == null)
+                {
+                    newPawn.mechanitor = new Pawn_MechanitorTracker();
+                }
+                newPawn.mechanitor.ActiveMechBills.Clear();
+                newPawn.mechanitor.ActiveMechBills.AddRange(originalPawn.mechanitor.ActiveMechBills);    
+            }
+
+            newPawn.forceNoDeathNotification = originalPawn.forceNoDeathNotification;
+            
+            return newPawn;
         }
 
         private void InitializeFormation()
