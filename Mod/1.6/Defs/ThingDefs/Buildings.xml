@@ -76,7 +76,6 @@
         </comps>
         <recipes>
            <li>Make_mytNS_Nanites</li>
-            <li>Make_ComponentSpacer</li>
         </recipes>
         <placeWorkers>
             <li>PlaceWorker_PreventInteractionSpotOverlap</li>
@@ -85,15 +84,15 @@
 
     <WorkGiverDef>
         <defName>DoBillsNaniteMaker</defName>
-        <label>nanitify things</label>
+        <label>Produce nanites</label>
         <giverClass>WorkGiver_DoBill</giverClass>
         <workType>Crafting</workType>
         <priorityInType>50</priorityInType>
         <fixedBillGiverDefs>
             <li>mytNS_NaniteCreator</li>
         </fixedBillGiverDefs>
-        <verb>nanitify things at</verb>
-        <gerund>naniting things at</gerund>
+        <verb>Create Nanites at</verb>
+        <gerund>Creating Nanites at</gerund>
         <requiredCapacities>
             <li>Manipulation</li>
         </requiredCapacities>
