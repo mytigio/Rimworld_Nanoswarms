@@ -162,7 +162,7 @@ namespace Nanoswarms
         public override void TickRare()
         {
             base.TickRare();
-            if (!DigitizationBegun || _compBuildingDigitalMind.StoredMind != null) return;
+            if (!DigitizationBegun || _compBuildingDigitalMind?.StoredMind != null) return;
             
             var pawnToStore = (Pawn)ContainedThing;
             if (pawnToStore == null) return;
@@ -185,7 +185,6 @@ namespace Nanoswarms
         {
             base.ExposeData();
             Scribe_Deep.Look<ThingOwner>(ref innerContainer, "innerContainer", (object) this);
-            Scribe_References.Look<CompBuildingDigitalMind>(ref _compBuildingDigitalMind, "CompBuildingDigitalMind");
             Scribe_Values.Look(ref _digitizationTicks, "digitizationTicks");
             Scribe_Values.Look(ref _digitizationBegun, "DigitizationBegun");
         }

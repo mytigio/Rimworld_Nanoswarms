@@ -24,7 +24,7 @@ namespace Nanoswarms
                     foreach (var convGenes in DefDatabase<AndroidConvertableGenesDef>
                                  .AllDefsListForReading)
                     {
-                        extraGeneCategories.AddRange(convGenes.geneCategories);
+                        extraGeneCategories.AddRangeUnique(convGenes.geneCategories);
                     }
                     
                     WriteLog("extra gene categories are null. Set to convertable genes defined in androids.", LogType.Debug);

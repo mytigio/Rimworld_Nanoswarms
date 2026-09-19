@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <HediffDef>
+    <HediffDef Parent="Hediff_AndroidReactor">
         <defName>mytNS_NanoswarmProjectionBody</defName>
         <label>Nanoswarm Projection</label>
         <hediffClass>Nanoswarms.mytNS_NanoswarmProjectionBody</hediffClass>
@@ -42,7 +42,7 @@
         <label>Desynchronization</label>
         <hediffClass>HediffWithComps</hediffClass>
         <description>Disorientation stemming from being powered down for an extended period.  Causes confusion and difficulty controlling the projection swarm due to wave-form synchronization errors.  This synchronization error will correct naturally given enough time.</description>
-        <defaultLabelColor>(0.8, 0.8, 1)</defaultLabelColor>
+        <defaultLabelColor>(0.6, 0.6, 0.6)</defaultLabelColor>
         <comps>
             <li Class="HediffCompProperties_SeverityPerDay">
                 <severityPerDay>-0.25</severityPerDay>
@@ -124,6 +124,80 @@
         <hediffClass>HediffWithComps</hediffClass>
         <comps>
             <li Class="Nanoswarms.mytNS_HediffCompProperties_DisableNanoSwarm" />
+        </comps>
+    </HediffDef>
+    
+    <!-- Skill hediffs -->
+    <HediffDef ParentName="ImplantHediffBase">
+        <defName>mytNS_melee10</defName>
+        <label>nanite armblade</label>
+        <labelNoun>a nanite armblade</labelNoun>
+        <description>The microscopic robots along the manipulator appendage of the swarm form into a hardened blade at a thought.</description>
+        <comps>
+            <li Class="HediffCompProperties_VerbGiver">
+                <tools>
+                    <li>
+                        <label>nanite armblade</label>
+                        <capacities>
+                            <li>Stab</li>
+                        </capacities>
+                        <power>23</power> <!-- nanoscale robots are sharp and deadly. -->
+                        <armorPenetration>0.5</armorPenetration>
+                        <cooldownTime>2.6</cooldownTime>
+                        <alwaysTreatAsWeapon>true</alwaysTreatAsWeapon>
+                        <soundMeleeHit>MeleeHit_BionicSlash</soundMeleeHit>
+                        <soundMeleeMiss>MeleeMiss_BionicSlash</soundMeleeMiss>
+                    </li>
+                    <li>
+                        <label>nanite armblade</label>
+                        <capacities>
+                            <li>Cut</li>
+                        </capacities>
+                        <power>23</power> <!-- nanoscale robots are sharp and deadly. -->
+                        <armorPenetration>0.5</armorPenetration>
+                        <cooldownTime>2.6</cooldownTime>
+                        <alwaysTreatAsWeapon>true</alwaysTreatAsWeapon>
+                        <soundMeleeHit>MeleeHit_BionicSlash</soundMeleeHit>
+                        <soundMeleeMiss>MeleeMiss_BionicSlash</soundMeleeMiss>
+                    </li>
+                </tools>
+            </li>
+        </comps>
+    </HediffDef>
+    <HediffDef ParentName="ImplantHediffBase">
+        <defName>mytNS_melee20</defName>
+        <label>nanite monoblade</label>
+        <labelNoun>a nanite monoblade</labelNoun>
+        <description>The microscopic robots along the manipulator appendage of the swarm form into a hardened blade at a thought, forming into a monosword at a moments notice.</description>
+        <comps>
+            <li Class="HediffCompProperties_VerbGiver">
+                <tools>
+                    <li>
+                        <label>nanite monoblade</label>
+                        <capacities>
+                            <li>Stab</li>
+                        </capacities>
+                        <power>35</power> <!-- nanoscale robots are sharp and deadly. -->
+                        <armorPenetration>0.90</armorPenetration>
+                        <cooldownTime>2</cooldownTime>
+                        <alwaysTreatAsWeapon>true</alwaysTreatAsWeapon>
+                        <soundMeleeHit>MeleeHit_BionicSlash</soundMeleeHit>
+                        <soundMeleeMiss>MeleeMiss_BionicSlash</soundMeleeMiss>
+                    </li>
+                    <li>
+                        <label>nanite monoblade</label>
+                        <capacities>
+                            <li>Cut</li>
+                        </capacities>
+                        <power>35</power> <!-- nanoscale robots are sharp and deadly. -->
+                        <armorPenetration>0.90</armorPenetration>
+                        <cooldownTime>2</cooldownTime>
+                        <alwaysTreatAsWeapon>true</alwaysTreatAsWeapon>
+                        <soundMeleeHit>MeleeHit_BionicSlash</soundMeleeHit>
+                        <soundMeleeMiss>MeleeMiss_BionicSlash</soundMeleeMiss>
+                    </li>
+                </tools>
+            </li>
         </comps>
     </HediffDef>
 </Defs>

@@ -33,8 +33,6 @@ namespace Nanoswarms
 
         public bool Reprogrammable => this.Props.SpawnType.isReprogrammable;
 
-
-
         public override void PostPreApplyDamage(ref DamageInfo dinfo, out bool absorbed)
         {
             base.PostPreApplyDamage(ref dinfo, out absorbed);
@@ -50,7 +48,7 @@ namespace Nanoswarms
             base.PostSpawnSetup(respawningAfterLoad);
             _compPower = parent.TryGetComp<CompPowerTrader>();
             _compRefuelable = parent.GetComp<CompRefuelable>();
-            if (!respawningAfterLoad && Props.SpawnType.isAI)
+            if (!respawningAfterLoad && Props.SpawnType.isAI && _compPower.PowerOn)
             {
                 CreateAIMind();
             }
@@ -131,18 +129,52 @@ namespace Nanoswarms
 
                 if (StoredMind != null && !StoredMindSpawned() && !ReprogrammingJobReady() && !_isBodyForming)
                 {
-                    var reProgramAction = new Command_Action
+                    if (Reprogrammable)
                     {
-                        action = InitiateReprogram,
-                        defaultLabel = (Reprogrammable) ? "mytNS_Reprogram".Translate() : "mytNS_Customize".Translate(),
-                        defaultDesc = (Reprogrammable) ? "mytNS_ReprogramDesc".Translate() : "mytNS_CustomizeDesc".Translate(),
-                        icon = ContentFinder<Texture2D>.Get("UI/Gizmos/ModifyAnAndroid")
-                    };
-                    gizmosExtra.Add(reProgramAction);
+                        var reProgramAction = new Command_Action
+                        {
+                            action = InitiateReprogram,
+                            defaultLabel = "mytNS_Reprogram".Translate(),
+                            defaultDesc = "mytNS_ReprogramDesc".Translate(),
+                            icon = ContentFinder<Texture2D>.Get("UI/Gizmos/ModifyAnAndroid")
+                        };
+                        gizmosExtra.Add(reProgramAction);
+                    }
                 }
             }
 
             return gizmosExtra;
+        }
+
+        private void InitiateStyling()
+        {
+            if (!ModLister.CheckIdeology("Styling station")) return;
+            Find.WindowStack.Add(new Dialog_StylingStation(StoredMind, parent));
+            //set the hair
+            if (StoredMind.style.nextHairDef != null && StoredMind.style.nextHairDef != StoredMind.story.hairDef)
+            {
+                StoredMind.story.hairDef = StoredMind.style.nextHairDef;
+            }
+
+            //set the bear
+            if (StoredMind.style.CanWantBeard && StoredMind.style.nextBeardDef != null &&
+                StoredMind.style.nextBeardDef != StoredMind.style.beardDef)
+            {
+                StoredMind.style.beardDef =  StoredMind.style.nextBeardDef;
+            }
+        
+            if (StoredMind.style.nextFaceTattooDef != null)
+            {
+                StoredMind.style.FaceTattoo = StoredMind.style.nextFaceTattooDef;
+            }
+
+            if (StoredMind.style.nextBodyTatooDef != null)
+            {
+                StoredMind.style.BodyTattoo = StoredMind.style.nextBodyTatooDef;
+            }
+            
+            StoredMind.style.Notify_StyleItemChanged();
+            StoredMind.style.ResetNextStyleChangeAttemptTick();
         }
 
         public override string CompInspectStringExtra()
@@ -168,6 +200,15 @@ namespace Nanoswarms
                           (_bodyFormingCompletedTicks / TicksToFormBody).ToStringPercent());
                 sb.AppendLine();
             }
+
+            if (StoredMind == null) return sb.ToString().Trim();
+            var desync = StoredMind.health.hediffSet.GetFirstHediffOfDef(mytNSDefOf.mytNS_Desynchronization);
+            if (desync != null && desync.Severity > 0.0f)
+            {
+                sb.Append("mytNS_DesyncDisplay".Translate() + ": " + desync.Severity.ToStringPercent());
+            }
+
+            sb.AppendLine();
             return sb.ToString().Trim();
         }
 
@@ -185,6 +226,11 @@ namespace Nanoswarms
         public override void CompTickRare()
         {
             base.CompTickRare();
+
+            if (StoredMind == null && _compPower.PowerOn && Props.IsAIMind)
+            {
+                CreateAIMind();
+            }
             
             if (ReprogrammingJobReady())
             {
@@ -210,19 +256,26 @@ namespace Nanoswarms
                 
                     if (desync == null)
                     {
+                        NanoswarmsHelper.WriteLog($"Power is off. Add desync hediff to {StoredMind.Name}.");
                         desync = StoredMind.health.AddHediff(mytNSDefOf.mytNS_Desynchronization);
                         desync.Severity = 0.1f;
                     }
+                    else if (desync.Severity < 1.0f)
+                    {
+                        NanoswarmsHelper.WriteLog($"Power is off. Increase severity of desync hediff for {StoredMind.Name}.");
+                        desync.Severity += 0.1f;
+                    }
                     else
                     {
-                        desync.Severity += 0.1f;
+                        NanoswarmsHelper.WriteLog($"Desync severity for {StoredMind.Name} is at max severity.");
                     }
                 }
                 else
                 {
                     if (desync != null && !StoredMindSpawned())
                     {
-                        NanoswarmsHelper.WriteLog($"Desync Severity for {StoredMind.Name}: {desync.Severity}");
+                        NanoswarmsHelper.WriteLog($"Reduce desync Severity for {StoredMind.Name} while no projection spawned: {desync.Severity}");
+                        desync.Severity -= 0.001f;
                     }
                 }
             }
@@ -294,7 +347,7 @@ namespace Nanoswarms
             var pawnKindDef = Props.SpawnType;
             var ofPlayer = Faction.OfPlayer;
             var pawnRequest = new PawnGenerationRequest(
-                PawnKindDefOf.Colonist,
+                mytNSDefOf.mytNS_SwarmColonist,
                 ofPlayer,
                 PawnGenerationContext.NonPlayer,
                 -1,
@@ -355,8 +408,9 @@ namespace Nanoswarms
             pawn.Position = parent.Position;
             pawn.relations = new Pawn_RelationsTracker(pawn);
             pawn.interactions = new Pawn_InteractionsTracker(pawn);
-            while (pawn.story.traits.allTraits.Count > Props.numberOfTraits)
-                pawn.story.traits.allTraits.RemoveLast();            
+
+            handleTraits(pawn);
+            
             StoredMind = pawn;
             ApplyXenotype();
             var passionsRemaining = Props.maxPassions;
@@ -384,6 +438,35 @@ namespace Nanoswarms
                 StoredMind.ideo.SetIdeo(Faction.OfPlayer.ideos.PrimaryIdeo);
             
             pawn.apparel.DestroyAll();
+        }
+
+        private void handleTraits(Pawn pawn)
+        {
+            var traitCount = pawn?.story?.traits?.allTraits?.Count ?? -1;
+            var keptTraits = 0;
+            for (var i = traitCount; i > 0; i--)
+            {
+                var idx = i - 1;
+                var trait = pawn.story.traits.allTraits[idx];
+                NanoswarmsHelper.WriteLog($"Checking trait {trait.def.defName} for removal.",NanoswarmsHelper.LogType.Debug);
+                if (VREA_DefOf.VREA_AndroidSettings.disallowedTraits.Contains(
+                        trait.def.defName) || keptTraits >= Props.numberOfTraits)
+                {
+                    pawn.story.traits.allTraits.RemoveAt(idx);
+                    continue;
+                }
+
+                keptTraits++;
+            }
+
+            if (Props.SpawnType.forcedTraits != null && pawn?.story?.traits != null)
+            {
+                foreach (var trait in Props.SpawnType.forcedTraits)
+                {
+                    NanoswarmsHelper.WriteLog($"Adding {trait.defName} to {pawn.Name}");
+                    pawn.story.traits.GainTrait(new Trait(trait));
+                }     
+            }
         }
 
         
@@ -444,9 +527,54 @@ namespace Nanoswarms
             pawnToStore.equipment.DestroyAllEquipment();
             pawnToStore.apparel.DestroyAll();
             pawnToStore.inventory.DestroyAll();
-            StoredMind = pawnToStore;
+            StoredMind = clonePawnAsSwarm(pawnToStore);
+            handleTraits(StoredMind);
+            pawnToStore.Destroy();
             ApplyXenotype();
             InitializeFormation();
+        }
+
+        private Pawn clonePawnAsSwarm(Pawn originalPawn)
+        {
+            var newPawn = (Pawn) ThingMaker.MakeThing(mytNSDefOf.mytNS_SwarmColonist.race);
+            newPawn.kindDef = mytNSDefOf.mytNS_SwarmColonist;
+            newPawn.SetFactionDirect(originalPawn.Faction);
+            PawnComponentsUtility.CreateInitialComponents(newPawn);
+            newPawn.gender = originalPawn.gender;
+            
+            newPawn.ageTracker = originalPawn.ageTracker;
+            newPawn.needs = originalPawn.needs;
+            newPawn.skills = originalPawn.skills;
+
+            newPawn.story = originalPawn.story;
+            newPawn.Name = originalPawn.Name;
+            
+            newPawn.abilities = originalPawn.abilities;
+            newPawn.connections = originalPawn.connections;
+
+            newPawn.genes = originalPawn.genes;
+            newPawn.health = originalPawn.health;
+            newPawn.ideo = originalPawn.ideo;
+
+            if (originalPawn?.learning != null)
+            {
+
+                newPawn.learning = originalPawn.learning;
+            }
+            
+            
+            newPawn.foodRestriction = originalPawn.foodRestriction;
+            newPawn.drugs = originalPawn.drugs;
+            newPawn.workSettings = originalPawn.workSettings;
+
+            if (originalPawn?.mechanitor != null)
+            {
+                newPawn.mechanitor = originalPawn.mechanitor;    
+            }
+
+            newPawn.forceNoDeathNotification = originalPawn.forceNoDeathNotification;
+            
+            return newPawn;
         }
 
         private void InitializeFormation()
@@ -630,9 +758,12 @@ namespace Nanoswarms
                     NanoswarmsHelper.WriteLog($"Restore StoredMind via reference");
                     Scribe_References.Look(ref StoredMind, "StoredMind");
                 }
+
+                if (StoredMind != null)
+                {
+                    GetLinkedHediff();
+                }
             }
-            
-            
             
             Scribe_Deep.Look(ref ReprogrammingProject, "ReprogrammingProject");
             Scribe_Deep.Look(ref _storedCustomXenotype, "_storedCustomXenotype");
