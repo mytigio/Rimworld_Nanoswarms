@@ -4,7 +4,7 @@
     <ThingDef ParentName="BenchBase">
         <defName>mytNS_NaniteCreator</defName>
         <label>nanite breader</label>
-        <description>a bench for making nanites. </description>
+        <description>a bench for making nanites.</description>
         <thingClass>Building_WorkTable</thingClass>
         <canOverlapZones>false</canOverlapZones>
         <passability>PassThroughOnly</passability>
@@ -74,10 +74,34 @@
             <li Class="CompProperties_Flickable"/>
             
         </comps>
+        <recipes>
+           <li>Make_mytNS_Nanites</li>
+            <li>Make_ComponentSpacer</li>
+        </recipes>
         <placeWorkers>
             <li>PlaceWorker_PreventInteractionSpotOverlap</li>
         </placeWorkers>
-    </ThingDef>
+  </ThingDef>
+
+    <WorkGiverDef>
+        <defName>DoBillsNaniteMaker</defName>
+        <label>nanitify things</label>
+        <giverClass>WorkGiver_DoBill</giverClass>
+        <workType>Crafting</workType>
+        <priorityInType>50</priorityInType>
+        <fixedBillGiverDefs>
+            <li>mytNS_NaniteCreator</li>
+        </fixedBillGiverDefs>
+        <verb>nanitify things at</verb>
+        <gerund>naniting things at</gerund>
+        <requiredCapacities>
+            <li>Manipulation</li>
+        </requiredCapacities>
+        <prioritizeSustains>true</prioritizeSustains>
+    </WorkGiverDef>
+    
+    
+  <!-- Neural arrays start -->
   <ThingDef Abstract="True" Name="NeuralArrayBase" ParentName="BuildingBase">
     <tickerType>Rare</tickerType>
     <drawerType>MapMeshAndRealTime</drawerType>
