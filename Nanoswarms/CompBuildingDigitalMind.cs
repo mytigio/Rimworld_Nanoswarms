@@ -409,31 +409,7 @@ namespace Nanoswarms
             pawn.relations = new Pawn_RelationsTracker(pawn);
             pawn.interactions = new Pawn_InteractionsTracker(pawn);
 
-            var traitCount = pawn?.story?.traits?.allTraits?.Count ?? -1;
-            var keptTraits = 0;
-            for (var i = traitCount; i > 0; i--)
-            {
-                var idx = i - 1;
-                var trait = pawn.story.traits.allTraits[idx];
-                NanoswarmsHelper.WriteLog($"Checking trait {trait.def.defName} for removal.",NanoswarmsHelper.LogType.Debug);
-                if (VREA_DefOf.VREA_AndroidSettings.disallowedTraits.Contains(
-                        trait.def.defName) || keptTraits >= Props.numberOfTraits)
-                {
-                    pawn.story.traits.allTraits.RemoveAt(idx);
-                    continue;
-                }
-
-                keptTraits++;
-            }
-
-            if (Props.SpawnType.forcedTraits != null && pawn?.story?.traits != null)
-            {
-                foreach (var trait in Props.SpawnType.forcedTraits)
-                {
-                    NanoswarmsHelper.WriteLog($"Adding {trait.defName} to {pawn.Name}");
-                    pawn.story.traits.GainTrait(new Trait(trait));
-                }     
-            }
+            handleTraits(pawn);
             
             StoredMind = pawn;
             ApplyXenotype();
@@ -462,6 +438,35 @@ namespace Nanoswarms
                 StoredMind.ideo.SetIdeo(Faction.OfPlayer.ideos.PrimaryIdeo);
             
             pawn.apparel.DestroyAll();
+        }
+
+        private void handleTraits(Pawn pawn)
+        {
+            var traitCount = pawn?.story?.traits?.allTraits?.Count ?? -1;
+            var keptTraits = 0;
+            for (var i = traitCount; i > 0; i--)
+            {
+                var idx = i - 1;
+                var trait = pawn.story.traits.allTraits[idx];
+                NanoswarmsHelper.WriteLog($"Checking trait {trait.def.defName} for removal.",NanoswarmsHelper.LogType.Debug);
+                if (VREA_DefOf.VREA_AndroidSettings.disallowedTraits.Contains(
+                        trait.def.defName) || keptTraits >= Props.numberOfTraits)
+                {
+                    pawn.story.traits.allTraits.RemoveAt(idx);
+                    continue;
+                }
+
+                keptTraits++;
+            }
+
+            if (Props.SpawnType.forcedTraits != null && pawn?.story?.traits != null)
+            {
+                foreach (var trait in Props.SpawnType.forcedTraits)
+                {
+                    NanoswarmsHelper.WriteLog($"Adding {trait.defName} to {pawn.Name}");
+                    pawn.story.traits.GainTrait(new Trait(trait));
+                }     
+            }
         }
 
         
@@ -523,6 +528,7 @@ namespace Nanoswarms
             pawnToStore.apparel.DestroyAll();
             pawnToStore.inventory.DestroyAll();
             StoredMind = clonePawnAsSwarm(pawnToStore);
+            handleTraits(StoredMind);
             pawnToStore.Destroy();
             ApplyXenotype();
             InitializeFormation();
