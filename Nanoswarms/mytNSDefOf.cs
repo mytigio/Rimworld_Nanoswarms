@@ -14,10 +14,21 @@ namespace Nanoswarms
         public static FleshTypeDef mytNS_NanoFlesh;
         public static NanoswarmAndroidGeneDef mytNS_NanobotSwarm;
         public static GeneCategoryDef mytNS_NanoSwarm_Hardware;
-        public static HediffDef mytNS_NanoswarmProjectionBody,mytNS_Desynchronization;
+        public static HediffDef mytNS_NanoswarmProjectionBody,mytNS_Desynchronization, mytNS_melee10, mytNS_shooting10, 
+            mytNS_construction10, mytNS_mining10, mytNS_cooking10, mytNS_plants10, mytNS_animals10, mytNS_crafting10, 
+            mytNS_artistic10, mytNS_medical10, mytNS_social10, mytNS_intelligence10;
         public static ThingDef mytSubpersonaNeuralArray, mytAINeuralArray, mytNS_DMNeuralArray, mytNS_Filth_Nanodust, mytNS_Filth_NanodustSmear, mytNS_SwarmProjectionRace;
         public static JobDef EnterDigitalMindArray;
         public static PawnKindDef mytNS_SwarmColonist;
         public static TaleDef EnteredDigitalMindArray;
+
+        public static BodyPartDef mytNS_swarmCloud,
+            mytNS_manipulator,
+            mytNS_locomotor,
+            mytNS_projector,
+            mytNS_arrayCasing,
+            mytNS_tunnelingArray,
+            mytNS_opticalCluster,
+            mytNS_vibrationCluster;
     }
 }

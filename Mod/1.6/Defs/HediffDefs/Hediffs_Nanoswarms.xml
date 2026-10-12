@@ -3,15 +3,26 @@
     <HediffDef Parent="Hediff_AndroidReactor">
         <defName>mytNS_NanoswarmProjectionBody</defName>
         <label>Nanoswarm Projection</label>
-        <hediffClass>Nanoswarms.mytNS_NanoswarmProjectionBody</hediffClass>
+        <hediffClass>Nanoswarms.Hediff_NanoswarmProjectionBody</hediffClass>
         <description>This body is in fact a swarm of nanoscale robots shaped to resemble a human.  As a result, the body is resistant to blunt and cutting damage, however the miroscopic robots are very vulnerable to fire and EMP damage.  The body is robotic, and is thus immune to most disease, does not require food or sleep.  The body is actually a projection controlled by a mind in a projection cabinet, and as such if destroyed, a new body can simply be formed from a new swarm of nanites.</description>
         <descriptionShort>This body is in fact a swarm of nanoscale robots shaped to resemble a human.  As it is robotic in nature it lacks many of the needs of an organic body.</descriptionShort>
         <countsAsAddedPartOrImplant>true</countsAsAddedPartOrImplant>
         <everCurableByItem>false</everCurableByItem>
+        <isBad>false</isBad>
         <stages>
             <li>
                 <totalBleedFactor>0.1</totalBleedFactor>
                 <naturalHealingFactor>0</naturalHealingFactor>
+                <capMods>
+                    <li>
+                        <capacity>Manipulation</capacity>
+                        <postFactor>1.25</postFactor>
+                    </li>
+                    <li>
+                        <capacity>Moving</capacity>
+                        <postFactor>1.25</postFactor>
+                    </li>
+                </capMods>
                 <statFactors>
                     <MarketValue>0</MarketValue>
                     <ToxicResistance>1</ToxicResistance>
@@ -20,19 +31,23 @@
                     <LeatherAmount>0</LeatherAmount>
                     <RoyalFavorValue>0</RoyalFavorValue>
                     <LifespanFactor>500</LifespanFactor>
-                    <ArmorRating_Heat>0</ArmorRating_Heat>
+                    
                 </statFactors>
                 <statOffsets>
                     <ComfyTemperatureMin>-30</ComfyTemperatureMin>
                     <ComfyTemperatureMax>30</ComfyTemperatureMax>
-                    <ArmorRating_Sharp>1.45</ArmorRating_Sharp>
-                    <ArmorRating_Blunt>1.45</ArmorRating_Blunt>
+                    <ArmorRating_Sharp>1.50</ArmorRating_Sharp>
+                    <ArmorRating_Blunt>0.75</ArmorRating_Blunt>
+                    <ArmorRating_Heat>-0.75</ArmorRating_Heat>
                 </statOffsets>
             </li>
         </stages>
         <comps>
-            <li Class="HediffCompProperties_ReactOnDamage">
-                <damageDefIncoming>EMP</damageDefIncoming>
+            <li Class="Nanoswarms.HediffCompProperties_ReactOnMultipleDamageTypes">
+                <damageDefIncoming>
+                    <li>EMP</li>
+                    <li>MechBandShockwave</li>
+                </damageDefIncoming>
                 <createHediff>mytNS_EMPBurst</createHediff>
             </li>
         </comps>
@@ -56,6 +71,9 @@
             <li>
                 <label>minor latency</label>
                 <minSeverity>0.04</minSeverity>
+                <statOffsets>
+                    <VREA_MemorySpaceDrainMultiplier>1</VREA_MemorySpaceDrainMultiplier>
+                </statOffsets>
                 <capMods>
                     <li>
                         <capacity>Manipulation</capacity>
@@ -69,7 +87,10 @@
             </li>
             <li>
                 <label>lag spikes</label>
-                <minSeverity>0.2</minSeverity>
+                <minSeverity>0.3</minSeverity>
+                <statOffsets>
+                    <VREA_MemorySpaceDrainMultiplier>3</VREA_MemorySpaceDrainMultiplier>
+                </statOffsets>
                 <capMods>
                     <li>
                         <capacity>Moving</capacity>
@@ -87,8 +108,10 @@
             </li>
             <li>
                 <label>persistent latency</label>
-                <minSeverity>0.35</minSeverity>
-                <painOffset>0.15</painOffset>
+                <minSeverity>0.50</minSeverity>
+                <statOffsets>
+                    <VREA_MemorySpaceDrainMultiplier>9</VREA_MemorySpaceDrainMultiplier>
+                </statOffsets>
                 <capMods>
                     <li>
                         <capacity>Moving</capacity>
@@ -106,11 +129,22 @@
             </li>
             <li>
                 <label>full desynchronization</label>
-                <minSeverity>0.62</minSeverity>
+                <minSeverity>0.90</minSeverity>
+                <statOffsets>
+                    <VREA_MemorySpaceDrainMultiplier>20</VREA_MemorySpaceDrainMultiplier>
+                </statOffsets>
                 <capMods>
                     <li>
+                        <capacity>Moving</capacity>
+                        <offset>-0.5</offset>
+                    </li>
+                    <li>
+                        <capacity>Manipulation</capacity>
+                        <offset>-0.7</offset>
+                    </li>
+                    <li>
                         <capacity>Consciousness</capacity>
-                        <setMax>0.1</setMax>
+                        <offset>-0.30</offset>
                     </li>
                 </capMods>
             </li>
@@ -123,21 +157,23 @@
         <description>An emp burst that destroyed the nanites of a nanoswarm projection.</description>
         <hediffClass>HediffWithComps</hediffClass>
         <comps>
-            <li Class="Nanoswarms.mytNS_HediffCompProperties_DisableNanoSwarm" />
+            <li Class="Nanoswarms.HediffCompProperties_DisableNanoSwarm" />
         </comps>
     </HediffDef>
     
-    <!-- Skill hediffs -->
+    <!-- Skill hediffs for level 10 -->
     <HediffDef ParentName="ImplantHediffBase">
         <defName>mytNS_melee10</defName>
         <label>nanite armblade</label>
         <labelNoun>a nanite armblade</labelNoun>
         <description>The microscopic robots along the manipulator appendage of the swarm form into a hardened blade at a thought.</description>
+        <keepOnBodyPartRestoration>true</keepOnBodyPartRestoration>
+        <isBad>false</isBad>
         <comps>
             <li Class="HediffCompProperties_VerbGiver">
                 <tools>
                     <li>
-                        <label>nanite armblade</label>
+                        <label>stab</label>
                         <capacities>
                             <li>Stab</li>
                         </capacities>
@@ -149,7 +185,7 @@
                         <soundMeleeMiss>MeleeMiss_BionicSlash</soundMeleeMiss>
                     </li>
                     <li>
-                        <label>nanite armblade</label>
+                        <label>cut</label>
                         <capacities>
                             <li>Cut</li>
                         </capacities>
@@ -164,11 +200,186 @@
             </li>
         </comps>
     </HediffDef>
+    <HediffDef ParentName="AddedBodyPartBase">
+        <defName>mytNS_shooting10</defName>
+        <label>refined optical cluster</label>
+        <labelNoun>a refined optical cluster</labelNoun>
+        <description>The swarm is molded into a precise structure to form an optical sensor with more resolution and precision.</description>
+        <keepOnBodyPartRestoration>true</keepOnBodyPartRestoration>
+        <isBad>false</isBad>
+        <addedPartProps>
+            <solid>true</solid>
+            <partEfficiency>1.25</partEfficiency>
+            <betterThanNatural>true</betterThanNatural>
+        </addedPartProps>
+        <stages>
+            <li>
+                <statOffsets>
+                    <AimingDelayFactor>0.25</AimingDelayFactor>
+                    <ShootingAccuracyPawn>5</ShootingAccuracyPawn>
+                </statOffsets>
+            </li>
+        </stages>
+    </HediffDef>
+    <HediffDef ParentName="ImplantHediffBase">
+        <defName>mytNS_construction10</defName>
+        <label>nanomorphic construction toolset</label>
+        <labelNoun>a nanomorphic toolset</labelNoun>
+        <description>Nanorobotic construction tools, formed and reformed with a thought based on the controlling minds thorough understanding of construction techniques.</description>
+        <keepOnBodyPartRestoration>true</keepOnBodyPartRestoration>
+        <isBad>false</isBad>
+        <stages>
+            <li>
+                <statFactors>
+                    <ConstructionSpeed>1.4</ConstructionSpeed>
+                    <SmoothingSpeed>1.4</SmoothingSpeed>
+                    <FixBrokenDownBuildingSuccessChance>1.20</FixBrokenDownBuildingSuccessChance>
+                    <ConstructSuccessChance>1.25</ConstructSuccessChance>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+    <HediffDef ParentName="ImplantHediffBase">
+        <defName>mytNS_mining10</defName>
+        <label>ultrasonic oscillating drill</label>
+        <labelNoun>a ultrasonic oscillating drill</labelNoun>
+        <description>Microscopic robots form into an oscillating drill to blast stone and rock away with hypersonic pressure waves.  Functions as a sonic drill that can be formed on demand with a thought.</description>
+        <keepOnBodyPartRestoration>true</keepOnBodyPartRestoration>
+        <isBad>false</isBad>
+        <stages>
+            <li>
+                <statOffsets>
+                    <MiningSpeed>1.60</MiningSpeed>
+                    <DeepDrillingSpeed>0.7</DeepDrillingSpeed>
+                </statOffsets>
+            </li>
+        </stages>
+    </HediffDef>
+    <HediffDef ParentName="ImplantHediffBase">
+        <defName>mytNS_cooking10</defName>
+        <label>precision nanite utensils</label>
+        <labelNoun>a precision nanite utensil</labelNoun>
+        <description>The manipulator limb splits into dozens of specialized utensils that improve precision and allow cooks to determine food temperature</description>
+        <keepOnBodyPartRestoration>true</keepOnBodyPartRestoration>
+        <isBad>false</isBad>
+        <stages>
+            <li>
+                <statFactors>
+                    <FoodPoisonChance>0</FoodPoisonChance>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+    <HediffDef ParentName="ImplantHediffBase">
+        <defName>mytNS_plants10</defName>
+        <label>microscopic finger pruners</label>
+        <labelNoun>a microscopic finger pruners</labelNoun>
+        <description>Pruning shears form on the end of each finger and allow precise cutting of multiple buds and stocks at once.  These shears are formed with a thought from the swarm of microscopic robots and are actually capable of deconstructing the plant stem at a molecular level.</description>
+        <keepOnBodyPartRestoration>true</keepOnBodyPartRestoration>
+        <isBad>false</isBad>
+        <stages>
+            <li>
+                <statOffsets>
+                    <PlantWorkSpeed>1.60</PlantWorkSpeed>
+                    <PlantHarvestYield>1</PlantHarvestYield>
+                    <DrugHarvestYield>1</DrugHarvestYield>
+                </statOffsets>
+            </li>
+        </stages>
+    </HediffDef>
+    <HediffDef ParentName="ImplantHediffBase">
+        <defName>mytNS_animals10</defName>
+        <label>nano-groomer</label>
+        <labelNoun>a nano-groomer</labelNoun>
+        <description>Fingers and arms form into long tendrils that move over the animal, grooming, cleaning, combing, sheering and milking the animal.</description>
+        <keepOnBodyPartRestoration>true</keepOnBodyPartRestoration>
+        <isBad>false</isBad>
+        <stages>
+            <li>
+                <statOffsets>
+                    <AnimalGatherSpeed>1.40</AnimalGatherSpeed>
+                    <AnimalGatherYield>1</AnimalGatherYield>
+                    <TameAnimalChance>1.20</TameAnimalChance>
+                    <TrainAnimalChance>1.20</TrainAnimalChance>
+                </statOffsets>
+            </li>
+        </stages>
+    </HediffDef>
+    <HediffDef ParentName="ImplantHediffBase">
+        <defName>mytNS_crafting10</defName>
+        <label>precision crafting set</label>
+        <labelNoun>a precision crafting set</labelNoun>
+        <description>Manipulator splits into an array of tiny precision tools that allow careful cutting, stitching, bonding and placement. This ensures all goods are high quality.</description>
+        <keepOnBodyPartRestoration>true</keepOnBodyPartRestoration>
+        <isBad>false</isBad>
+    </HediffDef>
+    <HediffDef ParentName="ImplantHediffBase">
+        <defName>mytNS_artistic10</defName>
+        <label>precision artisan tools</label>
+        <labelNoun>a precision artisan tool</labelNoun>
+        <description>Manipulator splits into an array of tiny precision tools that allow careful cutting, scraping, polishing and carving. This ensures all artistic works are high very high quality.</description>
+        <keepOnBodyPartRestoration>true</keepOnBodyPartRestoration>
+        <isBad>false</isBad>
+    </HediffDef>
+    <HediffDef ParentName="ImplantHediffBase">
+        <defName>mytNS_medical10</defName>
+        <label>monoscalpel</label>
+        <labelNoun>a monoscalpel</labelNoun>
+        <description>Fingers form into monoscalpels, elongating into nanotubes that can penetrate the skin and make precision cuts during surgery, improving surgery and first aide outcomes.</description>
+        <keepOnBodyPartRestoration>true</keepOnBodyPartRestoration>
+        <isBad>false</isBad>
+        <stages>
+            <li>
+                <statOffsets>
+                    <MedicalSurgerySuccessChance>1</MedicalSurgerySuccessChance>
+                    <MedicalOperationSpeed>0.15</MedicalOperationSpeed>
+                    <MedicalTendSpeed>0.25</MedicalTendSpeed>
+                    <MedicalTendQuality>0.25</MedicalTendQuality>
+                </statOffsets>
+            </li>
+        </stages>
+    </HediffDef>
+    <HediffDef ParentName="ImplantHediffBase">
+        <defName>mytNS_social10</defName>
+        <label>morphic form</label>
+        <labelNoun>a morphic form</labelNoun>
+        <description>The nanorobotic swarm can be reshaped to fit any preference or desire, as the controlling mind understands how to best present themselves for maximum effect, this translates into positive social outcomes.</description>
+        <stages>
+            <li>
+                <statOffsets>
+                    <PawnBeauty>2</PawnBeauty>
+                    <NegotiationAbility>0.15</NegotiationAbility>
+                    <ArrestSuccessChance>0.1</ArrestSuccessChance>
+                    <TradePriceImprovement>0.1</TradePriceImprovement>
+                    <DrugSellPriceImprovement>0.1</DrugSellPriceImprovement>
+                    <SocialImpact>0.25</SocialImpact>
+                </statOffsets>
+            </li>
+        </stages>
+    </HediffDef>
+    <HediffDef ParentName="ImplantHediffBase">
+        <defName>mytNS_intelligence10</defName>
+        <label>digital mind</label>
+        <labelNoun>a digital mind</labelNoun>
+        <description>Your mind is silicon and electricity. You can think at the speed of light and have perfect recall, you are just beginning to fully realize the benefits of a machine based intelligence.</description>
+        <stages>
+            <li>
+                <statFactors>
+                    <ResearchSpeed>1.25</ResearchSpeed>
+                    <HackingSpeed>1.2</HackingSpeed>
+                    <DrugSynthesisSpeed>1.2</DrugSynthesisSpeed>
+                    <PilotingAbility>1.2</PilotingAbility>
+                </statFactors>
+            </li>
+        </stages>
+    </HediffDef>
+    <!-- Skill hediffs for level 20 skills -->
     <HediffDef ParentName="ImplantHediffBase">
         <defName>mytNS_melee20</defName>
         <label>nanite monoblade</label>
         <labelNoun>a nanite monoblade</labelNoun>
         <description>The microscopic robots along the manipulator appendage of the swarm form into a hardened blade at a thought, forming into a monosword at a moments notice.</description>
+        <isBad>false</isBad>
         <comps>
             <li Class="HediffCompProperties_VerbGiver">
                 <tools>

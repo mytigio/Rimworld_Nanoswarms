@@ -14,9 +14,9 @@ namespace Nanoswarms
 		    _compBuildingDigitalMind ??
 		    (_compBuildingDigitalMind = ProjectionBody?.DigitalMindStorage);
 
-	    private mytNS_NanoswarmProjectionBody _projectionBody;
+	    private Hediff_NanoswarmProjectionBody _projectionBody;
 
-	    public mytNS_NanoswarmProjectionBody ProjectionBody
+	    public Hediff_NanoswarmProjectionBody ProjectionBody
 	    {
 		    get => _projectionBody;
 		    set => _projectionBody = value;
