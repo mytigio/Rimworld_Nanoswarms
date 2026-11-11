@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
+using UnityEngine;
 using Verse;
 using VREAndroids;
 
@@ -45,6 +46,11 @@ namespace Nanoswarms
         {
                 return ((x.IsAndroidGene()) && 
                         ((_compBuildingDigitalMind.Reprogrammable) ? x.AllowedForSwarms() : x.AllowedForSwarmCosmetic()));
+        }
+
+        public override void DrawGenes(Rect rect)
+        {
+            base.DrawGenes(rect);
         }
     }
 }
