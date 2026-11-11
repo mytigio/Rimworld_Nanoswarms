@@ -129,11 +129,12 @@
         <maxPassions>5</maxPassions>
         <skillRangeMinimum>5</skillRangeMinimum>
         <skillRangeMaximum>15</skillRangeMaximum>
+        <skillPoints>60</skillPoints>
         <numberOfTraits>2</numberOfTraits>
       </li>
       <li Class="CompProperties_Power">
         <compClass>CompPowerTrader</compClass>
-        <basePowerConsumption>2500</basePowerConsumption>
+        <basePowerConsumption>5000</basePowerConsumption>
       </li>
     </comps>
   </ThingDef>
@@ -176,7 +177,7 @@
       </li>
       <li Class="CompProperties_Power">
         <compClass>CompPowerTrader</compClass>
-        <basePowerConsumption>2000</basePowerConsumption>
+        <basePowerConsumption>3000</basePowerConsumption>
       </li>
       <li Class="Nanoswarms.CompProps_NoStoredMindGraphic">
         <graphicData>

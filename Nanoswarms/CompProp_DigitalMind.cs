@@ -12,6 +12,7 @@ namespace Nanoswarms
         public int maxBurningPassions = 0;
         public int skillRangeMinimum = 0;
         public int skillRangeMaximum = 0;
+        public int skillPoints = 0;
         public int numberOfTraits = 0;
 
         public bool IsAIMind => SpawnType.isAI;

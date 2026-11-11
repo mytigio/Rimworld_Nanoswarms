@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>8</LangVersion>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <SteamDirectory>/media/Games/SteamLibrary/steamapps/</SteamDirectory>
     <RimworldDirectory>$(SteamDirectory)common/RimWorld/</RimworldDirectory>
@@ -9,14 +9,14 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>false</DebugSymbols>
-    <OutputPath>../Mod/1.6/Assemblies</OutputPath>
+    <OutputPath>/media/Games/NanoswarmsMod/1.6/Assemblies/</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <OutputPath>../Mod/1.6/Assemblies</OutputPath>
+    <OutputPath>/media/Games/NanoswarmsMod/1.6/Assemblies/</OutputPath>
     <DebugType>none</DebugType>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Lib.Harmony" Version="2.4.2" />
+    <PackageReference Include="Lib.Harmony" Version="3.0.0-rc.5" />
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -45,7 +45,7 @@
     </Reference>
   </ItemGroup>
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="rm -rf $(TargetDir)" />
+    <Exec Command="rm -rf $(TargetDir)/*" />
   </Target>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="rm -rf $(RimworldModDirectory)$(TargetName)/; &#xA;mkdir $(RimworldModDirectory)$(TargetName)/; &#xA;cp -rf $(ProjectDir)../Mod/*  $(RimworldModDirectory)$(TargetName)/" />

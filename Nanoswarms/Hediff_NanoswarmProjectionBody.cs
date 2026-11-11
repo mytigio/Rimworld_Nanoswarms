@@ -124,6 +124,7 @@ namespace Nanoswarms
             {
                 _nanoswarmBodyGene = swarmBody;
                 swarmBody.ProjectionBody = this;
+                AddSkillHediffs();
             }
         } 
 

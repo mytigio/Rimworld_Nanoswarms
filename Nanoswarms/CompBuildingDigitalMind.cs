@@ -6,6 +6,7 @@ using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
 using Verse;
+using Verse.Noise;
 using VREAndroids;
 using Random = UnityEngine.Random;
 
@@ -222,12 +223,13 @@ namespace Nanoswarms
         private void InitiateReprogram()
         {
             if (!_compPower.PowerOn) return;
-            var creationWindow = new Window_SubpersonaProgram(this, null)
-                {
-                    disableAndroidHardwareLimitation = false
-                };
+            //var creationWindow = new Window_SubpersonaProgram(this, null)
+            //    {
+            //        disableAndroidHardwareLimitation = false
+            //    };
 
-            Find.WindowStack.Add(creationWindow);
+            //Find.WindowStack.Add(creationWindow);
+            NanoswarmsHelper.WriteLog("Reprogramming disabled.", NanoswarmsHelper.LogType.Warning);
         }
 
         public override void CompTickRare()
@@ -427,6 +429,7 @@ namespace Nanoswarms
             ApplyXenotype();
             var passionsRemaining = Props.maxPassions;
             var burningPassionsRemaining = Props.maxBurningPassions;
+            var skillPointsRemaining = Props.skillPoints;
             foreach (var skill in StoredMind.skills.skills)
             {
                 var random = Random.Range(0,100);
@@ -441,7 +444,9 @@ namespace Nanoswarms
                     passionsRemaining--;
                 }
                 skill.passion = passionToSet;
-                var skillLevel = Random.Range(Props.skillRangeMinimum, Props.skillRangeMaximum+1);
+                var skillLevel = Random.Range(Props.skillRangeMinimum, Math.Min(Props.skillRangeMaximum,Props.skillRangeMinimum+skillPointsRemaining)+1);
+                skillPointsRemaining -= (skillLevel-Props.skillRangeMinimum);
+                NanoswarmsHelper.WriteLog($"Setting {skill.def.defName} to {skillLevel} for {StoredMind.Name}. Skill points remaining: {skillPointsRemaining}");
                 skill.levelInt = skillLevel;
             }
             
@@ -530,6 +535,8 @@ namespace Nanoswarms
             StoredMind.ageTracker.ResetAgeReversalDemand(Pawn_AgeTracker.AgeReversalReason.ViaTreatment);
             
             StoredMind.forceNoDeathNotification = true;
+            
+            //set all hediffs based on skillset.
             NanoswarmsHelper.WriteLog("PreFormation for "+StoredMind.Name+" Complete.", NanoswarmsHelper.LogType.Debug);
         }
 
