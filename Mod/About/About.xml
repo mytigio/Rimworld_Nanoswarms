@@ -48,6 +48,7 @@
   <!-- as even basic XML options can change between major versions of the game. -->
   <supportedVersions>
     <li>1.6</li>
+    <li>1.7</li>
   </supportedVersions>
 
   <!-- This is the description of your mod shown in both the vanilla mod manager as well as modded managers. -->

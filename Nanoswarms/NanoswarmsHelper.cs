@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using HarmonyLib;
 using Verse;
 using VREAndroids;
@@ -24,7 +25,10 @@ namespace Nanoswarms
                     foreach (var convGenes in DefDatabase<AndroidConvertableGenesDef>
                                  .AllDefsListForReading)
                     {
-                        extraGeneCategories.AddRangeUnique(convGenes.geneCategories);
+                        if (convGenes?.geneCategories != null && convGenes?.geneCategories.Count > 0)
+                        {
+                            extraGeneCategories.AddRangeUnique(convGenes.geneCategories);
+                        } 
                     }
                     
                     WriteLog("extra gene categories are null. Set to convertable genes defined in androids.", LogType.Debug);
@@ -51,7 +55,7 @@ namespace Nanoswarms
         {
             NanoswarmsHelper.WriteLog("Starting Nanoswarms Helper Mod.");
             NanoswarmsHelper.HarmonyInstance = new Harmony("mytMods.Nanoswarms");
-            NanoswarmsHelper.HarmonyInstance.PatchAll();
+            NanoswarmsHelper.HarmonyInstance.PatchAll(Assembly.GetExecutingAssembly());
             NanoswarmsHelper.WriteLog("Harmony Started.");
         }
         

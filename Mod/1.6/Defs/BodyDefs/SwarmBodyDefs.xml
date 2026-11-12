@@ -186,7 +186,7 @@
 				<li>
 					<def>mytNS_manipulator</def>
 					<customLabel>left manipulator</customLabel>
-					<coverage>0.77</coverage>
+					<coverage>0.12</coverage>
 					<flipGraphic>true</flipGraphic>
 					<groups>
 						<li>Shoulders</li>
@@ -198,7 +198,7 @@
 				<li>
 					<def>mytNS_manipulator</def>
 					<customLabel>right manipulator</customLabel>
-					<coverage>0.77</coverage>
+					<coverage>0.12</coverage>
 					<flipGraphic>true</flipGraphic>
 					<groups>
 						<li>Arms</li>
@@ -208,7 +208,7 @@
 				<li>
 					<def>mytNS_locomotor</def>
 					<customLabel>left locomotor</customLabel>
-					<coverage>0.77</coverage>
+					<coverage>0.14</coverage>
 					<flipGraphic>true</flipGraphic>
 					<groups>
 						<li>Legs</li>
@@ -218,7 +218,7 @@
 				<li>
 					<def>mytNS_locomotor</def>
 					<customLabel>right locomotor</customLabel>
-					<coverage>0.77</coverage>
+					<coverage>0.14</coverage>
 					<flipGraphic>true</flipGraphic>
 					<groups>
 						<li>Legs</li>

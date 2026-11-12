@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using RimWorld;
+using RimWorld.Planet;
 using UnityEngine;
 using Verse;
+using Verse.Noise;
 using VREAndroids;
 using Random = UnityEngine.Random;
 
@@ -36,9 +38,10 @@ namespace Nanoswarms
         public override void PostPreApplyDamage(ref DamageInfo dinfo, out bool absorbed)
         {
             base.PostPreApplyDamage(ref dinfo, out absorbed);
-            if (dinfo.Def == DamageDefOf.EMP)
+            if (dinfo.Def == DamageDefOf.EMP ||dinfo.Def == DamageDefOf.MechBandShockwave)
             {
                 NanoswarmsHelper.WriteLog("EMP hit. End projection.", NanoswarmsHelper.LogType.Debug);
+                
                 StopProjection();
             }
         }
@@ -95,55 +98,66 @@ namespace Nanoswarms
                     };
                     gizmosExtra.Add(finishReprogramming);
                 }
-                
-                if (StoredMind != null && !StoredMindSpawned() && !ReprogrammingJobReady() && !_isBodyForming)
-                {
-                    var formProjectionAction = new Command_Action
-                    {
-                        action = InitializeFormation,
-                        defaultLabel = "mytNS_SpawnProjection".Translate(),
-                        defaultDesc = "mytNS_SpawnProjectionDesc".Translate(),
-                        icon = ContentFinder<Texture2D>.Get("UI/Gizmos/FormProjection")
-                    };
-                    gizmosExtra.Add(formProjectionAction);
-                } else if (StoredMindSpawned() && !ReprogrammingJobReady() && !_isBodyForming)
-                {
-                    var endFormProjectionAction = new Command_Action
-                    {
-                        action = StopProjection,
-                        defaultLabel = "mytNS_EndProjection".Translate(),
-                        defaultDesc = "mytNS_EndProjectionDesc".Translate(),
-                        icon = ContentFinder<Texture2D>.Get("UI/Gizmos/CancelProjection")
-                    };
-                    gizmosExtra.Add(endFormProjectionAction);
-                    
-                    var reFormProjectionAction = new Command_Action
-                    {
-                        action = InitializeFormation,
-                        defaultLabel = "mytNS_RespawnProjection".Translate(),
-                        defaultDesc = "mytNS_RespawnProjectionDesc".Translate(),
-                        icon = ContentFinder<Texture2D>.Get("UI/Gizmos/FormProjection")
-                    };
-                    gizmosExtra.Add(reFormProjectionAction);
-                }
 
-                if (StoredMind != null && !StoredMindSpawned() && !ReprogrammingJobReady() && !_isBodyForming)
+                if (StoredMind != null)
                 {
-                    if (Reprogrammable)
+                    var desync = StoredMind.health.hediffSet.GetFirstHediffOfDef(mytNSDefOf.mytNS_Desynchronization);
+                    if (StoredMind != null && !StoredMindSpawned() && !ReprogrammingJobReady() && !_isBodyForming)
                     {
-                        var reProgramAction = new Command_Action
+                        var formProjectionAction = new Command_Action
                         {
-                            action = InitiateReprogram,
-                            defaultLabel = "mytNS_Reprogram".Translate(),
-                            defaultDesc = "mytNS_ReprogramDesc".Translate(),
-                            icon = ContentFinder<Texture2D>.Get("UI/Gizmos/ModifyAnAndroid")
+                            action = InitializeFormation,
+                            defaultLabel = "mytNS_SpawnProjection".Translate(),
+                            defaultDesc = "mytNS_SpawnProjectionDesc".Translate(),
+                            icon = ContentFinder<Texture2D>.Get("UI/Gizmos/FormProjection")
                         };
-                        gizmosExtra.Add(reProgramAction);
+                        formProjectionAction.Disabled = (desync.Severity >= 0.9f);
+                        gizmosExtra.Add(formProjectionAction);
+                    } else if (StoredMindSpawned() && !ReprogrammingJobReady() && !_isBodyForming)
+                    {
+                        var endFormProjectionAction = new Command_Action
+                        {
+                            action = SafelyStopProjection,
+                            defaultLabel = "mytNS_EndProjection".Translate(),
+                            defaultDesc = "mytNS_EndProjectionDesc".Translate(),
+                            icon = ContentFinder<Texture2D>.Get("UI/Gizmos/CancelProjection")
+                        };
+                        gizmosExtra.Add(endFormProjectionAction);
+                        
+                        var reFormProjectionAction = new Command_Action
+                        {
+                            action = InitializeFormation,
+                            defaultLabel = "mytNS_RespawnProjection".Translate(),
+                            defaultDesc = "mytNS_RespawnProjectionDesc".Translate(),
+                            icon = ContentFinder<Texture2D>.Get("UI/Gizmos/FormProjection")
+                        };
+                        gizmosExtra.Add(reFormProjectionAction);
+                    }
+
+                    if (StoredMind != null && !StoredMindSpawned() && !ReprogrammingJobReady() && !_isBodyForming)
+                    {
+                        if (Reprogrammable)
+                        {
+                            var reProgramAction = new Command_Action
+                            {
+                                action = InitiateReprogram,
+                                defaultLabel = "mytNS_Reprogram".Translate(),
+                                defaultDesc = "mytNS_ReprogramDesc".Translate(),
+                                icon = ContentFinder<Texture2D>.Get("UI/Gizmos/ModifyAnAndroid")
+                            };
+                            gizmosExtra.Add(reProgramAction);
+                        }
                     }
                 }
+                
             }
 
             return gizmosExtra;
+        }
+
+        private void SafelyStopProjection()
+        {
+            StopProjection(false);
         }
 
         private void InitiateStyling()
@@ -269,6 +283,11 @@ namespace Nanoswarms
                     {
                         NanoswarmsHelper.WriteLog($"Desync severity for {StoredMind.Name} is at max severity.");
                     }
+
+                    if (desync.Severity > 1.0f)
+                    {
+                        desync.Severity = 1.0f;
+                    }
                 }
                 else
                 {
@@ -312,11 +331,11 @@ namespace Nanoswarms
 
         }
 
-        private mytNS_NanoswarmProjectionBody GetLinkedHediff()
+        private Hediff_NanoswarmProjectionBody GetLinkedHediff()
         {
             if (StoredMind?.health?.hediffSet?.TryGetHediff(mytNSDefOf.mytNS_NanoswarmProjectionBody, out var bodyHediff) == true)
             {
-                if (!(bodyHediff is mytNS_NanoswarmProjectionBody projectionBody)) return null;
+                if (!(bodyHediff is Hediff_NanoswarmProjectionBody projectionBody)) return null;
                 if (projectionBody.DigitalMindStorage == this) return projectionBody;
                 NanoswarmsHelper.WriteLog("Set hediff digital mind storage to current digital mind storage comp", NanoswarmsHelper.LogType.Debug);
                 projectionBody.DigitalMindStorage = this;
@@ -415,6 +434,7 @@ namespace Nanoswarms
             ApplyXenotype();
             var passionsRemaining = Props.maxPassions;
             var burningPassionsRemaining = Props.maxBurningPassions;
+            var skillPointsRemaining = Props.skillPoints;
             foreach (var skill in StoredMind.skills.skills)
             {
                 var random = Random.Range(0,100);
@@ -429,7 +449,9 @@ namespace Nanoswarms
                     passionsRemaining--;
                 }
                 skill.passion = passionToSet;
-                var skillLevel = Random.Range(Props.skillRangeMinimum, Props.skillRangeMaximum+1);
+                var skillLevel = Random.Range(Props.skillRangeMinimum, Math.Min(Props.skillRangeMaximum,Props.skillRangeMinimum+skillPointsRemaining)+1);
+                skillPointsRemaining -= (skillLevel-Props.skillRangeMinimum);
+                NanoswarmsHelper.WriteLog($"Setting {skill.def.defName} to {skillLevel} for {StoredMind.Name}. Skill points remaining: {skillPointsRemaining}");
                 skill.levelInt = skillLevel;
             }
             
@@ -497,14 +519,14 @@ namespace Nanoswarms
             if (StoredMind.Spawned || StoredMind.Corpse != null)
             {
                 NanoswarmsHelper.WriteLog("Projection already formed. Destroy first.", NanoswarmsHelper.LogType.Debug);
-                StopProjection();
+                StopProjection(false);
             }
             
             // iterate over the hediffs and remove any we wouldn't want on a digital mind in a nanobot swarm body.
             // this will include almost everything.
             // copy the list so we can act on it.
             var hediffList = StoredMind.health.hediffSet.hediffs.ListFullCopyOrNull();
-            foreach (var hediff in hediffList.Where(hediff => (hediff.def != mytNSDefOf.mytNS_NanoswarmProjectionBody && hediff.def != mytNSDefOf.mytNS_Desynchronization)))
+            foreach (var hediff in hediffList.Where(hediff => (!hediff.IsNanoswarmHediff())))
             {
                 NanoswarmsHelper.WriteLog("Removing Hediff " + hediff.Label, NanoswarmsHelper.LogType.Debug);
                 StoredMind.health.RemoveHediff(hediff);
@@ -518,6 +540,8 @@ namespace Nanoswarms
             StoredMind.ageTracker.ResetAgeReversalDemand(Pawn_AgeTracker.AgeReversalReason.ViaTreatment);
             
             StoredMind.forceNoDeathNotification = true;
+            
+            //set all hediffs based on skillset.
             NanoswarmsHelper.WriteLog("PreFormation for "+StoredMind.Name+" Complete.", NanoswarmsHelper.LogType.Debug);
         }
 
@@ -527,53 +551,200 @@ namespace Nanoswarms
             pawnToStore.equipment.DestroyAllEquipment();
             pawnToStore.apparel.DestroyAll();
             pawnToStore.inventory.DestroyAll();
+            NanoswarmsHelper.WriteLog($"pawnToStore Id: {pawnToStore.ThingID}. SpawnType: {Props.SpawnType.defName}",NanoswarmsHelper.LogType.Debug);
             StoredMind = clonePawnAsSwarm(pawnToStore);
-            handleTraits(StoredMind);
-            pawnToStore.Destroy();
+            NanoswarmsHelper.WriteLog($"StoredMind Id: {StoredMind.ThingID}. SpawnType: {Props.SpawnType.defName}",NanoswarmsHelper.LogType.Debug);
             ApplyXenotype();
+            handleTraits(StoredMind);
             InitializeFormation();
         }
 
+        //we need to clone the pawn and make them a swarm.
+        //the methods in the GameComponent_PawnDuplicator are all private
+        //and there is no version of the duplicator that swaps pawnkind, so
+        //I have to duplicate the logic here sadly.
         private Pawn clonePawnAsSwarm(Pawn originalPawn)
         {
-            var newPawn = (Pawn) ThingMaker.MakeThing(mytNSDefOf.mytNS_SwarmColonist.race);
-            newPawn.kindDef = mytNSDefOf.mytNS_SwarmColonist;
-            newPawn.SetFactionDirect(originalPawn.Faction);
-            PawnComponentsUtility.CreateInitialComponents(newPawn);
-            newPawn.gender = originalPawn.gender;
-            
-            newPawn.ageTracker = originalPawn.ageTracker;
-            newPawn.needs = originalPawn.needs;
-            newPawn.skills = originalPawn.skills;
-
-            newPawn.story = originalPawn.story;
-            newPawn.Name = originalPawn.Name;
-            
-            newPawn.abilities = originalPawn.abilities;
-            newPawn.connections = originalPawn.connections;
-
-            newPawn.genes = originalPawn.genes;
-            newPawn.health = originalPawn.health;
-            newPawn.ideo = originalPawn.ideo;
-
-            if (originalPawn?.learning != null)
+            var biologicalYearsFloat = originalPawn.ageTracker.AgeBiologicalYearsFloat;
+            var chronYearsFloat = originalPawn.ageTracker.AgeChronologicalYearsFloat;
+            if (chronYearsFloat > (double)biologicalYearsFloat)
             {
+                chronYearsFloat = biologicalYearsFloat;
+            }
 
-                newPawn.learning = originalPawn.learning;
+            var biologicalYears = new float?(biologicalYearsFloat);
+            var chronYears = new float?(chronYearsFloat);
+            var gender = new Gender?(originalPawn.gender);
+            
+            var genRequest = new PawnGenerationRequest(
+                mytNSDefOf.mytNS_SwarmColonist,
+                originalPawn.Faction,
+                tile: new PlanetTile(),
+                forceGenerateNewPawn: true,
+                canGeneratePawnRelations: false,
+                colonistRelationChanceFactor: 0.0f,
+                relationWithExtraPawnChanceFactor: 0.0f,
+                minChanceToRedressWorldPawn: null,
+                fixedBiologicalAge: biologicalYears,
+                fixedChronologicalAge: chronYears,
+                fixedGender: gender,
+                fixedIdeo: originalPawn.Ideo,
+                forbidAnyTitle: true,
+                forcedXenotype: null,
+                forcedCustomXenotype: null,
+                excludeBiologicalAgeRange: null,
+                biologicalAgeRange: null,
+                forceNoGear: true) {
+                IsCreepJoiner = false,
+                ForceNoIdeoGear = true,
+                CanGeneratePawnRelations = false,
+                DontGivePreArrivalPathway = true
+            };
+            var newPawn = PawnGenerator.GeneratePawn(genRequest);
+            newPawn.Name = (Name)NameTriple.FromString(originalPawn.Name.ToString());
+            
+            NanoswarmsHelper.WriteLog($"Name: {newPawn.Name}; biologicalYears: {newPawn.ageTracker.AgeBiologicalYears}; chronYears: {newPawn.ageTracker.AgeChronologicalYears}; gender: {newPawn.gender}",NanoswarmsHelper.LogType.Debug);
+
+            //handle story and traits.
+            newPawn.story.favoriteColor = originalPawn.story.favoriteColor;
+            newPawn.story.Childhood = originalPawn.story.Childhood;
+            newPawn.story.Adulthood =  originalPawn.story.Adulthood;
+            
+            newPawn.story.traits.allTraits.Clear();
+            foreach (var allTrait in originalPawn.story.traits.allTraits)
+            {
+                if (!ModsConfig.BiotechActive || allTrait.sourceGene == null)
+                {
+                    newPawn.story.traits.GainTrait(new Trait(allTrait.def, allTrait.Degree, allTrait.ScenForced));
+                }
             }
             
+            //handle appearance
+            newPawn.story.headType =originalPawn.story.headType;
+            newPawn.story.bodyType =originalPawn.story.bodyType;
+            newPawn.story.hairDef =originalPawn.story.hairDef;
+            newPawn.story.HairColor =originalPawn.story.HairColor;
+            newPawn.story.SkinColorBase =originalPawn.story.SkinColorBase;
+            newPawn.story.skinColorOverride =originalPawn.story.skinColorOverride;
+            newPawn.story.furDef =originalPawn.story.furDef;
             
-            newPawn.foodRestriction = originalPawn.foodRestriction;
-            newPawn.drugs = originalPawn.drugs;
-            newPawn.workSettings = originalPawn.workSettings;
-
-            if (originalPawn?.mechanitor != null)
+            //copy style
+            newPawn.style.beardDef = originalPawn.style.beardDef;
+            if (ModsConfig.IdeologyActive)
             {
-                newPawn.mechanitor = originalPawn.mechanitor;    
+                newPawn.style.BodyTattoo = originalPawn.style.BodyTattoo;
+                newPawn.style.FaceTattoo = originalPawn.style.FaceTattoo;
             }
+            
+            //copy skills
+            newPawn.skills.skills.Clear();
+            foreach (var skill in originalPawn.skills.skills)
+            {
+                var record = new SkillRecord(newPawn, skill.def)
+                {
+                    levelInt = skill.levelInt,
+                    passion = skill.passion,
+                    xpSinceLastLevel = skill.xpSinceLastLevel,
+                    xpSinceMidnight = skill.xpSinceMidnight
+                };
+                newPawn.skills.skills.Add(record);
+            }
+            
+            //copy hediffs
+            newPawn.health.hediffSet.hediffs.Clear();
+            
+            //copy needs
+            if (originalPawn?.needs?.AllNeeds != null)
+            {
+                newPawn.needs.AllNeeds.Clear();
+                foreach (var need in originalPawn.needs.AllNeeds)
+                {
+                    var instance = (Need) Activator.CreateInstance(need.def.needClass, (object)newPawn);
+                    instance.def = need.def;
+                    newPawn.needs.AllNeeds.Add(instance);
+                    instance.SetInitialLevel();
+                    instance.CurLevel = need.CurLevel;
+                    newPawn.needs.BindDirectNeedFields();
+                }
+            }
+
+            var memories = newPawn.needs.mood.thoughts.memories.Memories;
+            memories.Clear();
+            foreach (var memory in originalPawn.needs.mood.thoughts.memories.Memories)
+            {
+                var thoughtMemory = (Thought_Memory)ThoughtMaker.MakeThought(memory.def);
+                thoughtMemory.CopyFrom(memory);
+                thoughtMemory.pawn = newPawn;
+                memories.Add(thoughtMemory);
+            }
+            
+            //copy abilities
+            foreach (var ability in originalPawn.abilities.abilities.Where(ability => newPawn.abilities.GetAbility(ability.def) == null))
+            {
+                newPawn.abilities.GainAbility(ability.def);
+            }
+
+            var abilities = newPawn.abilities.abilities;
+            for (var index = abilities.Count - 1; index >= 0; --index)
+            {
+                var ability = abilities[index];
+                if (originalPawn.abilities.GetAbility(ability.def) == null)
+                {
+                    newPawn.abilities.RemoveAbility(ability.def);
+                }
+            }
+
+            if (originalPawn.royalty != null)
+            {
+                foreach (var grantedAbility in from roytalTitle in originalPawn.royalty.AllTitlesForReading from grantedAbility in roytalTitle.def.grantedAbilities where newPawn.abilities.GetAbility(grantedAbility) != null select grantedAbility)
+                {
+                    newPawn.abilities.RemoveAbility(grantedAbility);
+                }
+            }
+            
+            //copy genes
+            newPawn.genes.Endogenes.Clear();
+            var sourceEndogenes = originalPawn.genes.Endogenes;
+            foreach (var gene in sourceEndogenes)
+            {
+                newPawn.genes.AddGene(gene.def, false);
+            }
+
+            for (var i = 0; i < sourceEndogenes.Count; i++)
+            {
+                newPawn.genes.Endogenes[i].overriddenByGene = !sourceEndogenes[i].Overridden ? (Gene) null : newPawn.genes.GenesListForReading.First<Gene>((Func<Gene, bool>) (e => e.def == sourceEndogenes[i].overriddenByGene.def));
+            }
+
+            
+            if (ModsConfig.BiotechActive)
+            {
+                newPawn.ageTracker.growthPoints = originalPawn.ageTracker.growthPoints;
+                newPawn.ageTracker.vatGrowTicks = originalPawn.ageTracker.vatGrowTicks;
+                newPawn.genes.xenotypeName =  originalPawn.genes.xenotypeName;
+                newPawn.genes.iconDef = originalPawn.genes.iconDef;
+                
+                newPawn.genes.Xenogenes.Clear();
+                var sourceXenogenes = originalPawn.genes.Xenogenes;
+                foreach (var gene in sourceXenogenes)
+                {
+                    newPawn.genes.AddGene(gene.def, true);
+                }
+                for (var i = 0; i < sourceXenogenes.Count; i++)
+                {
+                    newPawn.genes.Xenogenes[i].overriddenByGene = !sourceXenogenes[i].Overridden ? (Gene) null : newPawn.genes.GenesListForReading.First<Gene>((Func<Gene, bool>) (e => e.def == sourceXenogenes[i].overriddenByGene.def));
+                }
+            }
+
+            if (originalPawn?.relations != null)
+            {
+                newPawn.relations = originalPawn.relations;
+            }
+
+            newPawn.foodRestriction.CurrentFoodPolicy = originalPawn.foodRestriction.CurrentFoodPolicy;
+            newPawn.drugs.CurrentPolicy = originalPawn.drugs.CurrentPolicy;
 
             newPawn.forceNoDeathNotification = originalPawn.forceNoDeathNotification;
-            
+            originalPawn.Destroy();
             return newPawn;
         }
 
@@ -589,7 +760,7 @@ namespace Nanoswarms
             if (StoredMind == null) return;
             if (_storedCustomXenotype == null)
             {
-                NanoswarmsHelper.WriteLog("No custom xenotype. Create default one from Swarmtype.", NanoswarmsHelper.LogType.Info);
+                NanoswarmsHelper.WriteLog($"No custom xenotype for {StoredMind.Name}. Create default one from Swarmtype.", NanoswarmsHelper.LogType.Info);
                 StoredMind?.genes?.Endogenes?.Clear();
                 StoredMind?.genes?.Xenogenes?.Clear();
                 _storedCustomXenotype = new CustomXenotype
@@ -665,7 +836,7 @@ namespace Nanoswarms
             NanoswarmsHelper.WriteLog("Try Place for "+StoredMind.Name+" Complete.", NanoswarmsHelper.LogType.Debug);
         }
         private bool _stoppingProjection = false;
-        public virtual void StopProjection()
+        public virtual void StopProjection(bool involuntaryStop = true)
         {
             //mutex lock to prevent multiple stops from running at the same time.
             if (_stoppingProjection)
@@ -712,6 +883,12 @@ namespace Nanoswarms
                 NanoswarmsHelper.WriteLog("Found StoredMind Corpse Map.  Trigger explosion and then despawn.", NanoswarmsHelper.LogType.Debug);
                 GenExplosion.DoExplosion(StoredMind.Corpse.Position, StoredMind.Corpse.Map, 4.9f, mytNSDefOf.mytNS_Damage_Nanodust, StoredMind.Corpse, -1, -1f, null, null, null, null, ThingDefOf.Filth_Slime);
                 StoredMind.Corpse.Destroy();
+            }
+
+            if (involuntaryStop)
+            {
+                var desync = StoredMind.health.GetOrAddHediff(mytNSDefOf.mytNS_Desynchronization);
+                desync.Severity = 1.0f;
             }
 
             _stoppingProjection = false;

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using RimWorld;
 using Verse;
 using VREAndroids;
 
@@ -23,9 +25,38 @@ namespace Nanoswarms
             return !onDisallowedList;
         }
 
+        public static bool IsNanoswarmHediff(this Hediff hediff)
+        {
+            var nanoswarmHediffs = new List<HediffDef>()
+            {
+                mytNSDefOf.mytNS_NanoswarmProjectionBody,
+                mytNSDefOf.mytNS_Desynchronization,
+                mytNSDefOf.mytNS_melee10,
+                mytNSDefOf.mytNS_shooting10,
+                mytNSDefOf.mytNS_construction10,
+                mytNSDefOf.mytNS_mining10,
+                mytNSDefOf.mytNS_cooking10,
+                mytNSDefOf.mytNS_plants10,
+                mytNSDefOf.mytNS_animals10,
+                mytNSDefOf.mytNS_crafting10,
+                mytNSDefOf.mytNS_artistic10,
+                mytNSDefOf.mytNS_medical10,
+                mytNSDefOf.mytNS_social10,
+                mytNSDefOf.mytNS_intelligence10
+            };
+                
+            return hediff != null && nanoswarmHediffs.Contains(hediff.def);
+        }
+
         public static bool IsNanoswarmAndroid(this Pawn pawn)
         {
             return pawn.health.hediffSet.HasHediff(mytNSDefOf.mytNS_NanoswarmProjectionBody);
+        }
+
+        public static void removeNanites(this Pawn pawn, float cost)
+        {
+            var nanoswarmGene = (Gene_NaniteSwarmBody) pawn.genes.GetGene(mytNSDefOf.mytNS_NanobotSwarm);
+            nanoswarmGene.Resource.Value -= cost;
         }
     }
 }

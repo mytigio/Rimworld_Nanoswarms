@@ -12,7 +12,7 @@ using VREAndroids;
 
 namespace Nanoswarms
 {
-    public class mytNS_Building_DigitalMindCasket : Building, ISuspendableThingHolder 
+    public class Building_DigitalMindCasket : Building, ISuspendableThingHolder 
     {
         protected ThingOwner innerContainer;
 
@@ -22,7 +22,7 @@ namespace Nanoswarms
         
         private CompBuildingDigitalMind _compBuildingDigitalMind;
 
-        public mytNS_Building_DigitalMindCasket()
+        public Building_DigitalMindCasket()
         {
             innerContainer = new ThingOwner<Thing>(this, false);
         }
