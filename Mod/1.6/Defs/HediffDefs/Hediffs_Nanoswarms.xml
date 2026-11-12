@@ -241,7 +241,7 @@
         <defName>mytNS_construction10</defName>
         <label>nanomorphic construction toolset</label>
         <labelNoun>a nanomorphic toolset</labelNoun>
-        <description>Nanorobotic construction tools, formed and reformed with a thought based on the controlling minds thorough understanding of construction techniques.</description>
+        <description>Nanorobotic construction tools formed instantly to perform any construction task.</description>
         <keepOnBodyPartRestoration>true</keepOnBodyPartRestoration>
         <isBad>false</isBad>
         <stages>
@@ -265,8 +265,7 @@
         <stages>
             <li>
                 <statOffsets>
-                    <MiningSpeed>1.60</MiningSpeed>
-                    <DeepDrillingSpeed>0.7</DeepDrillingSpeed>
+                    <MiningSpeed>2.0</MiningSpeed>
                 </statOffsets>
             </li>
         </stages>
@@ -333,7 +332,7 @@
         <defName>mytNS_artistic10</defName>
         <label>precision artisan tools</label>
         <labelNoun>a precision artisan tool</labelNoun>
-        <description>Manipulator splits into an array of tiny precision tools that allow careful cutting, scraping, polishing and carving. This ensures all artistic works are high very high quality.</description>
+        <description>Manipulator splits into an array of tiny precision tools that allow careful cutting, scraping, polishing and carving. This ensures all artistic works are very high quality.</description>
         <keepOnBodyPartRestoration>true</keepOnBodyPartRestoration>
         <isBad>false</isBad>
     </HediffDef>
@@ -359,7 +358,7 @@
         <defName>mytNS_social10</defName>
         <label>morphic form</label>
         <labelNoun>a morphic form</labelNoun>
-        <description>The nanorobotic swarm can be reshaped to fit any preference or desire, as the controlling mind understands how to best present themselves for maximum effect, this translates into positive social outcomes.</description>
+        <description>The nanorobotic swarm can be reconfigured to fit any preference or desire, this translates into positive social outcomes.</description>
         <stages>
             <li>
                 <statOffsets>
@@ -431,7 +430,7 @@
         <defName>mytNS_shooting20</defName>
         <label>grenade launcher</label>
         <labelNoun>a nanite grenade launcher</labelNoun>
-        <description>The swarm forms into a scoop and lobs a clump of nanites programmed to disintegrate everything nearby.</description>
+        <description>The swarm manipulator forms into a scoop and lobs a clump of nanites programmed to disintegrate everything nearby.</description>
         <isBad>false</isBad>
         <comps>
             <li Class="HediffCompProperties_GiveAbility">
