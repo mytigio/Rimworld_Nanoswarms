@@ -27,7 +27,10 @@
 			</li>
 		</linkToRefuelables>
 	</PipeSystem.PipeNetDef>
-
+	<DesignatorDropdownGroupDef>
+		<defName>mytNS_NanitePipes</defName>
+		<label>nanite pipes</label>
+	</DesignatorDropdownGroupDef>
 	<ThingDef ParentName="BuildingBase">
 		<defName>mytNS_NanitePipe</defName>
 		<label>nanite pipe</label>
@@ -35,6 +38,7 @@
 		<thingClass>PipeSystem.Building_Pipe</thingClass>
 		<category>Building</category>
 		<tickerType>Rare</tickerType>
+		<designatorDropdown>mytNS_NanitePipes</designatorDropdown>
 		<graphicData>
 			<texPath>Things/Building/Linked/NanitePipe_Atlas</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
@@ -98,6 +102,7 @@
 		<thingClass>PipeSystem.Building_Pipe</thingClass>
 		<category>Building</category>
 		<tickerType>Rare</tickerType>
+		<designatorDropdown>mytNS_NanitePipes</designatorDropdown>
 		<graphicData>
 			<texPath>UI/CSG/IConduit</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
