@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <AbilityDef Name="mytNS_Disintegration_Grenade">
+    <defName>mytNS_Disintegration_Grenade</defName>
+    <label>Nanite Disintegration Grenade</label>
+    <description>Launch a cluster of nanites programmed to disintegrate everything in a large area.</description>
+    <iconPath>UI/Abilities/PiercingSpine</iconPath>
+    <cooldownTicksRange>3750</cooldownTicksRange>
+    <displayOrder>200</displayOrder>
+    <aiCanUse>true</aiCanUse>
+    <verbProperties>
+      <verbClass>Verb_CastAbility</verbClass>
+      <range>13.9</range>
+      <minRange>0</minRange>
+      <warmupTime>3.5</warmupTime>
+      <soundCast>Shot_IncendiaryLauncher</soundCast>
+      <soundCastTail>GunTail_Heavy</soundCastTail>
+      <targetParams>
+        <canTargetLocations>true</canTargetLocations>
+      </targetParams>
+    </verbProperties>
+    <comps>
+      <li Class="Nanoswarms.CompProperties_AbilityNaniteCost">
+        <naniteCost>0.1</naniteCost>
+      </li>
+      <li Class="CompProperties_AbilityLaunchProjectile">
+        <projectileDef>mytNS_Bullet_DisintegrationGrenade</projectileDef>
+      </li>
+    </comps>
+  </AbilityDef>
+  
+  <ThingDef ParentName="BaseBullet">
+    <defName>mytNS_Bullet_DisintegrationGrenade</defName>
+    <label>nano-disintegration grenade</label>
+    <thingClass>Projectile_HellsphereCannon</thingClass>
+    <graphicData>
+      <texPath>Things/Projectile/NaniteGrenade</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>MoteGlow</shaderType>
+      <drawSize>(1.5, 3)</drawSize>
+    </graphicData>
+    <projectile>
+      <damageDef>mytNS_Disintegrate</damageDef>
+      <speed>35</speed>
+      <explosionRadius>4.9</explosionRadius>
+      <screenShakeFactor>1.5</screenShakeFactor>
+      <filth>Filth_BlastMark</filth>
+      <filthCount>1</filthCount>
+      <explosionSpawnsSingleFilth>true</explosionSpawnsSingleFilth>
+    </projectile>
+  </ThingDef>
+
+  <AbilityDef>
+    <defName>mytNS_SelfDestruct</defName>
+    <label>mass disintegrate</label>
+    <description>Reprogram the nanobots that make up the nanoswarm and send them out to destroy everything nearby.</description>
+    <iconPath>UI/Commands/LaunchEMPPulse</iconPath>
+    <aiCanUse>true</aiCanUse>
+    <targetRequired>False</targetRequired>
+    <cooldownTicksRange>30000</cooldownTicksRange> <!-- 12 hours -->
+    <verbProperties>
+      <verbClass>Verb_CastAbility</verbClass>
+      <range>4.9</range>
+      <drawAimPie>false</drawAimPie>
+      <warmupTime>10.0</warmupTime>
+      <targetParams>
+        <canTargetSelf>true</canTargetSelf>
+      </targetParams>
+    </verbProperties>
+    <comps>
+      <li Class="Nanoswarms.CompProperties_AbilitySelfDestruct">
+        <damageDef>mytNS_DisintegrateSelf</damageDef>
+      </li>
+    </comps>
+  </AbilityDef>
+  
+  <AbilityDef ParentName="AbilityTouchBase">
+    <defName>mytNS_naniteConstruction</defName>
+    <label>Nanite Construction</label>
+    <description>Reprogram a portion of your nanite swarm to quickly complete an unfinished construction project. The tiny robots can achieve an incredible level of detail.</description>
+    <iconPath>UI/Commands/LaunchEMPPulse</iconPath>
+    <aiCanUse>true</aiCanUse>
+    <targetRequired>true</targetRequired>
+    <cooldownTicksRange>30000</cooldownTicksRange>
+    <casterMustBeCapableOfViolence>false</casterMustBeCapableOfViolence>
+    <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
+    <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
+    <useAverageTargetPositionForWarmupEffecter>true</useAverageTargetPositionForWarmupEffecter>
+    <verbProperties>
+      <verbClass>Verb_CastAbilityTouch</verbClass>
+      <range>-1</range>
+      <drawAimPie>true</drawAimPie>
+      <warmupTime>5.0</warmupTime>
+      <warmupEffecter>RaisedRock_Collapse</warmupEffecter>
+      <targetParams>
+        <canTargetPawns>false</canTargetPawns>
+        <canTargetAnimals>false</canTargetAnimals>
+        <canTargetHumans>false</canTargetHumans>
+        <canTargetMechs>false</canTargetMechs>
+        <canTargetSubhumans>false</canTargetSubhumans>
+        <canTargetEntities>false</canTargetEntities>
+        <canTargetItems>true</canTargetItems>
+        <canTargetBuildings>true</canTargetBuildings>
+        <thingCategory>Ethereal</thingCategory>
+        <mapObjectTargetsMustBeAutoAttackable>false</mapObjectTargetsMustBeAutoAttackable>
+      </targetParams>
+    </verbProperties>
+    <comps>
+      <li Class="Nanoswarms.CompProperties_AbilityNaniteCost">
+        <naniteCost>0.15</naniteCost>
+      </li>
+      <li Class="Nanoswarms.CompProperties_AbilityNaniteConstruction" />
+      <li Class="CompProperties_AbilityFleckOnTarget">
+        <fleckDef>DustPuff</fleckDef>
+      </li>
+    </comps>
+  </AbilityDef>
+
+  <AbilityDef>
+    <defName>mytNS_AnimalControl</defName>
+    <label>Animal Control</label>
+    <description>Reprogram a portion of your nanite swarm to enter the mind of a nearby animal and rearrange the neural pathways, granting control over the animal temporarily.</description>
+    <iconPath>UI/Commands/LaunchEMPPulse</iconPath>
+    <aiCanUse>true</aiCanUse>
+    <targetRequired>true</targetRequired>
+    <cooldownTicksRange>300000</cooldownTicksRange>
+    <casterMustBeCapableOfViolence>false</casterMustBeCapableOfViolence>
+    <verbProperties>
+      <verbClass>Verb_CastAbilityTouch</verbClass>
+      <range>-1</range>
+      <drawAimPie>true</drawAimPie>
+      <warmupTime>3.0</warmupTime>
+      <targetParams>
+        <canTargetHumans>false</canTargetHumans>
+        <canTargetAnimals>true</canTargetAnimals>
+        <canTargetSubhumans>false</canTargetSubhumans>
+        <canTargetEntities>false</canTargetEntities>
+        <canTargetBuildings>false</canTargetBuildings>
+      </targetParams>
+    </verbProperties>
+    <comps>
+      <li Class="Nanoswarms.CompProperties_AbilityNaniteCost">
+        <naniteCost>0.20</naniteCost>
+      </li>
+      <li Class="Nanoswarms.CompProperties_AbilityAnimalControl" />
+    </comps>
+  </AbilityDef>
+
+  <AbilityDef ParentName="AbilityTouchBase">
+    <defName>mytNS_NaniteSculpting</defName>
+    <label>Nanite Sculpture</label>
+    <description>Reprogram a portion of your nanite swarm to cover and reshape a solid chunk of stone, creating a small masterwork sculpture.</description>
+    <iconPath>UI/Commands/LaunchEMPPulse</iconPath>
+    <aiCanUse>true</aiCanUse>
+    <targetRequired>true</targetRequired>
+    <cooldownTicksRange>30000</cooldownTicksRange>
+    <casterMustBeCapableOfViolence>false</casterMustBeCapableOfViolence>
+    <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
+    <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
+    <useAverageTargetPositionForWarmupEffecter>true</useAverageTargetPositionForWarmupEffecter>
+    <verbProperties>
+      <verbClass>Verb_CastAbilityTouch</verbClass>
+      <range>-1</range>
+      <drawAimPie>true</drawAimPie>
+      <warmupTime>3.0</warmupTime>
+      <targetParams>
+        <canTargetPawns>false</canTargetPawns>
+        <canTargetItems>true</canTargetItems>
+        <canTargetLocations>false</canTargetLocations>
+        <canTargetBuildings>false</canTargetBuildings>
+        <mapObjectTargetsMustBeAutoAttackable>false</mapObjectTargetsMustBeAutoAttackable>
+      </targetParams>
+    </verbProperties>
+    <comps>
+      <li Class="Nanoswarms.CompProperties_AbilityNaniteCost">
+        <naniteCost>0.15</naniteCost>
+      </li>
+      <li Class="Nanoswarms.CompProperties_AbilityNaniteSculpting" />
+    </comps>
+  </AbilityDef>
+</Defs>

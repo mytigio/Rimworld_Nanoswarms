@@ -52,5 +52,11 @@ namespace Nanoswarms
         {
             return pawn.health.hediffSet.HasHediff(mytNSDefOf.mytNS_NanoswarmProjectionBody);
         }
+
+        public static void removeNanites(this Pawn pawn, float cost)
+        {
+            var nanoswarmGene = (Gene_NaniteSwarmBody) pawn.genes.GetGene(mytNSDefOf.mytNS_NanobotSwarm);
+            nanoswarmGene.Resource.Value -= cost;
+        }
     }
 }

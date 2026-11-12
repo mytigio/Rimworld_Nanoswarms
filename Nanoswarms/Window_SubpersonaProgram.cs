@@ -19,11 +19,6 @@ namespace Nanoswarms
             forcePause = true;
         }
 
-        protected override void DrawGenes(Rect rect)
-        {
-            //base.DrawGenes(rect);
-        }
-
         public override List<GeneDef> SelectedGenes => this.selectedGenes;
         protected override string Header => "mytNS_Reprogram".Translate();
         protected override string AcceptButtonLabel => "mytNS_Reprogram".Translate();

@@ -98,52 +98,58 @@ namespace Nanoswarms
                     };
                     gizmosExtra.Add(finishReprogramming);
                 }
-                
-                if (StoredMind != null && !StoredMindSpawned() && !ReprogrammingJobReady() && !_isBodyForming)
-                {
-                    var formProjectionAction = new Command_Action
-                    {
-                        action = InitializeFormation,
-                        defaultLabel = "mytNS_SpawnProjection".Translate(),
-                        defaultDesc = "mytNS_SpawnProjectionDesc".Translate(),
-                        icon = ContentFinder<Texture2D>.Get("UI/Gizmos/FormProjection")
-                    };
-                    gizmosExtra.Add(formProjectionAction);
-                } else if (StoredMindSpawned() && !ReprogrammingJobReady() && !_isBodyForming)
-                {
-                    var endFormProjectionAction = new Command_Action
-                    {
-                        action = SafelyStopProjection,
-                        defaultLabel = "mytNS_EndProjection".Translate(),
-                        defaultDesc = "mytNS_EndProjectionDesc".Translate(),
-                        icon = ContentFinder<Texture2D>.Get("UI/Gizmos/CancelProjection")
-                    };
-                    gizmosExtra.Add(endFormProjectionAction);
-                    
-                    var reFormProjectionAction = new Command_Action
-                    {
-                        action = InitializeFormation,
-                        defaultLabel = "mytNS_RespawnProjection".Translate(),
-                        defaultDesc = "mytNS_RespawnProjectionDesc".Translate(),
-                        icon = ContentFinder<Texture2D>.Get("UI/Gizmos/FormProjection")
-                    };
-                    gizmosExtra.Add(reFormProjectionAction);
-                }
 
-                if (StoredMind != null && !StoredMindSpawned() && !ReprogrammingJobReady() && !_isBodyForming)
+                if (StoredMind != null)
                 {
-                    if (Reprogrammable)
+                    var desync = StoredMind.health.hediffSet.GetFirstHediffOfDef(mytNSDefOf.mytNS_Desynchronization);
+                    if (StoredMind != null && !StoredMindSpawned() && !ReprogrammingJobReady() && !_isBodyForming)
                     {
-                        var reProgramAction = new Command_Action
+                        var formProjectionAction = new Command_Action
                         {
-                            action = InitiateReprogram,
-                            defaultLabel = "mytNS_Reprogram".Translate(),
-                            defaultDesc = "mytNS_ReprogramDesc".Translate(),
-                            icon = ContentFinder<Texture2D>.Get("UI/Gizmos/ModifyAnAndroid")
+                            action = InitializeFormation,
+                            defaultLabel = "mytNS_SpawnProjection".Translate(),
+                            defaultDesc = "mytNS_SpawnProjectionDesc".Translate(),
+                            icon = ContentFinder<Texture2D>.Get("UI/Gizmos/FormProjection")
                         };
-                        gizmosExtra.Add(reProgramAction);
+                        formProjectionAction.Disabled = (desync.Severity >= 0.9f);
+                        gizmosExtra.Add(formProjectionAction);
+                    } else if (StoredMindSpawned() && !ReprogrammingJobReady() && !_isBodyForming)
+                    {
+                        var endFormProjectionAction = new Command_Action
+                        {
+                            action = SafelyStopProjection,
+                            defaultLabel = "mytNS_EndProjection".Translate(),
+                            defaultDesc = "mytNS_EndProjectionDesc".Translate(),
+                            icon = ContentFinder<Texture2D>.Get("UI/Gizmos/CancelProjection")
+                        };
+                        gizmosExtra.Add(endFormProjectionAction);
+                        
+                        var reFormProjectionAction = new Command_Action
+                        {
+                            action = InitializeFormation,
+                            defaultLabel = "mytNS_RespawnProjection".Translate(),
+                            defaultDesc = "mytNS_RespawnProjectionDesc".Translate(),
+                            icon = ContentFinder<Texture2D>.Get("UI/Gizmos/FormProjection")
+                        };
+                        gizmosExtra.Add(reFormProjectionAction);
+                    }
+
+                    if (StoredMind != null && !StoredMindSpawned() && !ReprogrammingJobReady() && !_isBodyForming)
+                    {
+                        if (Reprogrammable)
+                        {
+                            var reProgramAction = new Command_Action
+                            {
+                                action = InitiateReprogram,
+                                defaultLabel = "mytNS_Reprogram".Translate(),
+                                defaultDesc = "mytNS_ReprogramDesc".Translate(),
+                                icon = ContentFinder<Texture2D>.Get("UI/Gizmos/ModifyAnAndroid")
+                            };
+                            gizmosExtra.Add(reProgramAction);
+                        }
                     }
                 }
+                
             }
 
             return gizmosExtra;
@@ -223,13 +229,12 @@ namespace Nanoswarms
         private void InitiateReprogram()
         {
             if (!_compPower.PowerOn) return;
-            //var creationWindow = new Window_SubpersonaProgram(this, null)
-            //    {
-            //        disableAndroidHardwareLimitation = false
-            //    };
+            var creationWindow = new Window_SubpersonaProgram(this, null)
+                {
+                    disableAndroidHardwareLimitation = false
+                };
 
-            //Find.WindowStack.Add(creationWindow);
-            NanoswarmsHelper.WriteLog("Reprogramming disabled.", NanoswarmsHelper.LogType.Warning);
+            Find.WindowStack.Add(creationWindow);
         }
 
         public override void CompTickRare()

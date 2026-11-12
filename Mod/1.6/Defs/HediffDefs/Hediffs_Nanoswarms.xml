@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
+    <HediffDef ParentName="BurnBase">
+        <defName>mytNS_DisintegrationBurn</defName>
+        <label>disintegration burn</label>
+        <labelNoun>a disintegration burn</labelNoun>
+        <description>A disintegration burn.</description>
+        <comps>
+            <li Class="HediffCompProperties_GetsPermanent">
+                <permanentLabel>disintegration scar</permanentLabel>
+            </li>
+        </comps>
+        <injuryProps>
+            <destroyedLabel>Dissolved off</destroyedLabel>
+            <destroyedOutLabel>Dissolved</destroyedOutLabel>
+        </injuryProps>
+    </HediffDef>
+    
     <HediffDef Parent="Hediff_AndroidReactor">
         <defName>mytNS_NanoswarmProjectionBody</defName>
         <label>Nanoswarm Projection</label>
@@ -410,5 +426,117 @@
                 </tools>
             </li>
         </comps>
+    </HediffDef>
+    <HediffDef ParentName="ImplantHediffBase">
+        <defName>mytNS_shooting20</defName>
+        <label>grenade launcher</label>
+        <labelNoun>a nanite grenade launcher</labelNoun>
+        <description>The swarm forms into a scoop and lobs a clump of nanites programmed to disintegrate everything nearby.</description>
+        <isBad>false</isBad>
+        <comps>
+            <li Class="HediffCompProperties_GiveAbility">
+                <abilityDefs>
+                    <li>mytNS_Disintegration_Grenade</li>
+                </abilityDefs>
+            </li>
+        </comps>
+    </HediffDef>
+    <HediffDef ParentName="ImplantHediffBase">
+        <defName>mytNS_construction20</defName>
+        <label>nanite construction protocol</label>
+        <labelNoun>a nanite construction protocol</labelNoun>
+        <description>A protocol to quickly reprogram some nanobots in the swarm to construct and reshape materials.  The microscopic robots can get into the tiniest crevices, allowing excellent construction.</description>
+        <isBad>false</isBad>
+        <comps>
+            <li Class="HediffCompProperties_GiveAbility">
+                <abilityDefs>
+                    <li>mytNS_naniteConstruction</li>
+                </abilityDefs>
+            </li>
+        </comps>
+    </HediffDef>
+    <HediffDef ParentName="ImplantHediffBase">
+        <defName>mytNS_artistic20</defName>
+        <label>nanosculpting protocol</label>
+        <labelNoun>a nanosculpting protocol</labelNoun>
+        <description>Reprogram some of the swarm to cover a nearby stone chunk and reassemble the molecules into a small masterwork sculpture.</description>
+        <isBad>false</isBad>
+        <comps>
+            <li Class="HediffCompProperties_GiveAbility">
+                <abilityDefs>
+                    <li>mytNS_NaniteSculpting</li>
+                </abilityDefs>
+            </li>
+        </comps>
+    </HediffDef>
+    <HediffDef ParentName="ImplantHediffBase">
+        <defName>mytNS_crafting20</defName>
+        <label>grenade launcher</label>
+        <labelNoun>a nanite grenade launcher</labelNoun>
+        <description>The swarm forms into a scoop and lobs a clump of nanites programmed to disintegrate everything nearby.</description>
+        <isBad>false</isBad>
+    </HediffDef>
+    <HediffDef ParentName="ImplantHediffBase">
+        <defName>mytNS_animals20</defName>
+        <label>animal control protocol</label>
+        <labelNoun>an animal control protocol</labelNoun>
+        <description>A protocol to quickly reprogram nanobots in the swarm to invade and rewire the mind of a nearby animal.  Once implanted the microscopic robots can be used to tame the animal permanently, kill the animal instantly or temporarily draft the animal.</description>
+        <isBad>false</isBad>
+        <comps>
+            <li Class="HediffCompProperties_GiveAbility">
+                <abilityDefs>
+                    <li>mytNS_AnimalControl</li>
+                </abilityDefs>
+            </li>
+        </comps>
+    </HediffDef>
+    <HediffDef ParentName="ImplantHediffBase">
+        <defName>mytNS_cooking20</defName>
+        <label>grenade launcher</label>
+        <labelNoun>a nanite grenade launcher</labelNoun>
+        <description>The swarm forms into a scoop and lobs a clump of nanites programmed to disintegrate everything nearby.</description>
+        <isBad>false</isBad>
+    </HediffDef>
+    <HediffDef ParentName="ImplantHediffBase">
+        <defName>mytNS_intelligence20</defName>
+        <label>grenade launcher</label>
+        <labelNoun>a nanite grenade launcher</labelNoun>
+        <description>The swarm forms into a scoop and lobs a clump of nanites programmed to disintegrate everything nearby.</description>
+        <isBad>false</isBad>
+    </HediffDef>
+    <HediffDef ParentName="ImplantHediffBase">
+        <defName>mytNS_medical20</defName>
+        <label>grenade launcher</label>
+        <labelNoun>a nanite grenade launcher</labelNoun>
+        <description>The swarm forms into a scoop and lobs a clump of nanites programmed to disintegrate everything nearby.</description>
+        <isBad>false</isBad>
+    </HediffDef>
+    <HediffDef ParentName="ImplantHediffBase">
+        <defName>mytNS_mining20</defName>
+        <label>self destruct protocol</label>
+        <labelNoun>a self-destruct protocol</labelNoun>
+        <description>A protocol to quickly reprogram all the nanobots in the swarm to quickly deconstruct all matter around them.  Originally designed to quickly mine out areas of solid rock.</description>
+        <isBad>false</isBad>
+        <comps>
+            <li Class="HediffCompProperties_GiveAbility">
+                <abilityDefs>
+                    <li>mytNS_SelfDestruct</li>
+                </abilityDefs>
+            </li>
+        </comps>
+    </HediffDef>
+    <HediffDef ParentName="ImplantHediffBase">
+        <defName>mytNS_plants20</defName>
+        <label>grenade launcher</label>
+        <labelNoun>a nanite grenade launcher</labelNoun>
+        <description>The swarm forms into a scoop and lobs a clump of nanites programmed to disintegrate everything nearby.</description>
+        <isBad>false</isBad>
+    </HediffDef>
+    <HediffDef ParentName="ImplantHediffBase">
+        <defName>mytNS_social20</defName>
+        <label>grenade launcher</label>
+        <labelNoun>a nanite grenade launcher</labelNoun>
+        <description>The swarm forms into a scoop and lobs a clump of nanites programmed to disintegrate everything nearby.</description>
+        <isBad>false</isBad>
     </HediffDef>
 </Defs>

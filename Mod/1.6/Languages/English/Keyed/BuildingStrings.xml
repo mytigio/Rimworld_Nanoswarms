@@ -26,4 +26,10 @@
     <mytNS_Customize>Customize Appearance</mytNS_Customize>
     <mytNS_CustomizeDesc>Adjust the cosmetic factors of the nanoswarms appearance.  Cannot adjust subroutines or actual android hardware in this way.</mytNS_CustomizeDesc>
     <mytNS_NanoswarmNotAllowed>Nanoswarm Androids are not allowed.</mytNS_NanoswarmNotAllowed>
+    <mytNS_NaniteCost>Nanite cost</mytNS_NaniteCost>
+    <mytNS_AbilityDisabledNoNanoswarm>{0_labelShort} is not a nanoswarm.</mytNS_AbilityDisabledNoNanoswarm>
+    <mytNS_AbilityDisabledNoNanites>{0_labelShort} does not have enough nanites.</mytNS_AbilityDisabledNoNanites>
+    <mytNS_InvalidNaniteSculptingTarget>Can only target stone chunk.</mytNS_InvalidNaniteSculptingTarget>
+    <mytNS_InvalidNaniteConstructionTarget>Must target be an incomplete construction.</mytNS_InvalidNaniteConstructionTarget>
+    <mytNS_NaniteConstructionTargetMissingMaterials>Gather all materials before attempting to construct</mytNS_NaniteConstructionTargetMissingMaterials>
 </LanguageData>
